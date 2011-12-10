@@ -21,6 +21,7 @@ namespace Lyralabs.Net.TempMailServer
       while(true)
       {
         TcpClient clientSocket = this.serverSocket.AcceptTcpClient();
+        Console.WriteLine("Connected! [IP: {0}]", clientSocket.Client.RemoteEndPoint);
         NetworkStream stream = clientSocket.GetStream();
         StreamReader sr = new StreamReader(stream);
         while (sr.EndOfStream == false)
