@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.IO;
 
 namespace Lyralabs.Net.TempMailServer
 {
@@ -21,7 +22,18 @@ namespace Lyralabs.Net.TempMailServer
       {
         TcpClient clientSocket = this.serverSocket.AcceptTcpClient();
         NetworkStream stream = clientSocket.GetStream();
+        StreamReader sr = new StreamReader(stream);
+        while (sr.EndOfStream == false)
+        {
+          this.RunCommand(sr.ReadLine());
+        }
+        Console.WriteLine("--- EOS ---");
       }
+    }
+
+    private void RunCommand(string command)
+    {
+      Console.WriteLine(command);
     }
   }
 }
