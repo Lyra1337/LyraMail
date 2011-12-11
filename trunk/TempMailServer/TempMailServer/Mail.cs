@@ -5,11 +5,13 @@ using System.Text;
 
 namespace Lyralabs.Net.TempMailServer
 {
-  class MailBody
+  class Mail
   {
-    private string rawContent;
+    private string rawContent = null;
+    private StringBuilder body = null;
+    private Dictionary<string, List<string>> headers = null;
 
-    public MailBody(string _rawContent)
+    public Mail(string _rawContent)
     {
       if (String.IsNullOrEmpty(_rawContent))
         throw new ArgumentNullException("rawContent is null!");
@@ -20,9 +22,9 @@ namespace Lyralabs.Net.TempMailServer
 
     private void ParseHeader()
     {
-      StringBuilder body = new StringBuilder();
+      this.body = new StringBuilder();
       bool header = true;
-      Dictionary<string, List<string>> headers = new Dictionary<string, List<string>>();
+      this.headers = new Dictionary<string, List<string>>();
       foreach (string line in this.rawContent.Replace("\r", "").Split('\n'))
       {
         if (header)
@@ -31,9 +33,9 @@ namespace Lyralabs.Net.TempMailServer
           {
             header = false;
           }
-          else if (line.StartsWith(" ") && headers.Count > 0)
+          else if (line.StartsWith(" ") && this.headers.Count > 0)
           {
-            headers[headers.Keys.Last()][headers[headers.Keys.Last()].Count - 1] += line.Substring(1, line.Length - 1).Trim();
+            this.headers[this.headers.Keys.Last()][this.headers[this.headers.Keys.Last()].Count - 1] += line.Substring(1, line.Length - 1).Trim();
           }
           else
           {
@@ -41,16 +43,16 @@ namespace Lyralabs.Net.TempMailServer
             int separator = line.IndexOf(':');
             key = line.Substring(0, separator);
             value = line.Substring(separator + 1, line.Length - (separator + 1)).TrimStart();
-            if (headers.ContainsKey(key) == false)
+            if (this.headers.ContainsKey(key) == false)
             {
-              headers.Add(key, new List<string>());
+              this.headers.Add(key, new List<string>());
             }
-            headers[key].Add(value);
+            this.headers[key].Add(value);
           }
         }
         else
         {
-          body.AppendLine(line);
+          this.body.AppendLine(line);
         }
       }
     }

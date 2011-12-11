@@ -42,7 +42,7 @@ namespace Lyralabs.Net.TempMailServer
       }
       Console.WriteLine("--- EOS ---");
 
-      MailBody body = new MailBody(this.mailBody.ToString());
+      Mail body = new Mail(this.mailBody.ToString());
     }
 
     private void RunCommand(string command)
@@ -53,7 +53,6 @@ namespace Lyralabs.Net.TempMailServer
         {
           this.mailInput = false;
           this.writer.WriteLine("250 OK");
-          Console.WriteLine(">>250 OK");
           Console.WriteLine(this.mailBody.ToString());
           return;
         }
