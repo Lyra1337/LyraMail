@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Lyralabs.Net.TempMailServer
 {
   class Mail
   {
+    private static readonly Regex contentTypeParser = new Regex("(?<type>(multipart[^ ]+)) .*?boundary=(?<boundary>([^ ]+))", RegexOptions.Compiled);
+
     private string rawContent = null;
     private StringBuilder body = null;
     private Dictionary<string, List<string>> headers = null;
@@ -18,6 +21,25 @@ namespace Lyralabs.Net.TempMailServer
 
       this.rawContent = _rawContent;
       this.ParseHeader();
+      this.ParseBody();
+    }
+
+    private void ParseBody()
+    {
+      string contentType = null;
+      if (this.headers.ContainsKey("Content-Type"))
+      {
+        List<string> c = this.headers["Content-Type"];
+        if (c != null && c.Count > 0)
+        {
+          Match m = Mail.contentTypeParser.Match(c[0]);
+          if (m.Success)
+          {
+            string boundary = m.Groups["boundary"].Value;
+            contentType = m.Groups["type"].Value;
+          }
+        }
+      }
     }
 
     private void ParseHeader()
