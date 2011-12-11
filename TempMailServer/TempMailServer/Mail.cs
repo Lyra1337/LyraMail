@@ -47,6 +47,7 @@ namespace Lyralabs.Net.TempMailServer
       this.body = new StringBuilder();
       bool header = true;
       this.headers = new Dictionary<string, List<string>>();
+
       foreach (string line in this.rawContent.Replace("\r", "").Split('\n'))
       {
         if (header)

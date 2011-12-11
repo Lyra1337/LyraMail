@@ -43,6 +43,11 @@ namespace Lyralabs.Net.TempMailServer
 
       string path = String.Concat(LOCAL_PATH, request.Url.AbsolutePath);
 
+      if (path.EndsWith("/api.json"))
+      {
+
+      }
+
       if (Directory.Exists(path))
       {
         if (path.EndsWith("/") == false)
