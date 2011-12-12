@@ -27,6 +27,9 @@ namespace Lyralabs.Net.TempMailServer
     public void Start()
     {
       this.server.Start();
+      
+      Console.WriteLine("Webserver started at port {0}", this.port);
+
       while (true)
       {
         HttpListenerContext context = this.server.GetContext();
