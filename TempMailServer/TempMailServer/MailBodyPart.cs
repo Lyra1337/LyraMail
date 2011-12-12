@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Runtime.Serialization;
 
 namespace Lyralabs.Net.TempMailServer
 {
+  [DataContract]
   public class MailBodyPart
   {
     public MailBodyPart(List<string> bodyLines)
@@ -54,16 +56,21 @@ namespace Lyralabs.Net.TempMailServer
       this.BodyText = body.ToString();
     }
 
+    [DataMember]
     public string MimeType
     {
       get;
       set;
     }
+
+    [DataMember]
     public string Encoding
     {
       get;
       set;
     }
+
+    [DataMember]
     public string BodyText
     {
       get;

@@ -17,6 +17,7 @@ namespace Lyralabs.Net.TempMailServer
     private NetworkStream stream = null;
     private StreamReader reader = null;
     private StreamWriter writer = null;
+    private MailServer server = null;
 
     private bool mailInput = false;
     private StringBuilder mailBody = null;
@@ -24,8 +25,9 @@ namespace Lyralabs.Net.TempMailServer
     private string sender = null;
     private string recipient = null;
 
-    public MailSession(TcpClient _client)
+    public MailSession(MailServer _server, TcpClient _client)
     {
+      this.server = _server;
       this.client = _client;
       this.stream = _client.GetStream();
     }
@@ -42,7 +44,7 @@ namespace Lyralabs.Net.TempMailServer
       }
       Console.WriteLine("--- EOS ---");
 
-      return new Mail(this.mailBody.ToString());
+      return new Mail(this.server, this.mailBody.ToString());
     }
 
     private void RunCommand(string command)

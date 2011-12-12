@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Runtime.Serialization;
 
 namespace Lyralabs.Net.TempMailServer
 {
+  [DataContract]
   public class Mail
   {
     private static readonly Regex contentTypeParser = new Regex("(?<type>(multipart[^ ]+)) .*?boundary=(?<boundary>([^ ]+))", RegexOptions.Compiled);
@@ -14,17 +16,21 @@ namespace Lyralabs.Net.TempMailServer
     private StringBuilder body = null;
     private Dictionary<string, List<string>> headers = null;
 
+    private MailServer server = null;
+
+    [DataMember]
     public List<MailBodyPart> BodyParts
     {
       get;
       set;
     }
 
-    public Mail(string _rawContent)
+    public Mail(MailServer _server, string _rawContent)
     {
       if(String.IsNullOrEmpty(_rawContent))
         throw new ArgumentNullException("rawContent is null!");
 
+      this.server = _server;
       this.rawContent = _rawContent;
       this.ParseHeader();
       this.ParseBody();
