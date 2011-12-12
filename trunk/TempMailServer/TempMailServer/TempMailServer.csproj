@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mail.cs" />
+    <Compile Include="MailBodyPart.cs" />
     <Compile Include="MailServer.cs" />
     <Compile Include="MailSession.cs" />
     <Compile Include="Program.cs" />
