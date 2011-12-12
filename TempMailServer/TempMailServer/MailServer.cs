@@ -32,6 +32,8 @@ namespace Lyralabs.Net.TempMailServer
       this.serverSocket = new TcpListener(IPAddress.Any, MailServer.SERVER_PORT);
       this.serverSocket.Start();
 
+      Console.WriteLine("Mailserver started at port {0}", MailServer.SERVER_PORT);
+
       while (true)
       {
         TcpClient clientSocket = this.serverSocket.AcceptTcpClient();

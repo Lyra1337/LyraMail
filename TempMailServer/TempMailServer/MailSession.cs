@@ -43,8 +43,10 @@ namespace Lyralabs.Net.TempMailServer
         this.RunCommand(this.reader.ReadLine());
       }
       Console.WriteLine("--- EOS ---");
-
-      return new Mail(this.server, this.mailBody.ToString());
+      if (this.mailBody != null && this.mailBody.Length > 0)
+        return null;
+      else
+        return new Mail(this.server, this.mailBody.ToString());
     }
 
     private void RunCommand(string command)
