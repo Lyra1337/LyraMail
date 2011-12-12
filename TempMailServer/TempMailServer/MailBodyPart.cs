@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Lyralabs.Net.TempMailServer
 {
-  class MailBodyPart
+  public class MailBodyPart
   {
     public MailBodyPart(List<string> bodyLines)
     {

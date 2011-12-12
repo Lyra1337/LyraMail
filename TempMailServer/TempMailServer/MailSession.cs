@@ -30,7 +30,7 @@ namespace Lyralabs.Net.TempMailServer
       this.stream = _client.GetStream();
     }
 
-    public void Run()
+    public Mail Run()
     {
       this.writer = new StreamWriter(this.stream);
       this.writer.AutoFlush = true;
@@ -42,7 +42,7 @@ namespace Lyralabs.Net.TempMailServer
       }
       Console.WriteLine("--- EOS ---");
 
-      Mail body = new Mail(this.mailBody.ToString());
+      return new Mail(this.mailBody.ToString());
     }
 
     private void RunCommand(string command)
