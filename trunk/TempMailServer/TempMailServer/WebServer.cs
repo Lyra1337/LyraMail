@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Json;
 
 namespace Lyralabs.Net.TempMailServer
 {
-  class WebServer
+  public class WebServer
   {
     private static readonly string LOCAL_PATH = "web";
     private HttpListener server = null;

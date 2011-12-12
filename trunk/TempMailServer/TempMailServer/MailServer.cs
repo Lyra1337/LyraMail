@@ -14,6 +14,18 @@ namespace Lyralabs.Net.TempMailServer
   {
     private static readonly int SERVER_PORT = 25;
     protected TcpListener serverSocket = null;
+    private static object mailLock = new object();
+    
+    public List<Mail> Mails
+    {
+      get;
+      set;
+    }
+
+    public MailServer()
+    {
+      this.Mails = new List<Mail>();
+    }
 
     public void Start()
     {
@@ -37,7 +49,11 @@ namespace Lyralabs.Net.TempMailServer
       TcpClient client = s as TcpClient;
 
       MailSession session = new MailSession(client);
-      session.Run();
+      Mail mail = session.Run();
+      lock(MailServer.mailLock)
+      {
+        this.Mails.Add(mail);
+      }
     }
   }
 }

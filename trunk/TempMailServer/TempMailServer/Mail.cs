@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Lyralabs.Net.TempMailServer
 {
-  class Mail
+  public class Mail
   {
     private static readonly Regex contentTypeParser = new Regex("(?<type>(multipart[^ ]+)) .*?boundary=(?<boundary>([^ ]+))", RegexOptions.Compiled);
 
