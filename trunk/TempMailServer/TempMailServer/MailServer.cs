@@ -48,7 +48,7 @@ namespace Lyralabs.Net.TempMailServer
 
       TcpClient client = s as TcpClient;
 
-      MailSession session = new MailSession(client);
+      MailSession session = new MailSession(this, client);
       Mail mail = session.Run();
       lock(MailServer.mailLock)
       {

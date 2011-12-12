@@ -13,10 +13,12 @@ namespace Lyralabs.Net.TempMailServer
   {
     private static readonly string LOCAL_PATH = "web";
     private HttpListener server = null;
+    private MailServer mailServer = null;
     private int port = 8080;
 
-    public WebServer(int _port)
+    public WebServer(MailServer _mailServer, int _port)
     {
+      this.mailServer = _mailServer;
       this.port = _port;
       this.server = new HttpListener();
       this.server.Prefixes.Add(String.Concat("http://*:", this.port, "/"));
@@ -69,7 +71,10 @@ namespace Lyralabs.Net.TempMailServer
             switch(postParams["action"])
             {
               case "getmails":
-                //
+                {
+                  string json = Serialize(this.mailServer.Mails);
+                  WriteAndClose(json, response);
+                }
                 break;
             }
           }
