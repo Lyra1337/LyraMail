@@ -50,7 +50,7 @@ namespace Lyralabs.Net.TempMailServer
       try
       {
         string path = String.Concat(LOCAL_PATH, request.Url.AbsolutePath);
-        
+
         if(path.EndsWith("/api.json"))
         {
           Dictionary<string, string> postParams = new Dictionary<string, string>();
@@ -79,6 +79,9 @@ namespace Lyralabs.Net.TempMailServer
                   WriteAndClose(json, response);
                 }
                 break;
+              default:
+                WriteAndClose("wrong action", response);
+                break;
             }
           }
         }
@@ -89,25 +92,46 @@ namespace Lyralabs.Net.TempMailServer
             if(path.EndsWith("/") == false)
               path = String.Concat(path, "/");
 
+            if(File.Exists(String.Concat(path, "index.htm")))
+            {
+              string content = File.ReadAllText(String.Concat(path, "index.htm"));
+              WriteAndClose(content, response);
+            }
+            else
+            {
+              foreach(string f in Directory.GetFiles(path, "index.*", SearchOption.TopDirectoryOnly))
+              {
+                string content = File.ReadAllText(f);
+                WriteAndClose(content, response);
+              }
+              NotFound(response);
+            }
           }
           else if(File.Exists(path))
           {
-            byte[] file = File.ReadAllBytes(path);
+            string content = File.ReadAllText(path);
+            WriteAndClose(content, response);
           }
           else
           {
-            response.StatusCode = 404;
-            StreamWriter writer = new StreamWriter(response.OutputStream);
-            writer.Write("not found.");
-            writer.Flush();
-            response.AddHeader("Content-Type", "text/plain");
-            response.OutputStream.Close();
+            NotFound(response);
           }
         }
       }
-      catch(Exception)
+      catch(Exception ex)
       {
+        WriteAndClose(String.Concat(ex.Message, "\r\n  Stacktrace:\r\n", ex.StackTrace), response);
       }
+    }
+
+    private static void NotFound(HttpListenerResponse response)
+    {
+      response.StatusCode = 404;
+      StreamWriter writer = new StreamWriter(response.OutputStream);
+      writer.Write("not found.");
+      writer.Flush();
+      response.AddHeader("Content-Type", "text/plain");
+      response.OutputStream.Close();
     }
 
     private static string Serialize(object obj)

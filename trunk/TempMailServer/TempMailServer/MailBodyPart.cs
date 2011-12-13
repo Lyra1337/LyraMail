@@ -10,54 +10,67 @@ namespace Lyralabs.Net.TempMailServer
   [DataContract]
   public class MailBodyPart
   {
-    public MailBodyPart(List<string> bodyLines)
+    public MailBodyPart(List<string> bodyLines, bool isMultipart)
     {
+      this.MultiPart = isMultipart;
       this.ParseBody(bodyLines);
     }
 
     private void ParseBody(List<string> bodyLines)
     {
-      bool isHeader = true;
-      StringBuilder body = new StringBuilder();
-      foreach(string line in bodyLines)
+      if(this.MultiPart)
       {
-        if(isHeader)
+        bool isHeader = true;
+        StringBuilder body = new StringBuilder();
+        foreach(string line in bodyLines)
         {
-          if(String.IsNullOrWhiteSpace(line))
+          if(isHeader)
           {
-            isHeader = false;
-          }
-          else
-          {
-            if(line.StartsWith("Content-Type:"))
+            if(String.IsNullOrWhiteSpace(line))
             {
-              string[] parts = line.Split(' ');
-              switch(parts.Length)
+              isHeader = false;
+            }
+            else
+            {
+              if(line.StartsWith("Content-Type:"))
               {
-                case 2:
-                  this.MimeType = parts[1];
-                  this.Encoding = null;
-                  break;
-                case 3:
-                  this.MimeType = parts[1];
-                  this.Encoding = parts[2];
-                  break;
-                default:
-                  break;
+                string[] parts = line.Split(' ');
+                switch(parts.Length)
+                {
+                  case 2:
+                    this.ContentType = parts[1];
+                    this.Encoding = null;
+                    break;
+                  case 3:
+                    this.ContentType = parts[1];
+                    this.Encoding = parts[2];
+                    break;
+                  default:
+                    break;
+                }
               }
             }
           }
+          else
+          {
+            body.AppendLine(line);
+          }
         }
-        else
+        this.BodyText = body.ToString().Trim();
+      }
+      else
+      {
+        StringBuilder body = new StringBuilder();
+        foreach(string line in bodyLines)
         {
           body.AppendLine(line);
         }
+        this.BodyText = body.ToString().Trim();
       }
-      this.BodyText = body.ToString();
     }
 
     [DataMember]
-    public string MimeType
+    public string ContentType
     {
       get;
       set;
@@ -72,6 +85,13 @@ namespace Lyralabs.Net.TempMailServer
 
     [DataMember]
     public string BodyText
+    {
+      get;
+      set;
+    }
+
+    [DataMember]
+    public bool MultiPart
     {
       get;
       set;

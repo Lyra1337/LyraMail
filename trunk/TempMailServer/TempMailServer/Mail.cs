@@ -25,13 +25,35 @@ namespace Lyralabs.Net.TempMailServer
       set;
     }
 
+    [DataMember]
+    public string Recipient
+    {
+      get;
+      set;
+    }
+
+    [DataMember]
+    public string Sender
+    {
+      get;
+      set;
+    }
+
+    [DataMember]
+    public string Subject
+    {
+      get;
+      set;
+    }
+
     public Mail(MailServer _server, string _rawContent)
     {
       if(String.IsNullOrEmpty(_rawContent))
         throw new ArgumentNullException("rawContent is null!");
 
       this.server = _server;
-      this.rawContent = _rawContent;
+      if(_rawContent != null)
+        this.rawContent = _rawContent.Replace("\r", "");
       this.ParseHeader();
       this.ParseBody();
     }
@@ -139,8 +161,22 @@ namespace Lyralabs.Net.TempMailServer
           if(this.BodyParts == null)
             this.BodyParts = new List<MailBodyPart>();
 
-          this.BodyParts.Add(new MailBodyPart(part));
+          this.BodyParts.Add(new MailBodyPart(part, true));
         }
+      }
+      else
+      {
+        if(this.BodyParts == null)
+          this.BodyParts = new List<MailBodyPart>();
+
+        this.body.ToString();
+
+        MailBodyPart part = new MailBodyPart(this.body.ToString().Replace("\r", "").Split('\n').ToList(), false);
+
+        if(this.headers.ContainsKey("Content-Type"))
+          part.ContentType = this.headers["Content-Type"][0];
+
+        this.BodyParts.Add(part);
       }
     }
 
@@ -166,13 +202,16 @@ namespace Lyralabs.Net.TempMailServer
           {
             string key, value;
             int separator = line.IndexOf(':');
-            key = line.Substring(0, separator);
-            value = line.Substring(separator + 1, line.Length - (separator + 1)).TrimStart();
-            if(this.headers.ContainsKey(key) == false)
+            if(separator > 0)
             {
-              this.headers.Add(key, new List<string>());
+              key = line.Substring(0, separator);
+              value = line.Substring(separator + 1, line.Length - (separator + 1)).TrimStart();
+              if(this.headers.ContainsKey(key) == false)
+              {
+                this.headers.Add(key, new List<string>());
+              }
+              this.headers[key].Add(value);
             }
-            this.headers[key].Add(value);
           }
         }
         else
@@ -180,6 +219,15 @@ namespace Lyralabs.Net.TempMailServer
           this.body.AppendLine(line);
         }
       }
+
+      if(this.headers.ContainsKey("From") && this.headers["From"] != null && this.headers["From"].Count > 0)
+        this.Sender = this.headers["From"][0].Trim();
+
+      if(this.headers.ContainsKey("To") && this.headers["To"] != null && this.headers["To"].Count > 0)
+        this.Recipient = this.headers["To"][0].Trim();
+
+      if(this.headers.ContainsKey("Subject") && this.headers["Subject"] != null && this.headers["Subject"].Count > 0)
+        this.Subject = this.headers["Subject"][0].Trim();
     }
   }
 }
