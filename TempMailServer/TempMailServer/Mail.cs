@@ -136,7 +136,7 @@ namespace Lyralabs.Net.TempMailServer
         List<List<string>> parts = null;
         List<MailBodyPart> mailBodyParts = new List<MailBodyPart>();
 
-        foreach(string line in this.body.ToString().Split('\n'))
+        foreach(string line in this.body.Replace("\r", "").ToString().Split('\n'))
         {
           if(line.StartsWith(String.Concat("--", boundary)))
           {

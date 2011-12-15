@@ -69,9 +69,9 @@ namespace Lyralabs.Net.TempMailServer
               postParams.Add(s.ToLower(), request.QueryString[s]);
           }
 
-          if(postParams.ContainsKey("action"))
+          if (postParams.ContainsKey("action"))
           {
-            switch(postParams["action"])
+            switch (postParams["action"])
             {
               case "getmails":
                 {
@@ -81,8 +81,13 @@ namespace Lyralabs.Net.TempMailServer
                 break;
               default:
                 WriteAndClose("wrong action", response);
-                break;
+                return;
             }
+          }
+          else
+          {
+            WriteAndClose("wrong parameters", response);
+            return;
           }
         }
         else
