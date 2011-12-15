@@ -19,6 +19,13 @@ namespace Lyralabs.Net.TempMailServer
     private MailServer server = null;
 
     [DataMember]
+    public string Guid
+    {
+      get;
+      set;
+    }
+
+    [DataMember]
     public List<MailBodyPart> BodyParts
     {
       get;
@@ -56,6 +63,8 @@ namespace Lyralabs.Net.TempMailServer
         this.rawContent = _rawContent.Replace("\r", "");
       this.ParseHeader();
       this.ParseBody();
+
+      this.Guid = System.Guid.NewGuid().ToString();
     }
 
     private void ParseBody()
