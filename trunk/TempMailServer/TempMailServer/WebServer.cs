@@ -6,6 +6,8 @@ using System.Net;
 using System.Threading;
 using System.IO;
 using System.Runtime.Serialization.Json;
+using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace Lyralabs.Net.TempMailServer
 {
@@ -51,7 +53,11 @@ namespace Lyralabs.Net.TempMailServer
       {
         string path = String.Concat(LOCAL_PATH, request.Url.AbsolutePath);
 
-        if(path.EndsWith("/api.json"))
+        bool wantsJson = false;
+        if(path.EndsWith("json"))
+          wantsJson = true;
+
+        if(path.EndsWith("/api.json") || path.EndsWith("/api.xml"))
         {
           Dictionary<string, string> postParams = new Dictionary<string, string>();
           string postRequest = new StreamReader(request.InputStream).ReadToEnd();
@@ -81,7 +87,7 @@ namespace Lyralabs.Net.TempMailServer
                     long time = 0;
                     if(Int64.TryParse(postParams["timestamp"], out time))
                     {
-                      json = Serialize(this.mailServer.Mails.Where(mail => mail.Time > time).ToList());
+                      json = Serialize(this.mailServer.Mails.Where(mail => mail.Time > time).ToList(), wantsJson);
                     }
                     else
                     {
@@ -90,7 +96,7 @@ namespace Lyralabs.Net.TempMailServer
                   }
                   else
                   {
-                    json = Serialize(this.mailServer.Mails);
+                    json = Serialize(this.mailServer.Mails, wantsJson);
                   }
                   WriteAndClose(json, response);
                 }
@@ -155,11 +161,21 @@ namespace Lyralabs.Net.TempMailServer
       response.OutputStream.Close();
     }
 
-    private static string Serialize(object obj)
+    private static string Serialize(object obj, bool json)
     {
-      DataContractJsonSerializer serializer = new DataContractJsonSerializer(obj.GetType());
       MemoryStream ms = new MemoryStream();
-      serializer.WriteObject(ms, obj);
+
+      if(json)
+      {
+        DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(obj.GetType());
+        jsonSerializer.WriteObject(ms, obj);
+      }
+      else
+      {
+        DataContractSerializer xmlSerializer = new DataContractSerializer(obj.GetType());
+        xmlSerializer.WriteObject(ms, obj);
+      }
+      
       return Encoding.Default.GetString(ms.ToArray());
     }
 
