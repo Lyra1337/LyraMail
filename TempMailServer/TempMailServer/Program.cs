@@ -11,7 +11,7 @@ namespace Lyralabs.Net.TempMailServer
     static void Main(string[] args)
     {
       MailServer mailServer = new MailServer();
-      WebServer webServer = new WebServer(mailServer, 8080);
+      WebServer webServer = new WebServer(mailServer, 8081);
 
       Thread t = new Thread(webServer.Start);
       t.Start();
