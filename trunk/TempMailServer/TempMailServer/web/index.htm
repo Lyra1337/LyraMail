@@ -1,14 +1,50 @@
 ﻿<!DOCTYPE HTML>
 <html>
   <head>
-    <link rel="stylesheet" href="jquery-ui-1.8.16.custom.css" />
-    <script type="text/javascript" src="jquery-1.6.2.min.js"></script>
-    <script type="text/javascript" src="jquery-ui-1.8.16.custom.min.js"></script>
+    <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" />
+    <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        //
+      });
+    </script>
+    <style type="text/css">
+      table.sample {
+        border-spacing: 0px;
+        border-collapse: collapse;
+        background-color: white;
+      }
+      table.sample th {
+        border-width: 1px;
+        padding: 3px;
+        border-style: solid;
+      }
+      table.sample td {
+        border-width: 1px;
+        padding: 3px 50px;
+        border-style: solid;
+      }
+    </style>
     <title>Temp Mailer</title>
   </head>
   <body>
     <input id="mail" type="text" />
-    <table id="mails">
+    <table id="mails" class="sample">
+      <thead>
+        <tr>
+          <td>Sender</td>
+          <td>Empfänger</td>
+          <td>Zeit</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>asd</td>
+          <td>asd</td>
+          <td>asd</td>
+        </tr>
+      </tbody>
     </table>
   </body>
 </html>

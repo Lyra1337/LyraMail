@@ -26,6 +26,13 @@ namespace Lyralabs.Net.TempMailServer
     }
 
     [DataMember]
+    public long Time
+    {
+      get;
+      set;
+    }
+
+    [DataMember]
     public List<MailBodyPart> BodyParts
     {
       get;
@@ -57,6 +64,8 @@ namespace Lyralabs.Net.TempMailServer
     {
       if(String.IsNullOrEmpty(_rawContent))
         throw new ArgumentNullException("rawContent is null!");
+
+      this.Time = DateTime.Now.Ticks;
 
       this.server = _server;
       if(_rawContent != null)

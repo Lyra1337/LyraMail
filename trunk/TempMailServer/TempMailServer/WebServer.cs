@@ -75,7 +75,23 @@ namespace Lyralabs.Net.TempMailServer
             {
               case "getmails":
                 {
-                  string json = Serialize(this.mailServer.Mails);
+                  string json = null;
+                  if(postParams.ContainsKey("timestamp"))
+                  {
+                    long time = 0;
+                    if(Int64.TryParse(postParams["timestamp"], out time))
+                    {
+                      json = Serialize(this.mailServer.Mails.Where(mail => mail.Time > time));
+                    }
+                    else
+                    {
+                      json = "{\"error\":\"'timestamp' is in a wrong Format!\"}";
+                    }
+                  }
+                  else
+                  {
+                    json = Serialize(this.mailServer.Mails);
+                  }
                   WriteAndClose(json, response);
                 }
                 break;
