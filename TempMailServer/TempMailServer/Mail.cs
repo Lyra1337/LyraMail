@@ -60,6 +60,10 @@ namespace Lyralabs.Net.TempMailServer
       set;
     }
 
+    private Mail()
+    {
+    }
+
     public Mail(MailServer _server, string _rawContent)
     {
       if(String.IsNullOrEmpty(_rawContent))
