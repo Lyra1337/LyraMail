@@ -81,7 +81,7 @@ namespace Lyralabs.Net.TempMailServer
                     long time = 0;
                     if(Int64.TryParse(postParams["timestamp"], out time))
                     {
-                      json = Serialize(this.mailServer.Mails.Where(mail => mail.Time > time));
+                      json = Serialize(this.mailServer.Mails.Where(mail => mail.Time > time).ToList());
                     }
                     else
                     {
@@ -94,7 +94,7 @@ namespace Lyralabs.Net.TempMailServer
                   }
                   WriteAndClose(json, response);
                 }
-                break;
+                return;
               default:
                 WriteAndClose("wrong action", response);
                 return;
