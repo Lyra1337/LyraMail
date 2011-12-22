@@ -77,7 +77,7 @@ namespace Lyralabs.Net.TempMailServer
 
           if (postParams.ContainsKey("action"))
           {
-            switch (postParams["action"])
+            switch(postParams["action"])
             {
               case "getmails":
                 {
@@ -87,7 +87,14 @@ namespace Lyralabs.Net.TempMailServer
                     long time = 0;
                     if(Int64.TryParse(postParams["timestamp"], out time))
                     {
-                      json = Serialize(this.mailServer.Mails.Where(mail => mail.Time > time).ToList(), wantsJson);
+                      if(this.mailServer.Mails != null)
+                      {
+                        json = Serialize(this.mailServer.Mails.Where(mail => mail.Time > time).ToList(), wantsJson);
+                      }
+                      else
+                      {
+                        json = "[]";
+                      }
                     }
                     else
                     {
@@ -96,9 +103,21 @@ namespace Lyralabs.Net.TempMailServer
                   }
                   else
                   {
-                    json = Serialize(this.mailServer.Mails, wantsJson);
+                    if(this.mailServer.Mails != null)
+                    {
+                      json = Serialize(this.mailServer.Mails, wantsJson);
+                    }
+                    else
+                    {
+                      json = "[]";
+                    }
                   }
                   WriteAndClose(json, response);
+                }
+                return;
+              case "getinitialdata":
+                {
+
                 }
                 return;
               default:
@@ -121,7 +140,7 @@ namespace Lyralabs.Net.TempMailServer
 
             if(File.Exists(String.Concat(path, "index.htm")))
             {
-              string content = File.ReadAllText(String.Concat(path, "index.htm"));
+              string content = File.ReadAllText(String.Concat(path, "index.htm"), Encoding.UTF8);
               WriteAndClose(content, response);
             }
             else
@@ -183,7 +202,8 @@ namespace Lyralabs.Net.TempMailServer
     {
       try
       {
-        byte[] buffer = System.Text.Encoding.UTF8.GetBytes(content);
+        response.ContentEncoding = Encoding.UTF8;
+        byte[] buffer = Encoding.UTF8.GetBytes(content);
         response.ContentLength64 = buffer.Length;
         Stream output = response.OutputStream;
         output.Write(buffer, 0, buffer.Length);
