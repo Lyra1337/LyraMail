@@ -60,16 +60,12 @@ namespace Lyralabs.Net.TempMailServer
       set;
     }
 
-    private Mail()
-    {
-    }
-
     public Mail(MailServer _server, string _rawContent)
     {
       if(String.IsNullOrEmpty(_rawContent))
         throw new ArgumentNullException("rawContent is null!");
 
-      this.Time = DateTime.Now.Ticks;
+      this.Time = DateTime.Now.Ticks - MailServer.StartTime.Ticks;
 
       this.server = _server;
       if(_rawContent != null)

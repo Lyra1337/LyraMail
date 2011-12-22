@@ -12,6 +12,11 @@ namespace Lyralabs.Net.TempMailServer
 {
   public class MailServer
   {
+    public static DateTime StartTime
+    {
+      get;
+      private set;
+    }
     private static readonly int SERVER_PORT = 25;
     protected TcpListener serverSocket = null;
     private static object mailLock = new object();
@@ -29,6 +34,7 @@ namespace Lyralabs.Net.TempMailServer
 
     public void Start()
     {
+      MailServer.StartTime = DateTime.Now;
       this.serverSocket = new TcpListener(IPAddress.Any, MailServer.SERVER_PORT);
       this.serverSocket.Start();
 
@@ -45,16 +51,22 @@ namespace Lyralabs.Net.TempMailServer
 
     private void ProcessConnection(object s)
     {
-      if (s is TcpClient == false)
-        return;
-
-      TcpClient client = s as TcpClient;
-
-      MailSession session = new MailSession(this, client);
-      Mail mail = session.Run();
-      lock(MailServer.mailLock)
+      try
       {
-        this.Mails.Add(mail);
+        if(s is TcpClient == false)
+          return;
+
+        TcpClient client = s as TcpClient;
+
+        MailSession session = new MailSession(this, client);
+        Mail mail = session.Run();
+        lock(MailServer.mailLock)
+        {
+          this.Mails.Add(mail);
+        }
+      }
+      catch(IOException)
+      {        
       }
     }
   }

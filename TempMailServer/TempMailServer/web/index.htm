@@ -1,26 +1,103 @@
 ﻿<!DOCTYPE HTML>
 <html>
   <head>
+    <meta charset="utf-8" />
     <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" />
     <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
     <script type="text/javascript">
+      var timestamp = 0;
+      var mailCheckRunning = false;
+      
       $(function() {
-        //
+        $.ajax({
+          async: true,
+          cache: false,
+          url: "/api.json?action=getinitialdata",
+          success: function (json) {
+            
+          },
+          error: function (err) {
+            alert("error: " + err);
+          }
+        });
+        
+        checkMails();
       });
+      
+      function checkMails() {
+        if(mailCheckRunning) {
+          return;
+        }
+        mailCheckRunning = true;
+        
+        var getString = "/api.json" + 
+                        "?action=getmails" +
+                        "&timestamp=" + timestamp;
+        $.ajax({
+          dataType: "json",
+          async: true,
+          cache: false,
+          url: getString,
+          success: function (json) {
+            for(i = 0; i < json.length; i++) {
+              var current = json[i];
+              if(current.Time >= timestamp) {
+                timestamp = current.Time + 1;
+              }
+              $('#mails').append($('<tr/>').append($('<td/>').text(current.Sender))
+                                           .append($('<td/>').text(current.Recipient))
+                                           .append($('<td/>').text(current.Subject))
+                                           .append($('<td/>').text(current.Time))
+                                           .append($('<td/>').html("<a href=\"#\">HTML</a>&#0160;&#0160;|&#0160;&#0160;<a href=\"#\">Text</a>")));
+            }
+            
+            mailCheckRunning = false;
+            checkMails();
+          },
+          error: function (err) {
+            alert(err);
+            mailCheckRunning = false;
+            checkMails();
+          }
+        });
+      }
     </script>
     <style type="text/css">
-      table.sample {
+      body {
+        font-family: Verdana, Arial, Helvetica, sans-serif; 
+        font-size: 8pt;
+      }
+      table.maillist thead {
+        font-weight: bold;
+        font-size: 10pt;
+      }
+      .contentstyle {
+        width: 75%;
+      }
+      table.maillist {
         border-spacing: 0px;
         border-collapse: collapse;
         background-color: white;
+        width: 100%
       }
-      table.sample th {
-        border-width: 1px;
+      table.maillist th {
         padding: 3px;
-        border-style: solid;
       }
-      table.sample td {
+      table.maillist thead {
+        font-weight: bold;
+        font-size: 10pt;
+      }
+      table.maillist tbody td {
+        padding: 3px 20px;
+      }
+      table.maillist td {
+        text-align: center;
+        border-style: solid;
+        border-width: 1px;
+      }
+      #mailpreview {
+        margin: 10px 0px 0px 0px;
         border-width: 1px;
         padding: 3px 50px;
         border-style: solid;
@@ -30,21 +107,22 @@
   </head>
   <body>
     <input id="mail" type="text" />
-    <table id="mails" class="sample">
-      <thead>
-        <tr>
-          <td>Sender</td>
-          <td>Empfänger</td>
-          <td>Zeit</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>asd</td>
-          <td>asd</td>
-          <td>asd</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="contentstyle">
+      <table id="mailtable" class="maillist">
+        <thead>
+          <tr>
+            <td>Sender</td>
+            <td>Empfänger</td>
+            <td>Betreff</td>
+            <td>Zeit</td>
+            <td>Anzeigen</td>
+          </tr>
+        </thead>
+        <tbody id="mails">
+        </tbody>
+      </table>
+      <div id="mailpreview">
+      </div>
+    </div>
   </body>
 </html>
