@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempMailServer", "TempMailServer\TempMailServer.csproj", "{1A57CA71-3E1D-4C7C-B35B-CC561A4C245D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer", "TempMailServer\Lyralabs.Net.TempMailServer.csproj", "{1A57CA71-3E1D-4C7C-B35B-CC561A4C245D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer.Test", "TempMailServer.Test\Lyralabs.Net.TempMailServer.Test.csproj", "{DD0F8197-4696-4764-A25F-E2208D9BF503}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -17,6 +19,10 @@ Global
 		{1A57CA71-3E1D-4C7C-B35B-CC561A4C245D}.Debug|x86.Build.0 = Debug|x86
 		{1A57CA71-3E1D-4C7C-B35B-CC561A4C245D}.Release|x86.ActiveCfg = Release|x86
 		{1A57CA71-3E1D-4C7C-B35B-CC561A4C245D}.Release|x86.Build.0 = Release|x86
+		{DD0F8197-4696-4764-A25F-E2208D9BF503}.Debug|x86.ActiveCfg = Debug|x86
+		{DD0F8197-4696-4764-A25F-E2208D9BF503}.Debug|x86.Build.0 = Debug|x86
+		{DD0F8197-4696-4764-A25F-E2208D9BF503}.Release|x86.ActiveCfg = Release|x86
+		{DD0F8197-4696-4764-A25F-E2208D9BF503}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
