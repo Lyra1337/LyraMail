@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.Threading;
 using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Xml.Serialization;
+using System.Linq;
+using System.Net;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Text;
+using System.Threading;
 
 namespace Lyralabs.Net.TempMailServer
 {
@@ -29,7 +28,7 @@ namespace Lyralabs.Net.TempMailServer
     public void Start()
     {
       this.server.Start();
-      
+
       Console.WriteLine("Webserver started at port {0}", this.port);
 
       while (true)
@@ -42,7 +41,7 @@ namespace Lyralabs.Net.TempMailServer
 
     private void ProcessRequest(object ctx)
     {
-      if(ctx is HttpListenerContext == false)
+      if (ctx is HttpListenerContext == false)
         throw new ArgumentException("no context given!");
 
       HttpListenerContext context = ctx as HttpListenerContext;
@@ -54,42 +53,50 @@ namespace Lyralabs.Net.TempMailServer
         string path = String.Concat(LOCAL_PATH, request.Url.AbsolutePath);
 
         bool wantsJson = false;
-        if(path.EndsWith("json"))
+        if (path.EndsWith("json"))
           wantsJson = true;
 
-        if(path.EndsWith("/api.json") || path.EndsWith("/api.xml"))
+        if (path.EndsWith("/api.json") || path.EndsWith("/api.xml"))
         {
           Dictionary<string, string> postParams = new Dictionary<string, string>();
           string postRequest = new StreamReader(request.InputStream).ReadToEnd();
 
-          foreach(string s in postRequest.Split('&'))
+          foreach (string s in postRequest.Split('&'))
           {
             string[] keyVal = s.Split('=');
-            if(keyVal.Length == 2 && postParams.ContainsKey(s.ToLower()) == false)
+            if (keyVal.Length == 2 && postParams.ContainsKey(s.ToLower()) == false)
               postParams.Add(keyVal[0].ToLower(), keyVal[1]);
           }
 
-          foreach(string s in request.QueryString.AllKeys)
+          foreach (string s in request.QueryString.AllKeys)
           {
-            if(postParams.ContainsKey(s.ToLower()) == false)
+            if (postParams.ContainsKey(s.ToLower()) == false)
               postParams.Add(s.ToLower(), request.QueryString[s]);
           }
 
           if (postParams.ContainsKey("action"))
           {
-            switch(postParams["action"])
+            switch (postParams["action"])
             {
               case "getmails":
                 {
                   string json = null;
-                  if(postParams.ContainsKey("timestamp"))
+                  if (postParams.ContainsKey("timestamp"))
                   {
                     long time = 0;
-                    if(Int64.TryParse(postParams["timestamp"], out time))
+                    if (Int64.TryParse(postParams["timestamp"], out time))
                     {
-                      if(this.mailServer.Mails != null)
+                      if (this.mailServer.Mails != null)
                       {
-                        json = Serialize(this.mailServer.Mails.Where(mail => mail.Time > time).ToList(), wantsJson);
+                        IEnumerable<Mail> num = this.mailServer.Mails.Where(mail => mail.Time > time);
+                        if (num != null)
+                        {
+                          json = Serialize(num.ToList(), wantsJson);
+                        }
+                        else
+                        {
+                          json = "[]";
+                        }
                       }
                       else
                       {
@@ -103,7 +110,7 @@ namespace Lyralabs.Net.TempMailServer
                   }
                   else
                   {
-                    if(this.mailServer.Mails != null)
+                    if (this.mailServer.Mails != null)
                     {
                       json = Serialize(this.mailServer.Mails, wantsJson);
                     }
@@ -133,19 +140,19 @@ namespace Lyralabs.Net.TempMailServer
         }
         else
         {
-          if(Directory.Exists(path))
+          if (Directory.Exists(path))
           {
-            if(path.EndsWith("/") == false)
+            if (path.EndsWith("/") == false)
               path = String.Concat(path, "/");
 
-            if(File.Exists(String.Concat(path, "index.htm")))
+            if (File.Exists(String.Concat(path, "index.htm")))
             {
               string content = File.ReadAllText(String.Concat(path, "index.htm"), Encoding.UTF8);
               WriteAndClose(content, response);
             }
             else
             {
-              foreach(string f in Directory.GetFiles(path, "index.*", SearchOption.TopDirectoryOnly))
+              foreach (string f in Directory.GetFiles(path, "index.*", SearchOption.TopDirectoryOnly))
               {
                 string content = File.ReadAllText(f);
                 WriteAndClose(content, response);
@@ -153,7 +160,7 @@ namespace Lyralabs.Net.TempMailServer
               NotFound(response);
             }
           }
-          else if(File.Exists(path))
+          else if (File.Exists(path))
           {
             string content = File.ReadAllText(path);
             WriteAndClose(content, response);
@@ -164,7 +171,7 @@ namespace Lyralabs.Net.TempMailServer
           }
         }
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         WriteAndClose(String.Concat(ex.Message, "\r\n  Stacktrace:\r\n", ex.StackTrace), response);
       }
@@ -184,7 +191,7 @@ namespace Lyralabs.Net.TempMailServer
     {
       MemoryStream ms = new MemoryStream();
 
-      if(json)
+      if (json)
       {
         DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(obj.GetType());
         jsonSerializer.WriteObject(ms, obj);
@@ -194,7 +201,7 @@ namespace Lyralabs.Net.TempMailServer
         DataContractSerializer xmlSerializer = new DataContractSerializer(obj.GetType());
         xmlSerializer.WriteObject(ms, obj);
       }
-      
+
       return Encoding.Default.GetString(ms.ToArray());
     }
 
@@ -209,7 +216,7 @@ namespace Lyralabs.Net.TempMailServer
         output.Write(buffer, 0, buffer.Length);
         output.Close();
       }
-      catch(Exception)
+      catch (Exception)
       {
       }
     }

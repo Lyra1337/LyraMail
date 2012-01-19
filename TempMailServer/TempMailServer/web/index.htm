@@ -8,6 +8,7 @@
     <script type="text/javascript">
       var timestamp = 0;
       var mailCheckRunning = false;
+      var mails = Array();
       
       $(function() {
         $.ajax({
@@ -18,12 +19,34 @@
             
           },
           error: function (err) {
-            alert("error: " + err);
+            console.debug("startup-error: %o", err);
           }
         });
         
         checkMails();
       });
+      
+      function show_plain(counter) {
+        var current = mails[counter].BodyParts;
+        for(i = 0; i < current.length; i++) {
+          if(current[i].ContentType.indexOf("plain") != -1) {
+            $('#mailpreview').text(current[i].BodyText);
+            return;
+          }
+        }
+        $('#mailpreview').html('<div style="text-align: center; color: #FF3333; font-size: 18px;">plaintext unavailable</div>');
+      }
+      
+      function show_html(counter) {
+        var current = mails[counter].BodyParts;
+        for(i = 0; i < current.length; i++) {
+          if(current[i].ContentType.indexOf("html") != -1) {
+            $('#mailpreview').html(current[i].BodyText);
+            return;
+          }
+        }
+        $('#mailpreview').html('<div style="text-align: center; color: #FF3333; font-size: 18px;">html unavailable</div>');
+      }
       
       function checkMails() {
         if(mailCheckRunning) {
@@ -42,6 +65,9 @@
           success: function (json) {
             for(i = 0; i < json.length; i++) {
               var current = json[i];
+              
+              
+              
               if(current.Time >= timestamp) {
                 timestamp = current.Time + 1;
               }
@@ -49,14 +75,16 @@
                                            .append($('<td/>').text(current.Recipient))
                                            .append($('<td/>').text(current.Subject))
                                            .append($('<td/>').text(current.Time))
-                                           .append($('<td/>').html("<a href=\"#\">HTML</a>&#0160;&#0160;|&#0160;&#0160;<a href=\"#\">Text</a>")));
+                                           .append($('<td/>').html("<a onclick=\"show_html("+mails.length+");\" href=\"#show_html_"+mails.length+"\">HTML</a>&#0160;&#0160;|&#0160;&#0160;<a onclick=\"show_plain("+mails.length+");\" href=\"#show_plain_"+mails.length+"\">Text</a>")));
+              
+              mails.push(current);
             }
             
             mailCheckRunning = false;
             checkMails();
           },
           error: function (err) {
-            alert(err);
+            console.debug("update-error: %o", err);
             mailCheckRunning = false;
             checkMails();
           }
