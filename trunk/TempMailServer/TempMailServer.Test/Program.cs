@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net.Mail;
+using System.Threading;
 
 namespace Lyralabs.Net.TempMailServer.Test
 {
@@ -12,20 +13,19 @@ namespace Lyralabs.Net.TempMailServer.Test
 
     static void Main(string[] args)
     {
-      SmtpClient client = new SmtpClient("127.0.0.1");
-
       for (int i = 0; i < 3; i++)
       {
         foreach (string address in addresses)
         {
+          SmtpClient client = new SmtpClient("127.0.0.1");
+          client.Timeout = 1000;
           MailMessage msg = GenerateMessage(address);
           client.Send(msg);
           Console.WriteLine("msg sent.");
         }
       }
-      
     }
-
+    
     static MailMessage GenerateMessage(string receiver)
     {
       MailAddress from = new MailAddress("bla@contoso.com", "Steve Ballmer");

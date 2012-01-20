@@ -64,6 +64,7 @@ namespace Lyralabs.Net.TempMailServer
           this.mailInput = false;
           this.writer.WriteLine("250 OK");
           Console.WriteLine(this.mailBody.ToString());
+          //this.client.Close();
           return;
         }
         this.mailBody.AppendLine(command);
@@ -92,9 +93,11 @@ namespace Lyralabs.Net.TempMailServer
             break;
           case "QUIT":
             this.writer.WriteLine("221 closing channel");
+            this.client.Close();
             break;
           default:
             this.writer.WriteLine("500 Command not recognized: " + tokens[0]);
+            Console.WriteLine(">>500 Command not recognized: " + command);
             break;
         }
       }
