@@ -93,7 +93,13 @@ namespace Lyralabs.Net.TempMailServer
             break;
           case "QUIT":
             this.writer.WriteLine("221 closing channel");
-            this.client.Close();
+            try
+            {
+              this.stream.Close();
+            }
+            catch(Exception)
+            {
+            }
             break;
           default:
             this.writer.WriteLine("500 Command not recognized: " + tokens[0]);
