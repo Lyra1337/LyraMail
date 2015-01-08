@@ -144,7 +144,9 @@ namespace Lyralabs.Net.TempMailServer
                     if (Directory.Exists(path))
                     {
                         if (path.EndsWith("/") == false)
+                        {
                             path = String.Concat(path, "/");
+                        }
 
                         if (File.Exists(String.Concat(path, "index.htm")))
                         {
