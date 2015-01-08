@@ -34,8 +34,8 @@ namespace Lyralabs.Net.TempMailServer
             while (true)
             {
                 HttpListenerContext context = this.Server.GetContext();
-                Thread t = new Thread(new ParameterizedThreadStart(this.ProcessRequest));
-                t.Start(context);
+                Thread thread = new Thread(new ParameterizedThreadStart(this.ProcessRequest));
+                thread.Start(context);
             }
         }
 
