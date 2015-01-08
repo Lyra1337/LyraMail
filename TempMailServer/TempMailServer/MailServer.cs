@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.IO;
 using System.Threading;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace Lyralabs.Net.TempMailServer
 {
@@ -66,6 +67,13 @@ namespace Lyralabs.Net.TempMailServer
                 lock (MailServer.mailLock)
                 {
                     this.Mails.Add(mail);
+
+                    if (Directory.Exists("C:\\mails") == false)
+                    {
+                        Directory.CreateDirectory("C:\\mails");
+                    }
+
+                    File.WriteAllText(String.Format("C:\\mails\\email_{0}.json", DateTime.Now.ToFileTime()), JsonConvert.SerializeObject(mail));
                 }
             }
             catch (IOException ex)

@@ -123,7 +123,7 @@ namespace Lyralabs.Net.TempMailServer
 
                             case "getinitialdata":
                                 {
-
+                                    WebServer.WriteAndClose("[]", response);
                                 }
 
                                 return;
