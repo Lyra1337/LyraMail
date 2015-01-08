@@ -7,94 +7,94 @@ using System.Runtime.Serialization;
 
 namespace Lyralabs.Net.TempMailServer
 {
-  [DataContract]
-  public class MailBodyPart
-  {
-    public MailBodyPart(List<string> bodyLines, bool isMultipart)
+    [DataContract]
+    public class MailBodyPart
     {
-      this.MultiPart = isMultipart;
-      this.ParseBody(bodyLines);
-    }
-
-    private void ParseBody(List<string> bodyLines)
-    {
-      if(this.MultiPart)
-      {
-        bool isHeader = true;
-        StringBuilder body = new StringBuilder();
-        foreach(string line in bodyLines)
+        public MailBodyPart(List<string> bodyLines, bool isMultipart)
         {
-          if(isHeader)
-          {
-            if(String.IsNullOrWhiteSpace(line))
+            this.MultiPart = isMultipart;
+            this.ParseBody(bodyLines);
+        }
+
+        private void ParseBody(List<string> bodyLines)
+        {
+            if (this.MultiPart)
             {
-              isHeader = false;
+                bool isHeader = true;
+                StringBuilder body = new StringBuilder();
+                foreach (string line in bodyLines)
+                {
+                    if (isHeader)
+                    {
+                        if (String.IsNullOrWhiteSpace(line))
+                        {
+                            isHeader = false;
+                        }
+                        else
+                        {
+                            if (line.StartsWith("Content-Type:"))
+                            {
+                                string[] parts = line.Split(' ');
+                                switch (parts.Length)
+                                {
+                                    case 2:
+                                        this.ContentType = parts[1];
+                                        this.Encoding = null;
+                                        break;
+                                    case 3:
+                                        this.ContentType = parts[1];
+                                        this.Encoding = parts[2];
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        body.AppendLine(line);
+                    }
+                }
+                this.BodyText = body.ToString().Trim();
             }
             else
             {
-              if(line.StartsWith("Content-Type:"))
-              {
-                string[] parts = line.Split(' ');
-                switch(parts.Length)
+                StringBuilder body = new StringBuilder();
+                foreach (string line in bodyLines)
                 {
-                  case 2:
-                    this.ContentType = parts[1];
-                    this.Encoding = null;
-                    break;
-                  case 3:
-                    this.ContentType = parts[1];
-                    this.Encoding = parts[2];
-                    break;
-                  default:
-                    break;
+                    body.AppendLine(line);
                 }
-              }
+                this.BodyText = body.ToString().Trim();
             }
-          }
-          else
-          {
-            body.AppendLine(line);
-          }
         }
-        this.BodyText = body.ToString().Trim();
-      }
-      else
-      {
-        StringBuilder body = new StringBuilder();
-        foreach(string line in bodyLines)
+
+        [DataMember]
+        public string ContentType
         {
-          body.AppendLine(line);
+            get;
+            set;
         }
-        this.BodyText = body.ToString().Trim();
-      }
-    }
 
-    [DataMember]
-    public string ContentType
-    {
-      get;
-      set;
-    }
+        [DataMember]
+        public string Encoding
+        {
+            get;
+            set;
+        }
 
-    [DataMember]
-    public string Encoding
-    {
-      get;
-      set;
-    }
+        [DataMember]
+        public string BodyText
+        {
+            get;
+            set;
+        }
 
-    [DataMember]
-    public string BodyText
-    {
-      get;
-      set;
+        [DataMember]
+        public bool MultiPart
+        {
+            get;
+            set;
+        }
     }
-
-    [DataMember]
-    public bool MultiPart
-    {
-      get;
-      set;
-    }
-  }
 }
