@@ -11,11 +11,13 @@ namespace Lyralabs.Net.TempMailServer
         static void Main(string[] args)
         {
             MailServer mailServer = new MailServer();
-            WebServer webServer = new WebServer(mailServer, 8081);
+            WebServer webServer = new WebServer(mailServer, 1337);
 
             Thread t = new Thread(webServer.Start);
             t.Start();
             mailServer.Start();
+
+            Thread.Sleep(Timeout.Infinite);
         }
     }
 }
