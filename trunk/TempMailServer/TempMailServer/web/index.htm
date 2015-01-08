@@ -34,6 +34,7 @@
                     return;
                 }
             }
+
             $('#mailpreview').html('<div style="text-align: center; color: #FF3333; font-size: 18px;">plaintext unavailable</div>');
         }
 
@@ -45,6 +46,7 @@
                     return;
                 }
             }
+
             $('#mailpreview').html('<div style="text-align: center; color: #FF3333; font-size: 18px;">html unavailable</div>');
         }
 
@@ -54,9 +56,7 @@
             }
             mailCheckRunning = true;
 
-            var getString = "/api.json" +
-                            "?action=getmails" +
-                            "&timestamp=" + timestamp;
+            var getString = "/api.json?action=getmails&timestamp=" + timestamp;
             $.ajax({
                 dataType: "json",
                 async: true,
@@ -66,8 +66,6 @@
                     for (i = 0; i < json.length; i++) {
                         var current = json[i];
 
-
-
                         if (current.Time >= timestamp) {
                             timestamp = current.Time + 1;
                         }
@@ -75,7 +73,7 @@
                                                      .append($('<td/>').text(current.Recipient))
                                                      .append($('<td/>').text(current.Subject))
                                                      .append($('<td/>').text(current.Time))
-                                                     .append($('<td/>').html("<a onclick=\"show_html(" + mails.length + ");\" href=\"#show_html_" + mails.length + "\">HTML</a>&#0160;&#0160;|&#0160;&#0160;<a onclick=\"show_plain(" + mails.length + ");\" href=\"#show_plain_" + mails.length + "\">Text</a>")));
+                                                     .append($('<td/>').html("<a onclick=\"show_html(" + i + ");\" href=\"#show_html_" + i + "\">HTML</a>&#0160;&#0160;|&#0160;&#0160;<a onclick=\"show_plain(" + i + ");\" href=\"#show_plain_" + i + "\">Text</a>")));
 
                         mails.push(current);
                     }
