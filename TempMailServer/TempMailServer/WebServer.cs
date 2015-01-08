@@ -42,7 +42,9 @@ namespace Lyralabs.Net.TempMailServer
         private void ProcessRequest(object ctx)
         {
             if (ctx is HttpListenerContext == false)
+            {
                 throw new ArgumentException("no context given!");
+            }
 
             HttpListenerContext context = ctx as HttpListenerContext;
             HttpListenerRequest request = context.Request;
