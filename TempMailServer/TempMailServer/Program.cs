@@ -6,16 +6,16 @@ using System.Threading;
 
 namespace Lyralabs.Net.TempMailServer
 {
-  class Program
-  {
-    static void Main(string[] args)
+    class Program
     {
-      MailServer mailServer = new MailServer();
-      WebServer webServer = new WebServer(mailServer, 8081);
+        static void Main(string[] args)
+        {
+            MailServer mailServer = new MailServer();
+            WebServer webServer = new WebServer(mailServer, 8081);
 
-      Thread t = new Thread(webServer.Start);
-      t.Start();
-      mailServer.Start();
+            Thread t = new Thread(webServer.Start);
+            t.Start();
+            mailServer.Start();
+        }
     }
-  }
 }
