@@ -88,7 +88,7 @@ namespace Lyralabs.Net.TempMailServer
                         {
                             case "getmails":
                                 {
-                                    string json = null;
+                                    string json = "[]";
                                     if (postParams.ContainsKey("timestamp"))
                                     {
                                         long time = 0;
@@ -101,14 +101,6 @@ namespace Lyralabs.Net.TempMailServer
                                                 {
                                                     json = WebServer.Serialize(num.ToList(), wantsJson);
                                                 }
-                                                else
-                                                {
-                                                    json = "[]";
-                                                }
-                                            }
-                                            else
-                                            {
-                                                json = "[]";
                                             }
                                         }
                                         else
@@ -121,10 +113,6 @@ namespace Lyralabs.Net.TempMailServer
                                         if (this.MailServer.Mails != null)
                                         {
                                             json = Serialize(this.MailServer.Mails, wantsJson);
-                                        }
-                                        else
-                                        {
-                                            json = "[]";
                                         }
                                     }
 
