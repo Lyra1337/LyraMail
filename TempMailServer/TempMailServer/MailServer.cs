@@ -49,23 +49,26 @@ namespace Lyralabs.Net.TempMailServer
             }
         }
 
-        private void ProcessConnection(object s)
+        private void ProcessConnection(object objTcpClient)
         {
             try
             {
-                if (s is TcpClient == false)
+                if (objTcpClient == null || objTcpClient is TcpClient == false)
+                {
                     return;
+                }
 
-                TcpClient client = s as TcpClient;
+                TcpClient client = (TcpClient)objTcpClient;
 
                 MailSession session = new MailSession(this, client);
                 Mail mail = session.Run();
+
                 lock (MailServer.mailLock)
                 {
                     this.Mails.Add(mail);
                 }
             }
-            catch (IOException)
+            catch (IOException ex)
             {
             }
         }
