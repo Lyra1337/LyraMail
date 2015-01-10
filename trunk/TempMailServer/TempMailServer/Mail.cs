@@ -12,64 +12,48 @@ namespace Lyralabs.Net.TempMailServer
     {
         private static readonly Regex contentTypeParser = new Regex("(?<type>(multipart[^ ]+)) .*?boundary=(?<boundary>([^ ]+))", RegexOptions.Compiled);
 
-        private string rawContent = null;
-        private StringBuilder body = null;
-        private Dictionary<string, List<string>> headers = null;
-
-        private MailServer server = null;
-
-        [DataMember]
-        public string Guid
-        {
-            get;
-            set;
-        }
+        private string RawContent { get; set; }
+        private StringBuilder Body { get; set; }
+        private Dictionary<string, List<string>> Headers { get; set; }
+        private MailServer Server { get; set; }
 
         [DataMember]
-        public long Time
-        {
-            get;
-            set;
-        }
+        public string Guid { get; private set; }
 
         [DataMember]
-        public List<MailBodyPart> BodyParts
-        {
-            get;
-            set;
-        }
+        public long Time { get; private set; }
 
         [DataMember]
-        public string Recipient
-        {
-            get;
-            set;
-        }
+        public DateTime ReceiveTime { get; private set; }
 
         [DataMember]
-        public string Sender
-        {
-            get;
-            set;
-        }
+        public List<MailBodyPart> BodyParts { get; private set; }
 
         [DataMember]
-        public string Subject
-        {
-            get;
-            set;
-        }
+        public string Recipient { get; private set; }
 
-        public Mail(MailServer _server, string _rawContent)
+        [DataMember]
+        public string Sender { get; private set; }
+
+        [DataMember]
+        public string Subject { get; private set; }
+
+        public Mail(MailServer server, string rawContent)
         {
-            if (String.IsNullOrEmpty(_rawContent))
+            if (String.IsNullOrEmpty(rawContent))
+            {
                 throw new ArgumentNullException("rawContent is null!");
+            }
 
-            this.Time = DateTime.Now.Ticks - MailServer.StartTime.Ticks;
+            this.Server = server;
+            this.Time = DateTime.Now.Ticks - this.Server.StartTime.Ticks;
+            this.ReceiveTime = DateTime.Now;
 
-            this.server = _server;
-            if (_rawContent != null)
-                this.rawContent = _rawContent.Replace("\r", "");
+            if (rawContent != null)
+            {
+                this.RawContent = rawContent.Replace("\r", "");
+            }
+
             this.ParseHeader();
             this.ParseBody();
 
@@ -82,9 +66,9 @@ namespace Lyralabs.Net.TempMailServer
             string boundary = null;
             bool multipart = false;
 
-            if (this.headers.ContainsKey("Content-Type"))
+            if (this.Headers.ContainsKey("Content-Type"))
             {
-                List<string> c = this.headers["Content-Type"];
+                List<string> c = this.Headers["Content-Type"];
                 if (c != null && c.Count > 0)
                 {
                     Match m = Mail.contentTypeParser.Match(c[0]);
@@ -154,7 +138,7 @@ namespace Lyralabs.Net.TempMailServer
                 List<List<string>> parts = null;
                 List<MailBodyPart> mailBodyParts = new List<MailBodyPart>();
 
-                foreach (string line in this.body.Replace("\r", "").ToString().Split('\n'))
+                foreach (string line in this.Body.Replace("\r", "").ToString().Split('\n'))
                 {
                     if (line.StartsWith(String.Concat("--", boundary)))
                     {
@@ -187,12 +171,12 @@ namespace Lyralabs.Net.TempMailServer
                 if (this.BodyParts == null)
                     this.BodyParts = new List<MailBodyPart>();
 
-                this.body.ToString();
+                this.Body.ToString();
 
-                MailBodyPart part = new MailBodyPart(this.body.ToString().Replace("\r", "").Split('\n').ToList(), false);
+                MailBodyPart part = new MailBodyPart(this.Body.ToString().Replace("\r", "").Split('\n').ToList(), false);
 
-                if (this.headers.ContainsKey("Content-Type"))
-                    part.ContentType = this.headers["Content-Type"][0];
+                if (this.Headers.ContainsKey("Content-Type"))
+                    part.ContentType = this.Headers["Content-Type"][0];
 
                 this.BodyParts.Add(part);
             }
@@ -200,11 +184,11 @@ namespace Lyralabs.Net.TempMailServer
 
         private void ParseHeader()
         {
-            this.body = new StringBuilder();
+            this.Body = new StringBuilder();
             bool header = true;
-            this.headers = new Dictionary<string, List<string>>();
+            this.Headers = new Dictionary<string, List<string>>();
 
-            foreach (string line in this.rawContent.Replace("\r", "").Split('\n'))
+            foreach (string line in this.RawContent.Replace("\r", "").Split('\n'))
             {
                 if (header)
                 {
@@ -212,9 +196,9 @@ namespace Lyralabs.Net.TempMailServer
                     {
                         header = false;
                     }
-                    else if (line.StartsWith(" ") && this.headers.Count > 0)
+                    else if (line.StartsWith(" ") && this.Headers.Count > 0)
                     {
-                        this.headers[this.headers.Keys.Last()][this.headers[this.headers.Keys.Last()].Count - 1] += line.Substring(1, line.Length - 1).Trim();
+                        this.Headers[this.Headers.Keys.Last()][this.Headers[this.Headers.Keys.Last()].Count - 1] += line.Substring(1, line.Length - 1).Trim();
                     }
                     else
                     {
@@ -224,28 +208,28 @@ namespace Lyralabs.Net.TempMailServer
                         {
                             key = line.Substring(0, separator);
                             value = line.Substring(separator + 1, line.Length - (separator + 1)).TrimStart();
-                            if (this.headers.ContainsKey(key) == false)
+                            if (this.Headers.ContainsKey(key) == false)
                             {
-                                this.headers.Add(key, new List<string>());
+                                this.Headers.Add(key, new List<string>());
                             }
-                            this.headers[key].Add(value);
+                            this.Headers[key].Add(value);
                         }
                     }
                 }
                 else
                 {
-                    this.body.AppendLine(line);
+                    this.Body.AppendLine(line);
                 }
             }
 
-            if (this.headers.ContainsKey("From") && this.headers["From"] != null && this.headers["From"].Count > 0)
-                this.Sender = this.headers["From"][0].Trim();
+            if (this.Headers.ContainsKey("From") && this.Headers["From"] != null && this.Headers["From"].Count > 0)
+                this.Sender = this.Headers["From"][0].Trim();
 
-            if (this.headers.ContainsKey("To") && this.headers["To"] != null && this.headers["To"].Count > 0)
-                this.Recipient = this.headers["To"][0].Trim();
+            if (this.Headers.ContainsKey("To") && this.Headers["To"] != null && this.Headers["To"].Count > 0)
+                this.Recipient = this.Headers["To"][0].Trim();
 
-            if (this.headers.ContainsKey("Subject") && this.headers["Subject"] != null && this.headers["Subject"].Count > 0)
-                this.Subject = this.headers["Subject"][0].Trim();
+            if (this.Headers.ContainsKey("Subject") && this.Headers["Subject"] != null && this.Headers["Subject"].Count > 0)
+                this.Subject = this.Headers["Subject"][0].Trim();
         }
     }
 }
