@@ -13,11 +13,12 @@ namespace Lyralabs.Net.TempMailServer
 {
     public class MailServer
     {
-        public static DateTime StartTime
+        public DateTime StartTime
         {
             get;
             private set;
         }
+
         private static readonly int SERVER_PORT = 25;
         protected TcpListener serverSocket = null;
         private static object mailLock = new object();
@@ -35,7 +36,7 @@ namespace Lyralabs.Net.TempMailServer
 
         public void Start()
         {
-            MailServer.StartTime = DateTime.Now;
+            this.StartTime = DateTime.Now;
             this.serverSocket = new TcpListener(IPAddress.Any, MailServer.SERVER_PORT);
             this.serverSocket.Start();
 
@@ -64,6 +65,11 @@ namespace Lyralabs.Net.TempMailServer
                 MailSession session = new MailSession(this, client);
                 Mail mail = session.Run();
 
+                if (mail == null)
+                {
+                    return;
+                }
+
                 lock (MailServer.mailLock)
                 {
                     this.Mails.Add(mail);
@@ -73,7 +79,7 @@ namespace Lyralabs.Net.TempMailServer
                         Directory.CreateDirectory("C:\\mails");
                     }
 
-                    File.WriteAllText(String.Format("C:\\mails\\email_{0}.json", DateTime.Now.ToFileTime()), JsonConvert.SerializeObject(mail));
+                    File.WriteAllText(String.Format("C:\\mails\\email_{0}.json", DateTime.Now.ToFileTime()), JsonConvert.SerializeObject(mail, Formatting.Indented));
                 }
             }
             catch (IOException ex)
