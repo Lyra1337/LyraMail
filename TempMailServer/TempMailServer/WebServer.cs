@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -53,13 +54,7 @@ namespace Lyralabs.Net.TempMailServer
             try
             {
                 string path = String.Concat(LOCAL_PATH, request.Url.AbsolutePath);
-
-                bool wantsJson = false;
-                if (path.EndsWith("json"))
-                {
-                    wantsJson = true;
-                }
-
+                
                 if (path.EndsWith("/api.json") || path.EndsWith("/api.xml"))
                 {
                     Dictionary<string, string> postParams = new Dictionary<string, string>();
@@ -96,23 +91,23 @@ namespace Lyralabs.Net.TempMailServer
                                         {
                                             if (this.MailServer.Mails != null)
                                             {
-                                                IEnumerable<Mail> num = this.MailServer.Mails.Where(mail => mail.Time > time);
+                                                List<Mail> num = this.MailServer.Mails.Where(mail => mail.Time > time).ToList();
                                                 if (num != null)
                                                 {
-                                                    json = WebServer.Serialize(num.ToList(), wantsJson);
+                                                    json = WebServer.Serialize(num);
                                                 }
                                             }
                                         }
                                         else
                                         {
-                                            json = "{\"error\":\"'timestamp' is in a wrong Format!\"}";
+                                            json = WebServer.Serialize(new { error = "'timestamp' is in a wrong Format!" });
                                         }
                                     }
                                     else
                                     {
                                         if (this.MailServer.Mails != null)
                                         {
-                                            json = Serialize(this.MailServer.Mails, wantsJson);
+                                            json = Serialize(this.MailServer.Mails);
                                         }
                                     }
 
@@ -191,22 +186,9 @@ namespace Lyralabs.Net.TempMailServer
             response.OutputStream.Close();
         }
 
-        private static string Serialize(object obj, bool json)
+        private static string Serialize(object obj)
         {
-            MemoryStream ms = new MemoryStream();
-
-            if (json)
-            {
-                DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(obj.GetType());
-                jsonSerializer.WriteObject(ms, obj);
-            }
-            else
-            {
-                DataContractSerializer xmlSerializer = new DataContractSerializer(obj.GetType());
-                xmlSerializer.WriteObject(ms, obj);
-            }
-
-            return Encoding.Default.GetString(ms.ToArray());
+            return JsonConvert.SerializeObject(obj);
         }
 
         private static void WriteAndClose(string content, HttpListenerResponse response)
