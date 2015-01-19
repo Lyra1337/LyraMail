@@ -49,26 +49,24 @@ namespace Lyralabs.Net.TempMailServer
             catch (IOException)
             {
             }
-            finally
-            {
-                Console.WriteLine("--- EOS ---");
-                if (this.mailBody != null && this.mailBody.Length > 0)
-                {
-                    Mail mail = new Mail(this.server, this.mailBody.ToString());
 
-                    if (String.IsNullOrEmpty(mail.Recipient) == false && String.IsNullOrEmpty(mail.Sender) == false)
-                    {
-                        return mail;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+            Console.WriteLine("--- EOS ---");
+            if (this.mailBody != null && this.mailBody.Length > 0)
+            {
+                Mail mail = new Mail(this.server, this.mailBody.ToString());
+
+                if (String.IsNullOrEmpty(mail.Recipient) == false && String.IsNullOrEmpty(mail.Sender) == false)
+                {
+                    return mail;
                 }
                 else
                 {
                     return null;
                 }
+            }
+            else
+            {
+                return null;
             }
         }
 
