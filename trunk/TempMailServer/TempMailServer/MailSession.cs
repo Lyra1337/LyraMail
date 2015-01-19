@@ -39,28 +39,36 @@ namespace Lyralabs.Net.TempMailServer
             this.reader = new StreamReader(this.stream);
             this.writer.WriteLine("220 service ready");
 
-            while (this.client.Connected && this.reader.EndOfStream == false)
+            try
             {
-                this.RunCommand(this.reader.ReadLine());
-            }
-
-            Console.WriteLine("--- EOS ---");
-            if (this.mailBody != null && this.mailBody.Length > 0)
-            {
-                Mail mail = new Mail(this.server, this.mailBody.ToString());
-
-                if (String.IsNullOrEmpty(mail.Recipient) == false && String.IsNullOrEmpty(mail.Sender) == false)
+                while (this.client.Connected && this.reader.EndOfStream == false)
                 {
-                    return mail;
+                    this.RunCommand(this.reader.ReadLine());
+                }
+            }
+            catch (IOException)
+            {
+            }
+            finally
+            {
+                Console.WriteLine("--- EOS ---");
+                if (this.mailBody != null && this.mailBody.Length > 0)
+                {
+                    Mail mail = new Mail(this.server, this.mailBody.ToString());
+
+                    if (String.IsNullOrEmpty(mail.Recipient) == false && String.IsNullOrEmpty(mail.Sender) == false)
+                    {
+                        return mail;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else
                 {
                     return null;
                 }
-            }
-            else
-            {
-                return null;
             }
         }
 
