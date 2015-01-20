@@ -50,7 +50,6 @@ namespace Lyralabs.Net.TempMailServer
             {
             }
 
-            Console.WriteLine("--- EOS ---");
             if (this.mailBody != null && this.mailBody.Length > 0)
             {
                 Mail mail = new Mail(this.server, this.mailBody.ToString());
@@ -78,20 +77,19 @@ namespace Lyralabs.Net.TempMailServer
                 {
                     this.mailInput = false;
                     this.writer.WriteLine("250 OK");
-                    Console.WriteLine(this.mailBody.ToString());
-                    //this.client.Close();
                     return;
                 }
                 this.mailBody.AppendLine(command);
                 return;
             }
+
             string[] tokens = command.Split(' ');
             if (tokens.Length > 0)
             {
-                switch (tokens[0])
+                switch (tokens.First())
                 {
                     case "HELO":
-                        this.writer.WriteLine("250 OK"); //lyra.bz Hello " + tokens[1]);
+                        this.writer.WriteLine("250 OK");
                         break;
                     case "MAIL":
                         this.sender = mailFromParser.Match(tokens[1]).Groups[1].Value;
@@ -118,11 +116,9 @@ namespace Lyralabs.Net.TempMailServer
                         break;
                     default:
                         this.writer.WriteLine("500 Command not recognized: " + tokens[0]);
-                        Console.WriteLine(">>500 Command not recognized: " + command);
                         break;
                 }
             }
-            Console.WriteLine(command);
         }
     }
 }

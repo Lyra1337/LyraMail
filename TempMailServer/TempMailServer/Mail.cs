@@ -83,58 +83,6 @@ namespace Lyralabs.Net.TempMailServer
 
             if (multipart)
             {
-                #region comments
-                /*      Dictionary<string, List<string>> lines = new Dictionary<string, List<string>>();
-        string currentContentType = null;
-        bool isHeader = false;
-        int partCounter = 0;
-        foreach(string line in this.body.ToString().Replace("\r", "").Split('\n'))
-        {
-          if(String.IsNullOrEmpty(line))
-          {
-            isHeader = false;
-            if(currentContentType == null)
-            {
-              continue;
-            }
-            else
-            {
-              if(lines.ContainsKey(currentContentType) == false)
-                lines.Add(currentContentType, new List<string>());
-
-              lines[currentContentType].Add("");
-            }
-          }
-          else
-          {
-            if(isHeader)
-            {
-              if(line.StartsWith("Content-Type:"))
-              {
-                string[] cType = line.Split(' ');
-                if(cType.Length > 1)
-                {
-                  currentContentType = cType[1];
-                }
-              }
-            }
-            if(line.Trim() == String.Concat("--", boundary))
-            {
-              isHeader = true;
-
-              if(lines.ContainsKey(currentContentType) == false)
-                lines.Add(currentContentType, new List<string>());
-
-              lines[currentContentType].Add("");
-            }
-            else if(line.Trim() == String.Concat("--", boundary, "--"))
-            {
-              break;
-            }
-          }
-        }*/
-                #endregion
-
                 List<List<string>> parts = null;
                 List<MailBodyPart> mailBodyParts = new List<MailBodyPart>();
 
@@ -208,10 +156,12 @@ namespace Lyralabs.Net.TempMailServer
                         {
                             key = line.Substring(0, separator);
                             value = line.Substring(separator + 1, line.Length - (separator + 1)).TrimStart();
+
                             if (this.Headers.ContainsKey(key) == false)
                             {
                                 this.Headers.Add(key, new List<string>());
                             }
+
                             this.Headers[key].Add(value);
                         }
                     }
@@ -223,13 +173,19 @@ namespace Lyralabs.Net.TempMailServer
             }
 
             if (this.Headers.ContainsKey("From") && this.Headers["From"] != null && this.Headers["From"].Count > 0)
+            {
                 this.Sender = this.Headers["From"][0].Trim();
+            }
 
             if (this.Headers.ContainsKey("To") && this.Headers["To"] != null && this.Headers["To"].Count > 0)
+            {
                 this.Recipient = this.Headers["To"][0].Trim();
+            }
 
             if (this.Headers.ContainsKey("Subject") && this.Headers["Subject"] != null && this.Headers["Subject"].Count > 0)
+            {
                 this.Subject = this.Headers["Subject"][0].Trim();
+            }
         }
     }
 }
