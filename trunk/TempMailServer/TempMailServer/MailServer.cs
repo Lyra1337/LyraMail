@@ -8,20 +8,21 @@ using System.IO;
 using System.Threading;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Lyralabs.Net.TempMailServer
 {
     public class MailServer
     {
-        public DateTime StartTime
-        {
-            get;
-            private set;
-        }
-
         private static readonly int SERVER_PORT = 25;
-        protected TcpListener serverSocket = null;
-        private static object mailLock = new object();
+        private static readonly string LOG_SOURCE_NAME = "GWS MailReceiver";
+        private static readonly string LOG_NAME = "GWS MailReceiver";
+
+        protected TcpListener ServerSocket = null;
+        protected EventLog Log = null;
+
+        public delegate void ChangedEventHandler(object sender, MailReceivedEventArgs e);
+        public event ChangedEventHandler MailReceivedEvent = null;
 
         public List<Mail> Mails
         {
@@ -29,25 +30,44 @@ namespace Lyralabs.Net.TempMailServer
             set;
         }
 
+        public DateTime StartTime
+        {
+            get;
+            private set;
+        }
+
         public MailServer()
         {
+            this.Prepare();
+        }
+
+        private void Prepare()
+        {
+            if (EventLog.SourceExists(MailServer.LOG_SOURCE_NAME) == false)
+            {
+                EventLog.CreateEventSource(MailServer.LOG_SOURCE_NAME, MailServer.LOG_NAME);
+            }
+
+            this.Log = new EventLog(MailServer.LOG_NAME, ".", MailServer.LOG_SOURCE_NAME);
+
             this.Mails = new List<Mail>();
         }
 
-        public void Start()
+        public void Run()
         {
             this.StartTime = DateTime.Now;
-            this.serverSocket = new TcpListener(IPAddress.Any, MailServer.SERVER_PORT);
-            this.serverSocket.Start();
+            this.ServerSocket = new TcpListener(IPAddress.Any, MailServer.SERVER_PORT);
+            this.ServerSocket.Start();
 
-            Console.WriteLine("Mailserver started at port {0}", MailServer.SERVER_PORT);
+            this.Log.WriteEntry(String.Format("Mailserver started at port {0}", MailServer.SERVER_PORT), EventLogEntryType.Information);
 
             while (true)
             {
-                TcpClient clientSocket = this.serverSocket.AcceptTcpClient();
-                Console.WriteLine("Connected! [IP: {0}]", clientSocket.Client.RemoteEndPoint);
-                Thread t = new Thread(new ParameterizedThreadStart(ProcessConnection));
-                t.Start(clientSocket);
+                TcpClient clientSocket = this.ServerSocket.AcceptTcpClient();
+                this.Log.WriteEntry(String.Format("Connected! [IP: {0}]", clientSocket.Client.RemoteEndPoint), EventLogEntryType.Information);
+
+                Thread thread = new Thread(new ParameterizedThreadStart(this.ProcessConnection));
+                thread.Start(clientSocket);
             }
         }
 
@@ -70,19 +90,32 @@ namespace Lyralabs.Net.TempMailServer
                     return;
                 }
 
-                lock (MailServer.mailLock)
+                this.MailReceived(mail);
+
+                if (Directory.Exists("mails") == false)
                 {
-                    this.Mails.Add(mail);
+                    Directory.CreateDirectory("mails");
+                }
 
-                    if (Directory.Exists("C:\\mails") == false)
-                    {
-                        Directory.CreateDirectory("C:\\mails");
-                    }
+                File.WriteAllText(String.Format("mails/email_{0}.json", DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss-fff")), JsonConvert.SerializeObject(mail, Formatting.Indented));
+            }
+            catch (IOException)
+            {
+            }
+        }
 
-                    File.WriteAllText(String.Format("C:\\mails\\email_{0}.json", DateTime.Now.ToFileTime()), JsonConvert.SerializeObject(mail, Formatting.Indented));
+        private void MailReceived(Mail mail)
+        {
+            try
+            {
+                this.Mails.Add(mail);
+
+                if (this.MailReceivedEvent != null)
+                {
+                    this.MailReceivedEvent(this, new MailReceivedEventArgs(mail));
                 }
             }
-            catch (IOException ex)
+            catch (Exception)
             {
             }
         }
