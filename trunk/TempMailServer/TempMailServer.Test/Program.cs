@@ -9,7 +9,7 @@ namespace Lyralabs.Net.TempMailServer.Test
 {
     class Program
     {
-        static string[] addresses = new string[] { "test1@lyra.bz", "test2@lyra.bz", "test3@lyra.bz" };
+        static string[] addresses = new string[] { "DP20WI6@gus-cr-dev.cloudapp.net", "loginblubb@gus-cr-dev.cloudapp.net" };
 
         static void Main(string[] args)
         {
