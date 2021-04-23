@@ -9,6 +9,10 @@
                 "darkly/bootstrap.css",
                 "darkly/bootstrap.min.css"
             ]
+        },
+        {
+            "library": "font-awesome@5.15.3",
+            "destination": "wwwroot/lib/fontawesome"
         }
     ]
 }
