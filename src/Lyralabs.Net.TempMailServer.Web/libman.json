@@ -1,0 +1,14 @@
+{
+    "version": "1.0",
+    "defaultProvider": "cdnjs",
+    "libraries": [
+        {
+            "library": "bootswatch@4.6.0",
+            "destination": "wwwroot/lib/bootswatch",
+            "files": [
+                "darkly/bootstrap.css",
+                "darkly/bootstrap.min.css"
+            ]
+        }
+    ]
+}

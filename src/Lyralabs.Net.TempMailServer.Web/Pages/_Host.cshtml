@@ -12,10 +12,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lyralabs.Net.TempMailServer.Web</title>
     <base href="~/" />
-    <link rel="stylesheet" href="lib/theme/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="lib/theme/css/font-awesome.css" />
-    <link rel="stylesheet" href="lib/theme/css/unicorn.css" />
+    <link href="lib/bootswatch/darkly/bootstrap.min.css" rel="stylesheet" />
     <link href="css/site.css" rel="stylesheet" />
+    <link href="css/dashboard.css" rel="stylesheet" />
     <link href="Lyralabs.Net.TempMailServer.Web.styles.css" rel="stylesheet" />
 </head>
 <body data-color="grey" class="flat">
@@ -33,31 +32,5 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
-
-
-    <script src="lib/theme/js/jquery.min.js"></script>
-    <script src="lib/theme/js/jquery-ui.custom.js"></script>
-    <script src="lib/theme/js/bootstrap.min.js"></script>
-    <script src="lib/theme/js/wysihtml5.js"></script>
-    <script src="lib/theme/js/bootstrap-wysihtml5.js"></script>
-
-    <script src="lib/theme/js/jquery.nicescroll.min.js"></script>
-    <script src="lib/theme/js/unicorn.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('.new-message-content textarea').wysihtml5();
-
-            $('.messages-item-star').on('click', function () {
-                par = $(this).parents('li');
-                if (par.hasClass('starred')) {
-                    par.removeClass('starred');
-                    $(this).attr('title', 'Mark as starred');
-                } else {
-                    par.addClass('starred');
-                    $(this).attr('title', 'Remove star');
-                }
-            });
-        });
-    </script>
 </body>
 </html>

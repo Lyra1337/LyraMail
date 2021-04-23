@@ -1,26 +1,13 @@
 ﻿@inherits LayoutComponentBase
 
-<div id="wrapper">
-    <div id="header">
-        <h1><a href="./index.html">Temp Mail Server</a></h1>
-        <a id="menu-trigger" href="#"><i class="fa fa-bars"></i></a>
-    </div>
+<TopNavigationMenu />
 
-    <div id="user-nav">
-        <TopNavigationMenu />
-    </div>
-
-    <div id="sidebar">
-        <SideNavigationMenu />
-    </div>
-
-    <div id="content">
-        @this.Body
-    </div>
+<div class="container-fluid">
     <div class="row">
-        <div id="footer" class="col-xs-12">
-            Temp Mail Server
-        </div>
+        <SideNavigationMenu />
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            @this.Body
+        </main>
     </div>
-    <div class="white-backdrop"></div>
 </div>
