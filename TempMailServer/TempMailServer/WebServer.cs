@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading;
 
@@ -23,7 +21,7 @@ namespace Lyralabs.Net.TempMailServer
             this.MailServer = mailServer;
             this.Port = port;
             this.Server = new HttpListener();
-            this.Server.Prefixes.Add(String.Concat("http://*:", this.Port, "/"));
+            this.Server.Prefixes.Add(String.Concat("http://127.0.0.1:", this.Port, "/"));
         }
 
         public void Start()
