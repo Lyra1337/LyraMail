@@ -45,18 +45,20 @@ namespace Lyralabs.Net.TempMailServer
                 throw new ArgumentException("no context given!");
             }
 
-            HttpListenerContext context = ctx as HttpListenerContext;
-            HttpListenerRequest request = context.Request;
-            HttpListenerResponse response = context.Response;
+            var context = ctx as HttpListenerContext;
+            var request = context.Request;
+            var response = context.Response;
 
             try
             {
                 string path = String.Concat(LOCAL_PATH, request.Url.AbsolutePath);
-                
+
                 if (path.EndsWith("/api.json") || path.EndsWith("/api.xml"))
                 {
                     Dictionary<string, string> postParams = new Dictionary<string, string>();
-                    string postRequest = new StreamReader(request.InputStream).ReadToEnd();
+
+                    using var reader = new StreamReader(request.InputStream);
+                    var postRequest = reader.ReadToEnd();
 
                     foreach (string s in postRequest.Split('&'))
                     {
@@ -134,14 +136,14 @@ namespace Lyralabs.Net.TempMailServer
                 }
                 else
                 {
-                    if (Directory.Exists(path))
+                    if (Directory.Exists(path) == true)
                     {
                         if (path.EndsWith("/") == false)
                         {
                             path = String.Concat(path, "/");
                         }
 
-                        if (File.Exists(String.Concat(path, "index.htm")))
+                        if (File.Exists(String.Concat(path, "index.htm")) == true)
                         {
                             string content = File.ReadAllText(String.Concat(path, "index.htm"), Encoding.UTF8);
                             WebServer.WriteAndClose(content, response);
@@ -157,7 +159,7 @@ namespace Lyralabs.Net.TempMailServer
                             WebServer.NotFound(response);
                         }
                     }
-                    else if (File.Exists(path))
+                    else if (File.Exists(path) == true)
                     {
                         string content = File.ReadAllText(path);
                         WebServer.WriteAndClose(content, response);
@@ -200,9 +202,7 @@ namespace Lyralabs.Net.TempMailServer
                 output.Write(buffer, 0, buffer.Length);
                 output.Close();
             }
-            catch (Exception)
-            {
-            }
+            catch { }
         }
     }
 }
