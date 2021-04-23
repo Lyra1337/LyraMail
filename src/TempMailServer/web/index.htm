@@ -3,8 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" />
-    <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"></script>
     <script type="text/javascript">
         var timestamp = 0;
         var mailCheckRunning = false;
@@ -70,10 +74,10 @@
                             timestamp = current.Time + 1;
                         }
                         $('#mails').append($('<tr/>').append($('<td/>').text(current.Sender))
-                                                     .append($('<td/>').text(current.Recipient))
-                                                     .append($('<td/>').text(current.Subject))
-                                                     .append($('<td/>').text(current.Time))
-                                                     .append($('<td/>').html("<a onclick=\"show_html(" + i + ");\" href=\"#show_html_" + i + "\">HTML</a>&#0160;&#0160;|&#0160;&#0160;<a onclick=\"show_plain(" + i + ");\" href=\"#show_plain_" + i + "\">Text</a>")));
+                            .append($('<td/>').text(current.Recipient))
+                            .append($('<td/>').text(current.Subject))
+                            .append($('<td/>').text(current.Time))
+                            .append($('<td/>').html("<a onclick=\"show_html(" + i + ");\" href=\"#show_html_" + i + "\">HTML</a>&#0160;&#0160;|&#0160;&#0160;<a onclick=\"show_plain(" + i + ");\" href=\"#show_plain_" + i + "\">Text</a>")));
 
                         mails.push(current);
                     }
@@ -111,24 +115,24 @@
             width: 100%;
         }
 
-        table.maillist th {
-            padding: 3px;
-        }
+            table.maillist th {
+                padding: 3px;
+            }
 
-        table.maillist thead {
-            font-weight: bold;
-            font-size: 10pt;
-        }
+            table.maillist thead {
+                font-weight: bold;
+                font-size: 10pt;
+            }
 
-        table.maillist tbody td {
-            padding: 3px 20px;
-        }
+            table.maillist tbody td {
+                padding: 3px 20px;
+            }
 
-        table.maillist td {
-            text-align: center;
-            border-style: solid;
-            border-width: 1px;
-        }
+            table.maillist td {
+                text-align: center;
+                border-style: solid;
+                border-width: 1px;
+            }
 
         #mailpreview {
             margin: 10px 0px 0px 0px;

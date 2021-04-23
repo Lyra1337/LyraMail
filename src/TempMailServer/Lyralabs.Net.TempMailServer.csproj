@@ -24,8 +24,6 @@
       <None Remove="web\css\images\ui-icons_fcd113_256x240.png" />
       <None Remove="web\css\jquery-ui-1.8.16.custom.css" />
       <None Remove="web\index.htm" />
-      <None Remove="web\js\jquery-1.6.2.min.js" />
-      <None Remove="web\js\jquery-ui-1.8.16.custom.min.js" />
     </ItemGroup>
 
     <ItemGroup>
@@ -81,12 +79,6 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <Content Include="web\index.htm">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="web\js\jquery-1.6.2.min.js">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="web\js\jquery-ui-1.8.16.custom.min.js">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
