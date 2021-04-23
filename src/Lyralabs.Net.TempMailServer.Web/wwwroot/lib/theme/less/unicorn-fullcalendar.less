@@ -1,0 +1,61 @@
+/* Fullcalendar overrides and fixes */
+.fc {
+	position: relative;
+}
+.fc-header-title {
+	margin-top: 10px;
+	h2 {
+		margin: 0;
+		font-size: 22px;
+		color: #444444;
+		text-shadow: 0 1px 0 #ffffff;
+	}
+}
+.fc-button-month, .fc-button-basicWeek, .fc-button-basicDay {
+	margin-top: -36px;
+	background-image: none;
+	border: 0;
+	border-radius: 0 !important;
+	padding: 5px 14px 4px;
+	height: auto;
+	background-color: transparent;
+	border-left: 1px solid #CDCDCD;
+	margin-left: 2px;
+	margin-right: -2px !important;
+	color: #666666;
+	box-shadow: none;
+}
+.fc-header-right {
+	.fc-state-active {
+		background-color: #f9f9f9;
+		box-shadow: none;
+		border-bottom: 1px solid #f9f9f9;
+		color: #333333;
+	}
+	.fc-button:last-child {
+		border-right: 1px solid #CDCDCD;
+	}
+}
+.fc-button-next {
+	position: absolute;
+	right: 0;
+}
+.fc-button-prev, .fc-button-next {
+	background-color: transparent;
+	background-image: none;
+	border: 0;
+	box-shadow: none;
+	margin-top: 7px;
+}
+.fc-event {
+	background-color: #333333;
+	border: 0;
+	padding: 2px 6px 3px;
+	font-size: 75%;
+	font-weight: 500;
+}
+.external-event {
+	display: block;
+	margin: 10px;
+	padding:4.75px;
+}

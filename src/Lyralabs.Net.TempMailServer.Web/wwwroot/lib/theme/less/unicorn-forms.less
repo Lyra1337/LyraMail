@@ -1,0 +1,184 @@
+/* Form styles */
+.form-group {
+	border-top: 1px solid #ffffff;
+	border-bottom: 1px solid #eeeeee;
+	.row {
+		margin-bottom: 15px;
+		@media (max-width: @screen-md-max) {
+			[class*="col-lg-"], [class*="col-md-"] {
+				margin-bottom: 15px;
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+form {
+	margin-bottom: 0;
+	.form-group {
+		margin: 0;
+		padding: 5px 20px;
+		&:last-child {
+			border-bottom: 0;
+		}
+	}
+}
+
+.form-horizontal {
+
+	.form-group {
+		margin: 0;
+		padding: 10px 0;
+
+		&:last-child {
+			border-bottom: 0;
+		}
+		> [class*="col-"] > .row > [class*="col-"] {
+			&:first-child {
+				padding-left: 0;
+			}
+			&:last-child {
+				padding-right: 0;
+			}
+		}
+	}
+
+	.control-label {
+		font-weight: bold;
+		color: #555555;
+		text-shadow: 0 1px 0 #fff;
+	}
+	
+	/*
+	.controls {
+		padding: 10px 10px 10px 0;
+		
+		label {
+			margin-top: 6px;
+			margin-right: 10px;
+			
+			div[class^="iradio_flat-"], div[class^="icheckbox_flat-"] {
+				vertical-align: middle;
+				margin-top: -3px;
+			}
+		}
+		> .row {
+			> [class*="col-"] {
+				padding-left: 0;
+				&:last-child {
+					padding-right: 0;
+				}
+				> .input-group {
+					padding: 0;
+				}
+			}
+		}
+	}
+	*/
+
+	.form-actions {
+		background-color: #f4f4f4;
+		padding: 10px 40px 10px 200px;
+		.nopadding & {
+			.border-bottom-radius(6px);
+		}
+	}
+
+	@media(max-width: @screen-xs-max) {
+
+		.control-label {
+			padding-left: 15px;
+			padding-bottom: 10px;
+        	position: relative;
+		}
+		.form-actions {
+			text-align: center;
+			background-color: #f4f4f4;
+			padding: 10px 40px 10px 50px;
+		}
+	}
+	.input-group {
+		padding: 0;
+	}
+	@media (max-width: @screen-sm-max) {
+		.form-group {
+			[class*="col-"]	> .row > [class*="col-"] {
+				padding-left: 0;
+				padding-right: 0;
+			}
+		}
+	}
+}
+.control-label {
+	font-weight: normal;
+}
+.help-block, .help-inline {
+    color: #999999;
+
+	.has-error & {
+		color: #B94A48;
+	}
+	.has-success & {
+		color: #468847;
+	}
+	.has-warning & {
+		color: #C09853;
+	}
+}
+[class*="icheckbox_"] .help-inline {
+	margin-top: 1px;
+	margin-left: 30px;
+	position: absolute;
+	float: left;
+	min-width: 200px;
+	width: auto;
+}
+.input-icon {
+	.fa {
+		position: absolute;
+		top: 11px;
+		left: 10px;
+	}
+	.form-control {
+		padding-left: 28px;
+		font-family: @font-family-sans-serif;
+	}
+	&.on-right {
+		.fa {
+			right: 10px;
+			left: auto;
+		}
+		.form-control {
+			padding-left: 12px;
+			padding-right: 28px;
+		}
+	}
+	&.icon-sm {
+		.fa {
+			top: 9px;
+		}
+	}
+	&.icon-lg {
+		.fa {
+			font-size: 20px;
+			top: 13px;
+			left: 12px;
+		}
+		&.on-right .fa {
+			left: auto;
+			right: 12px;
+		}
+		.form-control {
+			padding-left: 30px;
+		}
+		&.on-right .form-control {
+			padding-left: 12px;
+			padding-right: 30px;
+		}
+	}
+}

@@ -1,0 +1,43 @@
+
+* {
+	outline:none !important;
+	-moz-outline: none !important;
+}
+
+/* Main */
+html {
+	overflow-x: hidden;
+}
+body {
+	overflow-x: hidden;
+	overflow-y: auto;
+    margin-top: -20px;
+    background: #000 url('../img/pattern.png') repeat scroll top center;
+    @media (nax-width: @screen-xs-max) {
+		margin-top: -2px;
+    }
+    @media (max-width: @screen-sm-max) {
+    	padding: 18px 0 0 !important;
+    }
+}
+a, a:hover {
+	text-decoration: none !important;
+}
+
+.row {
+	margin: 0;
+}
+.tooltip {
+	font-size: 10px;
+}
+.tooltip-inner {
+	padding: 4px 8px 3px;
+}
+
+@media (min-width: @screen-lg) {
+	.boxed #wrapper {
+		width: 1174px;
+		margin: 0 auto;
+		position: relative;
+	}
+}

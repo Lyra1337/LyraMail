@@ -1,0 +1,47 @@
+.gallery-masonry {
+  margin: 0 auto;
+}
+.gallery-masonry .item {
+  width: 240px;
+  margin: 10px;
+  float: left;
+  position: relative;
+}
+.gallery-masonry .item .actions {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: block;
+  padding: 5px;
+  border-radius: 4px;
+  opacity: 0;
+  -webkit-transition: opacity 0.3s ease-in-out;
+  -moz-transition: opacity 0.3s ease-in-out;
+  -ms-transition: opacity 0.3s ease-in-out;
+  -o-transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
+}
+.gallery-masonry .item .actions-inner {
+  width: 64px;
+  height: 27px;
+  background-color: #000000;
+  padding: 5px 8px;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -13px;
+  margin-left: -32px;
+}
+.gallery-masonry .item .actions-inner a {
+  margin: 0 4px;
+  color: #ffffff;
+}
+.gallery-masonry .item .actions .actions-inner i {
+  margin-top: -1px;
+}
+.gallery-masonry .item:hover .actions {
+  opacity: 1;
+}

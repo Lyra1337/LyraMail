@@ -1,0 +1,35 @@
+/* Breadcrumb */
+#breadcrumb {
+	box-shadow: 0 0 1px #ffffff;
+	border-top: 1px solid #d6d6d6;
+	border-bottom: 1px solid #d6d6d6;
+	padding-left: 10px;
+	margin-bottom: 20px;
+	a {
+		padding: 8px 20px 8px 10px;
+		display: inline-block;
+		background-image: url('../img/breadcrumb.png');
+		background-position: center right;
+		background-repeat: no-repeat;
+		font-size: 11px;
+		color: #666666;
+		i {
+			margin-right: 5px;
+			opacity: .6;
+			vertical-align: middle;
+		}
+		&:hover {
+			color: #333333;
+			i {
+				opacity: .8;
+			}
+		}
+		&:last-child {
+			background-image:none;
+		}
+		&.current {
+			font-weight: bold;
+			color: #444444;
+		}
+	}
+}

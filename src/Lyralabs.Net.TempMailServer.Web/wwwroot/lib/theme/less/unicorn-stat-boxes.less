@@ -1,0 +1,267 @@
+/* Stat boxes */
+.stat-boxes, .quick-actions, .quick-actions-horizontal, .stats-plain {
+    display: inline-block;
+    list-style: none outside none;
+    margin: 20px 0 10px;
+    text-align: center;
+    padding: 0;
+}
+.stats-plain {
+	width: 100%;
+	li {
+		padding: 0 30px;
+		display: inline-block;
+		margin: 0 10px 20px;
+		h4 {
+			font-size: 40px;
+			margin-bottom: 15px;
+		}
+		span {
+			font-size: 14px;
+			color: #555555;
+		}
+	}
+}
+.stat-boxes, .quick-actions, .quick-actions-horizontal {
+	li {
+	    border: 1px solid #d5d5d5;
+	    border-radius: 4px 4px 4px 4px;
+	    .box-shadow(~"0 1px 0 0 #FFFFFF inset, 0 1px 0 rgba(255,255,255,0.4)");
+	    display: inline-block;
+	    line-height: 18px;
+	    margin: 0 10px 10px;
+	    padding: 0 10px;
+	}
+}
+.quick-actions {
+	li {
+		min-width: 120px;
+		a {
+			padding: 10px 30px;
+			i[class^="icon-"], i[class*=" icon-"] {
+				background-repeat: no-repeat;
+				background-attachment: scroll;
+				background-position: 0 0;
+				background-color: transparent;
+				width: 32px;
+				height: 32px;
+				display: block;
+				margin: 0 auto 5px;
+			}
+		}
+	}
+	i {
+		&.icon-book {
+			background-image: url('../img/icons/32/book.png');
+		}
+		&.icon-cabinet {
+			background-image: url('../img/icons/32/cabinet.png');
+		}
+		&.icon-cal {
+			background-image: url('../img/icons/32/calendar.png');
+		}
+		&.icon-client {
+			background-image: url('../img/icons/32/client.png');
+		}
+		&.icon-database {
+			background-image: url('../img/icons/32/database.png');
+		}
+		&.icon-download {
+			background-image: url('../img/icons/32/download.png');
+		}
+		&.icon-graph {
+			background-image: url('../img/icons/32/graph.png');
+		}
+		&.icon-home {
+			background-image: url('../img/icons/32/home.png');
+		}
+		&.icon-lock {
+			background-image: url('../img/icons/32/lock.png');
+		}
+		&.icon-mail {
+			background-image: url('../img/icons/32/mail.png');
+		}
+		&.icon-pdf {
+			background-image: url('../img/icons/32/pdf.png');
+		}
+		&.icon-people {
+			background-image: url('../img/icons/32/people.png');
+		}
+		&.icon-piechart {
+			background-image: url('../img/icons/32/piechart.png');
+		}
+		&.icon-search {
+			background-image: url('../img/icons/32/search.png');
+		}
+		&.icon-shopping-bag {
+			background-image: url('../img/icons/32/shopping-bag.png');
+		}
+		&.icon-survey {
+			background-image: url('../img/icons/32/survey.png');
+		}
+		&.icon-tag {
+			background-image: url('../img/icons/32/tag.png');
+		}
+		&.icon-user {
+			background-image: url('../img/icons/32/user.png');
+		}
+		&.icon-wallet {
+			background-image: url('../img/icons/32/wallet.png');
+		}
+		&.icon-web {
+			background-image: url('../img/icons/32/web.png');
+		}
+	}
+}
+
+.quick-actions, .quick-actions-horizontal {
+	li {
+		padding: 0;
+		a {
+			text-align: center !important;
+			display: block;
+			color: #666666;
+			text-shadow: 0 1px 0 #ffffff;
+		}
+		&:active, &:focus {
+		    #gradient > .vertical(#eeeeee,#f4f4f4,0%,100%);
+		    .box-shadow(~"0 1px 4px 0 rgba(0,0,0,0.2) inset, 0 1px 0 rgba(255,255,255,0.4)");
+		}
+	}
+}
+
+
+
+.quick-actions-horizontal {
+	li a {
+		span {
+			padding: 10px 12px 10px 10px;
+			display: inline-block;
+		}
+		i[class^="icon-"], i[class*=" icon-"] {
+			background-repeat: no-repeat;
+			background-attachment: scroll;
+			background-position: center;
+			background-color: transparent;
+			width: 16px;
+			height: 16px;
+			display: inline-block;
+			margin: -2px 0 0 !important; 
+			border-right: 1px solid #dddddd;
+			margin-right: 10px;
+			padding: 20px;
+			vertical-align: middle;
+		}
+	}
+	i {
+		&.icon-book {
+			background-image: url('../img/icons/16/book.png');
+		}
+		&.icon-cabinet {
+			background-image: url('../img/icons/16/cabinet.png');
+		}
+		&.icon-cal {
+			background-image: url('../img/icons/16/calendar.png');
+		}
+		&.icon-client {
+			background-image: url('../img/icons/16/client.png');
+		}
+		&.icon-database {
+			background-image: url('../img/icons/16/database.png');
+		}
+		&.icon-download {
+			background-image: url('../img/icons/16/download.png');
+		}
+		&.icon-graph {
+			background-image: url('../img/icons/16/graph.png');
+		}
+		&.icon-home {
+			background-image: url('../img/icons/16/home.png');
+		}
+		&.icon-lock {
+			background-image: url('../img/icons/16/lock.png');
+		}
+		&.icon-mail {
+			background-image: url('../img/icons/16/mail.png');
+		}
+		&.icon-pdf {
+			background-image: url('../img/icons/16/pdf.png');
+		}
+		&.icon-people {
+			background-image: url('../img/icons/16/people.png');
+		}
+		&.icon-piechart {
+			background-image: url('../img/icons/16/piechart.png');
+		}
+		&.icon-search {
+			background-image: url('../img/icons/16/search.png');
+		}
+		&.icon-shopping-bag {
+			background-image: url('../img/icons/16/shopping-bag.png');
+		}
+		&.icon-survey {
+			background-image: url('../img/icons/16/survey.png');
+		}
+		&.icon-tag {
+			background-image: url('../img/icons/16/tag.png');
+		}
+		&.icon-user {
+			background-image: url('../img/icons/16/user.png');
+		}
+		&.icon-wallet {
+			background-image: url('../img/icons/16/wallet.png');
+		}
+		&.icon-web {
+			background-image: url('../img/icons/16/web.png');
+		}
+	}
+}
+
+
+.stat-boxes {
+	.left, .right {
+		text-shadow: 0 1px 0 #ffffff;
+	    float: left;
+	}
+	.left {
+	    border-right: 1px solid #DCDCDC;
+	    box-shadow: 1px 0 0 0 #FFFFFF;
+	    margin-right: 12px;
+	    padding: 10px 14px 6px 4px;
+	    font-size: 10px;
+	    font-weight: bold;
+		span {
+			margin-bottom: 5px;
+			display: block;
+		}
+		i {
+			font-size: 14px;
+			vertical-align: middle;
+			margin-right: 5px;
+		}
+	}
+	.right {
+	    font-size: 12px;
+	    padding: 9px 10px 7px 0;
+	    text-align: center;
+	    width: 70px;
+	    color: #666666;
+	    strong {
+	    	display: block;
+	    	font-size: 26px;
+			margin-bottom: 3px;
+			margin-top: 6px;
+	    }
+	}
+	.sparkline_bar_good, .sparkline_line_good  {
+		color: #459D1C;
+	}
+	.sparkline_bar_neutral, .sparkline_line_neutral  {
+		color: #757575;
+	}
+	.sparkline_bar_bad, .sparkline_line_bad  {
+		color: #BA1E20;
+	}
+}
+
+

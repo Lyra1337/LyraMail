@@ -1,0 +1,224 @@
+/* Content */
+#content {
+    margin-left: 205px;
+    margin-right: 0;
+    margin-top: -39px;
+    position: relative;
+    min-height: 500px;
+    width: auto;
+    -webkit-background-clip: padding-box;
+    .border-left-radius(8px);
+    @media (max-width: @screen-xs-max) {
+    	margin-left: 0 !important;
+    	margin-top: 0;
+		border-radius: 0;
+		left: auto;
+		z-index: 1;
+		.transition(left 0.5s);
+		.fixed & {
+			padding-top: 67px;
+		}
+		.menu-open & {
+			left: 205px;
+		}
+    }
+    @media (min-width: @screen-sm) and (max-width: @screen-sm-max) {
+		margin-left: 43px;
+		margin-top: 38px;
+    }
+}
+
+#content-header {
+	background-color: #f6f6f6;
+    border-top-left-radius: 8px;
+    min-height: 92px;
+    padding-top: 5px;
+    width: 100%;
+    margin-top: -38px;
+    z-index: 20;
+
+    // Page Title
+	h1 {
+	    color: #555555;
+	    font-size: 28px;
+	    font-weight: normal;
+	    text-shadow: 0 1px 0 #ffffff;
+	    margin-left: 20px;
+	}
+	h1, > .btn-group {
+		margin-top: 25px;
+	}
+	// Header Quick Buttons
+	> .btn-group {
+	    float: right;
+	    right: 20px;
+	    position: absolute;
+	    margin-top:-50px; // FIX: Line up with the header correctly on > tablet size (will be removed below)
+	    .box-shadow(0 2px 3px rgba(0,0,0,0.1) inset);
+	    background-color: rgba(0,0,0,0.035);
+	    border-bottom: 1px solid rgba(255,255,255,0.65);
+	    border-radius: 5px;
+
+	    .btn {
+			line-height: 18px;
+			font-size: 18px;
+			padding: 12px 16px;
+			color: rgba(0,0,0,0.5);
+			border-width: 0 1px 0 0;
+			border-style: solid;
+			border-color: #dddddd;
+			&:hover {
+				color: rgba(0,0,0,0.7);
+			}
+			&:last-child {
+				border-width: 0;
+			}
+			.label {
+				font-size: 11px;
+				line-height: 12px;
+				position: absolute;
+				top: 4px;
+				right: 5px;
+				padding: 2px 5px;
+			}
+		}
+		&.colored {
+			box-shadow: none;
+			border: 0;
+			.btn {
+				border: 0;
+				color: #ffffff;
+				&:hover {
+					color: #eeeeee;
+				}
+			}
+		}
+		.flat & {
+			background-color: transparent;
+			.box-shadow(none);
+			border: 1px solid #dddddd;
+		}
+	}
+	// Content Header Stats
+	.mini-stats {
+	 	list-style: none;
+	 	margin: 0;
+	 	padding: 0;
+	 	top: 0;
+	 	position: absolute;
+	 	right: 0;
+	 	border-left: 1px solid #ddd;
+		.clearfix();
+
+	 	li {
+	 		float: left;
+			border-left: 1px solid #fff;	
+			border-right: 1px solid #ddd;
+			padding-bottom: 6px;
+			&:last-child {
+				border-right: 0;
+			}
+	 	}
+	 	.left {
+			float: left;
+			padding-top: 8px;
+			padding-left: 15px;
+			span {
+				display: block;
+				margin-bottom: 4px;
+			}
+	 	}
+	 	.right {
+			float: right;
+			padding: 8px 15px 0 10px;
+			font-size: 12px;
+			strong {
+				display: block;
+				font-size: 18px;
+				margin-bottom: 2px;
+			}
+	 	}
+	 	.sparkline_bar_good, .sparkline_bar_neutral, .sparkline_bar_bad {
+	 		font-size: 12px;
+			text-align: center;
+			font-weight: bold;
+	 	}
+	 	.sparkline_bar_good {
+	 		color: #83bd67;
+	 	}
+	 	.sparkline_bar_neutral {
+	 		color: #757575;
+	 	}
+	 	.sparkline_bar_bad {
+	 		color: #55acd2;
+	 	}
+	}
+
+	&.mini {
+		min-height: 60px;
+
+		h1, > .btn-group {
+			margin-top: 10px;
+		}
+	}
+
+	// Responsive Styles
+	@media (max-width: 400px) {
+		.mini-stats {
+			li {
+				.left, .right {
+					float: none;
+					padding-left: 0;
+					padding-right: 0;
+					text-align: center;
+				}
+			}
+		}
+	}
+	@media (max-width: @screen-xs-max) {
+		margin-top: 0;
+        /*height: 140px; FIX iPhone: Makes header take up too much space/not enough, let it dictate (by h1 text length) */
+        height:auto; /* FIX iPhone: allow h1, btn-group to set height*/
+        text-align: center;
+
+        h1, .btn-group, .mini-stats {
+	        float: none;
+	        position:relative; /*FIX iPhone: let btn group go in document flow, not absolute. Prevents button/header from running into each other*/
+	    }
+		
+		h1 {
+	    	display: block;
+	        text-align: center;
+	        margin-left: auto;
+	        margin-top: 0;
+	        padding-top: 0 !important;
+	        padding-top: 15px;
+	        width: 100%;
+	    }
+
+	    .btn-group {
+	    	/*margin-top: 70px; FIX iPhone: Makes button group go needlessly far below the header. */
+	        margin:10px 0; /* FIX iPhone: give equal margins (as below h1), still able to target with finger */
+	        left: 0;
+	        right: auto;
+	    }
+
+	    .mini-stats {
+	 		margin-top: 18px;
+	    	min-height: 60px;
+	    	border-left: 0;
+	    	border-top: 1px solid #e5e5e5;
+	    	&.box-3 li {
+	    		width: 33% !important;
+	    	}
+	    	li {
+	    		&:first-child {
+					border-left: 0;
+				}
+		    }
+	 	}
+	}
+	@media (min-width: @screen-sm) and (max-width: @screen-sm-max) {
+		border-top-left-radius: 0;
+	}
+}

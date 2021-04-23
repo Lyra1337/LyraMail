@@ -1,0 +1,72 @@
+/* Invoice style */
+.invoice-content {
+	padding: 20px;
+}
+.invoice-action {
+    margin-bottom: 30px;
+}
+.invoice-head {
+    clear: both;
+    margin-bottom: 40px;
+    overflow: hidden;
+    width: auto;
+}
+.invoice-meta {
+    font-size: 18px;
+    margin-bottom: 40px;
+}
+.invoice-date {
+    float: right;
+    font-size: 80%;
+}
+.invoice-content {
+    h5 {
+        color: #333333;
+        font-size: 16px;
+        font-weight: normal;
+        margin-bottom: 10px;
+    }
+    ul {
+    	list-style: none;
+    	margin: 0;
+    	padding: 0;
+    }
+    th {
+        &.total-label {
+            text-align: right;
+        }
+        &.total-amount {
+            text-align: left;
+        }
+        &.total-label, &.total-amount {
+            font-size: 16px;
+        }
+    }
+}
+
+.invoice-from {
+    float: left;
+}
+.invoice-to {
+    float: right;
+}
+.invoice-from, .invoice-to {
+    width: 49%;
+
+    li {
+        clear: left;
+        span {
+            display: block;
+        }
+    }
+}
+.amount-word {
+    color: #666666;
+    margin-bottom: 40px;
+    margin-top: 40px;
+    span {
+        color: #5476A6;
+        font-weight: bold;
+        padding-left: 20px;
+    }
+}

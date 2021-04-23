@@ -1,17 +1,26 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+<div id="wrapper">
+    <div id="header">
+        <h1><a href="./index.html">Temp Mail Server</a></h1>
+        <a id="menu-trigger" href="#"><i class="fa fa-bars"></i></a>
     </div>
 
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+    <div id="user-nav">
+        <TopNavigationMenu />
+    </div>
 
-        <div class="content px-4">
-            @Body
+    <div id="sidebar">
+        <SideNavigationMenu />
+    </div>
+
+    <div id="content">
+        @this.Body
+    </div>
+    <div class="row">
+        <div id="footer" class="col-xs-12">
+            Temp Mail Server
         </div>
     </div>
+    <div class="white-backdrop"></div>
 </div>

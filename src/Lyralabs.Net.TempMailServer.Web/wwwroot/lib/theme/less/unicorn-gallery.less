@@ -1,0 +1,57 @@
+/* Gallery styles */
+// Masonry Gallery
+.gallery-masonry {
+    margin: 0 auto;
+	.item {
+	    width: 240px;
+	    margin: 10px;
+	    float: left;
+	    position: relative;
+		.actions {
+			position: absolute;
+			top: 5px;
+			bottom: 5px;
+			left: 5px;
+			right: 5px;
+			background-color: rgba(0,0,0,.3);
+			display: block;
+			.opacity(0);
+			.transition(opacity 0.3s ease-in-out);
+		}
+		.actions-inner {
+			width: 64px;
+			height: 27px;
+			background-color: @gray-darker;
+			border-radius: 5px;
+			position: absolute;
+			text-align: center;
+			top: 50%;
+			left: 50%;
+			.opacity(0);
+			-webkit-transform: translateY(-10px);
+			transform: translateY(-10px);
+			margin-top: -13px;
+			margin-left: -32px;
+			.transition(~"transform 0.3s ease-in-out 0.2s, opacity 0.3s ease-in-out 0.2s");
+			a {
+				display: inline-block;
+				margin: 1px 0 0;
+				color: #ffffff;
+				&:first-child {
+					margin-right: 10px;
+				}
+			}
+			i {
+			    line-height: 27px;
+			}
+		}
+		&:hover .actions {
+			.opacity(1);
+			.actions-inner {
+				-webkit-transform: translateY(0px);
+				transform: translateY(0px);
+				.opacity(1);
+			}
+		}
+	}
+}

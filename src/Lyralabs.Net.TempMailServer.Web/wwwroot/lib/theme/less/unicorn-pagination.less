@@ -1,0 +1,50 @@
+/* Pagination */
+.dataTables_paginate {
+    line-height: 16px;
+    text-align: right;
+    margin-top: 0px;
+    margin-right: 0px;
+    float: right;
+}
+.dataTables_paginate .ui-button,  .pagination.alternate li a {
+    font-size: 12px;
+    padding: 4px 10px !important;
+    border-style: solid;
+    border-width: 1px 1px 1px 0;
+    //border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    display: inline-block;
+    line-height: 16px;
+    color: #333333;
+    text-shadow: 0 1px 0 #ffffff;
+    margin-right: 0;
+    
+    &:hover {
+        color: #222222;
+        text-shadow: 0 1px 0 #ffffff;
+        cursor: pointer;
+    }
+}
+.pagination.alternate li a {
+    margin-right: 1px;
+}
+.dataTables_paginate .first, .pagination.alternate li:first-child a {
+    .border-left-radius(4px);   
+    border-left-width: 1px; 
+}
+.dataTables_paginate .last {
+    .border-right-radius(4px);    
+}
+
+.dataTables_paginate .ui-state-disabled, .fc-state-disabled, .pagination.alternate li.disabled a {
+    color: #AAAAAA !important;
+    &:hover {
+        cursor: default !important;
+    }
+}
+
+.dataTables_paginate span .ui-state-disabled, .pagination.alternate li.active a {
+    color: #ffffff !important;
+    cursor: default !important;
+    .box-shadow(0 1px 0 rgba(255,255,255,0.2) inset) !important;
+    .opacity(1);
+}

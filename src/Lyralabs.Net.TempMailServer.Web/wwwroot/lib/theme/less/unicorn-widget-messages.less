@@ -1,0 +1,232 @@
+/* Messages (Inbox) */
+.widget-messages {
+	.widget-title {
+		.nav-tabs li a {
+			padding-bottom: 7px;
+			@media (max-width: 600px) {
+				.text {
+					display: none;
+				}
+			}
+		}
+	}
+	.widget-content {
+		height: 600px;
+		overflow: hidden;
+
+		@media (max-width: 700px) {
+			height: auto;
+		}
+	}
+	.messages-list {
+		width: 260px;
+		height: 620px;
+		margin: -4px 0 0;
+		padding: 0;
+		float: left;
+		list-style: none;
+
+		.messages-item {
+			padding: 5px 15px 5px 25px;
+			position: relative;
+			span {
+				display: block;
+				color: @gray;
+			}
+			.messages-item-star, .messages-item-attachment, .messages-item-time, .messages-item-time .messages-item-actions {
+				position: absolute;
+			}
+			.messages-item-star {
+				left: 7px;
+				opacity: 0;
+				.transition(opacity 0.2s ease-in-out);
+			}
+			.messages-item-attachment {
+				left: 7px;
+				top: 25px;
+			}
+			.messages-item-avatar {
+				border-radius: 4px;
+				float: left;
+				.square(40px);
+			}
+			.messages-item-from,
+			.messages-item-subject {
+				margin-left: 45px;
+			}
+			.messages-item-from {
+				margin-top: 2px;
+				font-weight: bold;
+			}
+			.messages-item-time {
+				top: 8px;
+				right: 15px;
+				opacity: 1;
+				.transition(opacity 0.2s ease-in-out);
+
+				.text {
+					font-size: 12px;
+					color: @gray-light;
+				}
+				.messages-item-actions {
+					top: 0;
+					right: 0;
+					opacity: 0;
+					width: 75px;
+					.transition(opacity 0.2s ease-in-out);
+					> a, .dropdown > a {
+						margin-left: 5px;
+						color: @gray;
+					}
+					> div {
+						display: inline-block;
+					}
+					.dropdown-menu {
+						margin-top: 0;
+					}
+					.tag-icon {
+						margin: 0 5px 0 -13px;
+						display: inline-block;
+						.square(11px);
+						border-radius: 3px;
+					}
+				}
+				&:hover {
+					.text{
+						opacity: 0;
+					}
+					.messages-item-actions {
+						opacity: 1;
+					}
+				}
+			}
+			.messages-item-subject {
+				font-size: 12px;
+				margin-bottom: 4px;
+			}
+			.messages-item-preview {
+				font-size: 12px;
+				color: @gray-light;
+			}
+			&:hover {
+				cursor: pointer !important;
+				.messages-item-star {
+					opacity: .2;
+				}
+			}
+			&.starred {
+				.messages-item-star {
+					display: block;
+					opacity: 1;
+				}
+			}
+		}
+
+		@media (max-width: 700px) {
+			height: auto;
+			max-height: 500px;
+			float: none;
+			width: auto;
+			margin-top: 3px;
+			
+		}
+	}
+	.messages-content {
+		width: auto;
+		margin-top: 4px;
+		margin-left: 260px;
+		height: auto;
+		background-color: transparent;
+		position: relative;
+		
+		.message-header {
+			padding: 10px 15px;
+			.message-from {
+				font-weight: bold;
+			}
+			.message-to {
+				color: @gray-light;
+			}
+			.message-time {
+				position: absolute;
+				top: 10px;
+				right: 15px;
+				color: @gray-light;
+			}
+			.message-actions {
+				position: absolute;
+				width: 115px;
+				left: 50%;
+				margin-left: -65.7px;
+				a {
+					margin: 0 0 0 -4px;
+					background-color: #fafafa;
+					padding: 4px 7px;
+
+					&:first-child {
+						.border-left-radius(15px);
+						padding-left: 10px;
+					}
+					&:last-child {
+						.border-right-radius(15px);
+					}
+				}
+			}
+		}
+		.message-content {
+			padding: 10px;
+		}
+		@media(max-width: 700px) {
+			margin-left: 0;
+		}
+	}
+}
+.modal.mail-new-message .modal-dialog {
+	padding-top: 0;
+
+	.modal-header {
+		.border-top-radius(0);
+	}
+	.new-message-to, .new-message-subject {
+		border-bottom: 1px solid @gray-lighter;
+		padding: 10px;
+		color: @gray-light;
+		input[type=text] {
+			border: 0;
+			width: 90%;
+			color: @gray;
+		}
+	}
+	.wysihtml5-toolbar {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		background-color: @gray-lighter;
+		.clearfix();
+		li {
+			float: left;
+		}
+		.btn {
+			margin: 0;
+			padding: 5px 10px !important;
+			border: 0 !important;
+			border-radius: 0;
+			color: @gray;
+			background-color: transparent;
+			&.wysihtml5-command-active {
+				background-color: darken(@gray-lighter,10%);
+			}
+		}
+		.btn-group {
+			margin: 0 10px;
+		}
+	}
+	textarea {
+		border: 0;
+		width: 100%;
+		padding: 2%;
+	}
+	.modal-footer {
+		padding: 5px 15px;
+	}
+}
