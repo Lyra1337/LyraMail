@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer.Test", "TempMailServer.Test\Lyralabs.Net.TempMailServer.Test.csproj", "{DD0F8197-4696-4764-A25F-E2208D9BF503}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer.Web", "Lyralabs.Net.TempMailServer.Web\Lyralabs.Net.TempMailServer.Web.csproj", "{B9BC9D51-04BA-4F81-8100-C44B78AD1DC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DD0F8197-4696-4764-A25F-E2208D9BF503}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD0F8197-4696-4764-A25F-E2208D9BF503}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD0F8197-4696-4764-A25F-E2208D9BF503}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9BC9D51-04BA-4F81-8100-C44B78AD1DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9BC9D51-04BA-4F81-8100-C44B78AD1DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9BC9D51-04BA-4F81-8100-C44B78AD1DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9BC9D51-04BA-4F81-8100-C44B78AD1DC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
