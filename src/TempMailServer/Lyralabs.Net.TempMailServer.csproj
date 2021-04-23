@@ -1,129 +1,165 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1A57CA71-3E1D-4C7C-B35B-CC561A4C245D}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Lyralabs.Net.TempMailServer</RootNamespace>
-    <AssemblyName>Lyralabs.Net.TempMailServer</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Mail.cs" />
-    <Compile Include="MailBodyPart.cs" />
-    <Compile Include="MailReceivedEventArgs.cs" />
-    <Compile Include="MailServer.cs" />
-    <Compile Include="MailSession.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebServer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="web\css\images\ui-bg_flat_55_999999_40x100.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-bg_flat_75_aaaaaa_40x100.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-bg_glass_45_0078ae_1x400.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-bg_glass_55_f8da4e_1x400.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-bg_glass_75_79c9ec_1x400.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-bg_gloss-wave_45_e14f1c_500x100.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-bg_gloss-wave_50_6eac2c_500x100.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-bg_gloss-wave_75_2191c0_500x100.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-bg_inset-hard_100_fcfdfd_1x100.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-icons_0078ae_256x240.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-icons_056b93_256x240.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-icons_d8e7f3_256x240.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-icons_e0fdff_256x240.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-icons_f5e175_256x240.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-icons_f7a50d_256x240.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\images\ui-icons_fcd113_256x240.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\css\jquery-ui-1.8.16.custom.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\index.htm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\js\jquery-1.6.2.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web\js\jquery-ui-1.8.16.custom.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="web\css\images\ui-bg_flat_55_999999_40x100.png" />
+      <None Remove="web\css\images\ui-bg_flat_75_aaaaaa_40x100.png" />
+      <None Remove="web\css\images\ui-bg_glass_45_0078ae_1x400.png" />
+      <None Remove="web\css\images\ui-bg_glass_55_f8da4e_1x400.png" />
+      <None Remove="web\css\images\ui-bg_glass_75_79c9ec_1x400.png" />
+      <None Remove="web\css\images\ui-bg_gloss-wave_45_e14f1c_500x100.png" />
+      <None Remove="web\css\images\ui-bg_gloss-wave_50_6eac2c_500x100.png" />
+      <None Remove="web\css\images\ui-bg_gloss-wave_75_2191c0_500x100.png" />
+      <None Remove="web\css\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+      <None Remove="web\css\images\ui-icons_0078ae_256x240.png" />
+      <None Remove="web\css\images\ui-icons_056b93_256x240.png" />
+      <None Remove="web\css\images\ui-icons_d8e7f3_256x240.png" />
+      <None Remove="web\css\images\ui-icons_e0fdff_256x240.png" />
+      <None Remove="web\css\images\ui-icons_f5e175_256x240.png" />
+      <None Remove="web\css\images\ui-icons_f7a50d_256x240.png" />
+      <None Remove="web\css\images\ui-icons_fcd113_256x240.png" />
+      <None Remove="web\css\jquery-ui-1.8.16.custom.css" />
+      <None Remove="web\index.htm" />
+      <None Remove="web\js\jquery-1.6.2.min.js" />
+      <None Remove="web\js\jquery-ui-1.8.16.custom.min.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="web\css\images\ui-bg_flat_55_999999_40x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-bg_flat_75_aaaaaa_40x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-bg_glass_45_0078ae_1x400.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-bg_glass_55_f8da4e_1x400.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-bg_glass_75_79c9ec_1x400.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-bg_gloss-wave_45_e14f1c_500x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-bg_gloss-wave_50_6eac2c_500x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-bg_gloss-wave_75_2191c0_500x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-bg_inset-hard_100_fcfdfd_1x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-icons_0078ae_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-icons_056b93_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-icons_d8e7f3_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-icons_e0fdff_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-icons_f5e175_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-icons_f7a50d_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\images\ui-icons_fcd113_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\css\jquery-ui-1.8.16.custom.css">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\index.htm">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\js\jquery-1.6.2.min.js">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="web\js\jquery-ui-1.8.16.custom.min.js">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Properties\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+
+    <!--<ItemGroup>
+      <None Update="web\css\images\ui-bg_flat_55_999999_40x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-bg_flat_75_aaaaaa_40x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-bg_glass_45_0078ae_1x400.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-bg_glass_55_f8da4e_1x400.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-bg_glass_75_79c9ec_1x400.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-bg_gloss-wave_45_e14f1c_500x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-bg_gloss-wave_50_6eac2c_500x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-bg_gloss-wave_75_2191c0_500x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-bg_inset-hard_100_fcfdfd_1x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-icons_0078ae_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-icons_056b93_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-icons_d8e7f3_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-icons_e0fdff_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-icons_f5e175_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-icons_f7a50d_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\images\ui-icons_fcd113_256x240.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\css\jquery-ui-1.8.16.custom.css">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\index.htm">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\js\jquery-1.6.2.min.js">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="web\js\jquery-ui-1.8.16.custom.min.js">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>-->
+
 </Project>
