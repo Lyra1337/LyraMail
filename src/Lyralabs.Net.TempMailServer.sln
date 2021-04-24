@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer", "TempMailServer\Lyralabs.Net.TempMailServer.csproj", "{1A57CA71-3E1D-4C7C-B35B-CC561A4C245D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer.Test", "TempMailServer.Test\Lyralabs.Net.TempMailServer.Test.csproj", "{DD0F8197-4696-4764-A25F-E2208D9BF503}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer.Web", "Lyralabs.Net.TempMailServer.Web\Lyralabs.Net.TempMailServer.Web.csproj", "{B9BC9D51-04BA-4F81-8100-C44B78AD1DC4}"
@@ -25,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1A57CA71-3E1D-4C7C-B35B-CC561A4C245D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A57CA71-3E1D-4C7C-B35B-CC561A4C245D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A57CA71-3E1D-4C7C-B35B-CC561A4C245D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A57CA71-3E1D-4C7C-B35B-CC561A4C245D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD0F8197-4696-4764-A25F-E2208D9BF503}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD0F8197-4696-4764-A25F-E2208D9BF503}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD0F8197-4696-4764-A25F-E2208D9BF503}.Release|Any CPU.ActiveCfg = Release|Any CPU
