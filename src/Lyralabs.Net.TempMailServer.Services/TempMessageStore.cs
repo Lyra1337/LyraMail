@@ -1,4 +1,5 @@
-﻿using SmtpServer;
+﻿using AutoMapper;
+using SmtpServer;
 using SmtpServer.Protocol;
 using SmtpServer.Storage;
 using System;
@@ -12,8 +13,17 @@ using System.Threading.Tasks;
 
 namespace Lyralabs.Net.TempMailServer.Services
 {
-    class TempMessageStore : MessageStore
+    internal sealed class TempMessageStore : MessageStore
     {
+        private readonly MailboxService mailboxService;
+        private readonly IMapper mapper;
+
+        public TempMessageStore(MailboxService mailboxService, IMapper mapper)
+        {
+            this.mailboxService = mailboxService;
+            this.mapper = mapper;
+        }
+
         public override async Task<SmtpResponse> SaveAsync(
             ISessionContext context,
             IMessageTransaction transaction,
@@ -31,7 +41,10 @@ namespace Lyralabs.Net.TempMailServer.Services
             stream.Position = 0;
 
             var message = await MimeKit.MimeMessage.LoadAsync(stream, cancellationToken);
-            Console.WriteLine(message.TextBody);
+
+            var dto = this.mapper.Map<EmailDto>(message);
+
+            await this.mailboxService.StoreMail(dto);
 
             return SmtpResponse.Ok;
         }

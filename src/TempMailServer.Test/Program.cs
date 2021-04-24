@@ -9,7 +9,7 @@ namespace Lyralabs.Net.TempMailServer.Test
 {
     class Program
     {
-        static string[] addresses = new string[] { "lkjgnf@example.com", "loginblubb@example.com" };
+        static string[] addresses = new string[] { "steve@example.com", "jobs@example.com" };
 
         static void Main(string[] args)
         {
@@ -28,7 +28,7 @@ namespace Lyralabs.Net.TempMailServer.Test
 
         static MailMessage GenerateMessage(string receiver)
         {
-            MailAddress from = new MailAddress("bla@contoso.com", "Steve Ballmer");
+            MailAddress from = new MailAddress("steve@contoso.com", "Steve Ballmer");
             MailAddress to = new MailAddress(receiver, "Steve Jobs");
             MailMessage msg = new MailMessage(from, to);
             msg.Subject = "Hi, wie gehts?";

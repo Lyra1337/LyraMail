@@ -1,3 +1,4 @@
+using Lyralabs.Net.TempMailServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +27,13 @@ namespace Lyralabs.Net.TempMailServer.Web
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            services.AddSingleton<MailboxService>();
+            services.AddSingleton<MailServerService>();
+            services.AddSingleton<MapperService>();
+            services.AddSingleton(x => x.Resolve<MapperService>().Mapper);
+
+            services.AddHostedService(x => x.Resolve<MailServerService>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

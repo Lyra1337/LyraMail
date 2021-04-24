@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.113" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Lyralabs.Net.TempMailServer.Services\Lyralabs.Net.TempMailServer.Services.csproj" />
+  </ItemGroup>
+
 </Project>

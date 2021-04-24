@@ -1,7 +1,15 @@
 ﻿@page "/"
+@inject Services.MailboxService mailbox
 
-<h1>Hello, world!</h1>
+<h1>Mailbox</h1>
 
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+@if (mailbox != null)
+{
+    @foreach (var bla in mailbox.GetMails("jobs@example.com"))
+    {
+<pre>
+@bla.Message
+</pre>
+        <br />
+    }
+}
