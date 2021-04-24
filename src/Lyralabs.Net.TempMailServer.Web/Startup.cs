@@ -1,4 +1,3 @@
-using Lyralabs.Net.TempMailServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -33,6 +32,7 @@ namespace Lyralabs.Net.TempMailServer.Web
             services.AddSingleton<MailServerService>();
             services.AddSingleton<MapperService>();
             services.AddSingleton(x => x.Resolve<MapperService>().Mapper);
+            services.AddSingleton(x => x.Resolve<IConfiguration>().GetSection("MailServer").Get<MailServerConfiguration>());
 
             services.AddHostedService(x => x.Resolve<MailServerService>());
         }
