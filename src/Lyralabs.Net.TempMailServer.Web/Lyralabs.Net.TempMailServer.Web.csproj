@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Lyralabs.Net.TempMailServer.Services\Lyralabs.Net.TempMailServer.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
+
 </Project>
