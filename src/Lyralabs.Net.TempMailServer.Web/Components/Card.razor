@@ -1,0 +1,28 @@
+﻿@code{
+    [Parameter]
+    public RenderFragment Title { get; set; }
+
+    [Parameter]
+    public RenderFragment Body { get; set; }
+
+    [Parameter]
+    public RenderFragment Footer { get; set; }
+}
+
+<div class="card text-center">
+    @if (this.Title != null)
+    {
+        <div class="card-header">
+            @this.Title
+        </div>
+    }
+    <div class="card-body">
+        @this.Body
+    </div>
+    @if (this.Footer != null)
+    {
+        <div class="card-footer text-muted">
+            @this.Footer
+        </div>
+    }
+</div>
