@@ -7,9 +7,12 @@
 
     [Parameter]
     public RenderFragment Footer { get; set; }
+
+    [Parameter]
+    public string Class { get; set; }
 }
 
-<div class="card text-center">
+<div class="card text-center @this.Class">
     @if (this.Title != null)
     {
         <div class="card-header">

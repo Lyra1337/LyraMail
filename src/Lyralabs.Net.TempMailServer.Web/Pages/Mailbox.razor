@@ -11,7 +11,7 @@
 }
 
 <button @onclick="this.Refresh" role="button" class="btn btn-secondary">Refresh</button>
-<button @onclick="this.Refresh" role="button" class="btn btn-danger">New Address</button>
+<button @onclick="this.GetNewMailbox" role="button" class="btn btn-danger">New Address</button>
 <button @onclick="this.TestEmail" role="button" class="btn btn-primary">Test Email</button>
 
 <div class="row no-gutters">
@@ -46,7 +46,7 @@
                     @this.CurrentMail.Subject
                 </Title>
                 <Body>
-<pre>
+<pre class="text-break">
 @this.CurrentMail.Message
 </pre>
                 </Body>
