@@ -47,11 +47,19 @@ namespace Lyralabs.Net.TempMailServer
         {
             if (body is TextPart textPart)
             {
-                using var stream = new MemoryStream();
-                textPart.WriteTo(stream);
-                stream.Seek(0, SeekOrigin.Begin);
-                using var reader = new StreamReader(stream, textPart.ContentType.CharsetEncoding);
-                return reader.ReadToEnd();
+                switch (textPart.ContentType.MimeType.ToLower())
+                {
+                    case "text/plain":
+                        return textPart.Text;
+                    default:
+                        {
+                            using var stream = new MemoryStream();
+                            textPart.WriteTo(stream);
+                            stream.Seek(0, SeekOrigin.Begin);
+                            using var reader = new StreamReader(stream, textPart.ContentType.CharsetEncoding);
+                            return reader.ReadToEnd();
+                        }
+                }
             }
             else
             {
