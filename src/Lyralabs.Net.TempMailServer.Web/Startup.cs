@@ -34,6 +34,8 @@ namespace Lyralabs.Net.TempMailServer.Web
             services.AddSingleton(x => x.Resolve<MapperService>().Mapper);
             services.AddSingleton(x => x.Resolve<IConfiguration>().GetSection("MailServer").Get<MailServerConfiguration>());
 
+            services.AddScoped<UserState>();
+
             services.AddHostedService(x => x.Resolve<MailServerService>());
         }
 
