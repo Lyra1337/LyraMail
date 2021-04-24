@@ -13,6 +13,25 @@
         {
             "library": "font-awesome@5.15.3",
             "destination": "wwwroot/lib/fontawesome"
+        },
+        {
+            "library": "twitter-bootstrap@4.6.0",
+            "destination": "wwwroot/lib/bootstrap",
+            "files": [
+                "js/bootstrap.js",
+                "js/bootstrap.js.map",
+                "js/bootstrap.min.js",
+                "js/bootstrap.min.js.map"
+            ]
+        },
+        {
+            "library": "jquery@3.6.0",
+            "destination": "wwwroot/lib/jquery",
+            "files": [
+                "jquery.slim.js",
+                "jquery.slim.min.js",
+                "jquery.slim.min.map"
+            ]
         }
     ]
 }
