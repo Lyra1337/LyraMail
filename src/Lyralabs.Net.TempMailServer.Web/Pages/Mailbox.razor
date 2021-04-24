@@ -14,20 +14,43 @@
 <button @onclick="this.Refresh" role="button" class="btn btn-danger">New Address</button>
 <button @onclick="this.TestEmail" role="button" class="btn btn-primary">Test Email</button>
 
-@if (this.Mails != null)
-{
-    @foreach (var bla in this.Mails)
-    {
-        <Card>
-            <Title>
-                From: @bla.FromAddress
-            </Title>
-            <Body>
+<div class="row no-gutters">
+    <div class="col-sm-6 col-md-5 col-lg-4">
+        <div class="list-group">
+            @foreach (var mail in this.Mails)
+            {
+                <a href="javascript:void(0)"
+                   @onclick="() => this.ShowMail(mail)"
+                   class="list-group-item list-group-item-action flex-column align-items-start @(this.CurrentMail == mail ? "active" : "")">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">
+                            @mail.FromAddress
+                        </h5>
+                        <small>@mail.ReceivedDate.ToShortTimeString()</small>
+                    </div>
+                    <strong>
+                        @mail.Subject
+                    </strong>
+                    <p class="my-1">
+                        @mail.Message
+                    </p>
+                </a>
+            }
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-7 col-lg-8">
+        @if (this.CurrentMail != null)
+        {
+            <Card>
+                <Title>
+                    @this.CurrentMail.Subject
+                </Title>
+                <Body>
 <pre>
-@bla.Message
+@this.CurrentMail.Message
 </pre>
-            </Body>
-        </Card>
-        <br />
-    }
-}
+                </Body>
+            </Card>
+        }
+    </div>
+</div>

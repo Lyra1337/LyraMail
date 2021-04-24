@@ -13,7 +13,8 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
         [Inject]
         protected UserState UserState { get; set; }
 
-        protected List<EmailDto> Mails { get; private set; }
+        protected List<EmailDto> Mails { get; private set; } = new List<EmailDto>();
+        public EmailDto CurrentMail { get; private set; }
 
         protected override void OnInitialized()
         {
@@ -44,9 +45,14 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
             MailAddress to = new MailAddress(this.UserState.CurrentMailbox, "Steve Jobs");
             MailMessage msg = new MailMessage(from, to);
             msg.Subject = "Hi, wie gehts?";
-            msg.Body = "body blubb";
+            msg.Body = $"body blubb \r\n{System.Guid.NewGuid()}";
 
             client.Send(msg);
+        }
+
+        protected void ShowMail(EmailDto mail)
+        {
+            this.CurrentMail = mail;
         }
     }
 }

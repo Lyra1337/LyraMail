@@ -33,6 +33,7 @@ namespace Lyralabs.Net.TempMailServer
         private void MapMail(IMapperConfigurationExpression cfg)
         {
             cfg.CreateMap<MimeMessage, EmailDto>()
+                .ForMember(x => x.ReceivedDate, opt => opt.MapFrom(x => x.Date.LocalDateTime))
                 .ForMember(x => x.Message, opt => opt.MapFrom(x => this.ReadBody(x.Body)))
                 .ForMember(x => x.FromAddress, opt => opt.MapFrom(x => x.From.OfType<MailboxAddress>().Single().Address))
                 .ForMember(x => x.FromName, opt => opt.MapFrom(x => x.From.OfType<MailboxAddress>().Single().Name))
