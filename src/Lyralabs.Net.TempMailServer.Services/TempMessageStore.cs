@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using SmtpServer;
 using SmtpServer.Protocol;
 using SmtpServer.Storage;
@@ -17,11 +18,13 @@ namespace Lyralabs.Net.TempMailServer.Services
     {
         private readonly MailboxService mailboxService;
         private readonly IMapper mapper;
+        private readonly ILogger<TempMessageStore> logger;
 
-        public TempMessageStore(MailboxService mailboxService, IMapper mapper)
+        public TempMessageStore(MailboxService mailboxService, IMapper mapper, ILogger<TempMessageStore> logger)
         {
             this.mailboxService = mailboxService;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         public override async Task<SmtpResponse> SaveAsync(
@@ -41,6 +44,8 @@ namespace Lyralabs.Net.TempMailServer.Services
             stream.Position = 0;
 
             var message = await MimeKit.MimeMessage.LoadAsync(stream, cancellationToken);
+
+            this.logger.LogInformation($"received E-Mail from {String.Join(", ", message.From)}");
 
             var dto = this.mapper.Map<EmailDto>(message);
 

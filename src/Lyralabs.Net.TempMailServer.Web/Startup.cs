@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,8 @@ namespace Lyralabs.Net.TempMailServer.Web
             {
                 app.UseExceptionHandler("/Error");
             }
+
+            //app.UseSerilogRequestLogging();
 
             app.UseStaticFiles();
 
