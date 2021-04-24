@@ -10,18 +10,28 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
         [Inject]
         protected MailboxService MailboxService { get; set; }
 
+        [Inject]
+        protected UserState UserState { get; set; }
+
         protected List<EmailDto> Mails { get; private set; }
 
-        protected string mailbox = null;
-
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            this.mailbox = this.MailboxService.GenerateNewMailbox();
+            if (this.UserState.CurrentMailbox is null)
+            {
+                this.GetNewMailbox();
+            }
+        }
+
+        protected void GetNewMailbox()
+        {
+            this.UserState.CurrentMailbox= this.MailboxService.GenerateNewMailbox();
+            this.Refresh();
         }
 
         protected void Refresh()
         {
-            this.Mails = this.MailboxService.GetMails(this.mailbox);
+            this.Mails = this.MailboxService.GetMails(this.UserState.CurrentMailbox);
             this.StateHasChanged();
         }
 
@@ -31,7 +41,7 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
             client.Timeout = 1000;
 
             MailAddress from = new MailAddress("steve@contoso.com", "Steve Ballmer");
-            MailAddress to = new MailAddress(this.mailbox, "Steve Jobs");
+            MailAddress to = new MailAddress(this.UserState.CurrentMailbox, "Steve Jobs");
             MailMessage msg = new MailMessage(from, to);
             msg.Subject = "Hi, wie gehts?";
             msg.Body = "body blubb";

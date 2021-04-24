@@ -4,8 +4,14 @@
 <h1>Mailbox</h1>
 
 <span>your email address:</span>
-<input class="form-control" type="text" @bind-value="this.mailbox" />
+
+@if (this.UserState.CurrentMailbox != null)
+{
+    <input readonly class="form-control" type="text" @bind-value="this.UserState.CurrentMailbox" />
+}
+
 <button @onclick="this.Refresh" role="button" class="btn btn-secondary">Refresh</button>
+<button @onclick="this.Refresh" role="button" class="btn btn-danger">New Address</button>
 <button @onclick="this.TestEmail" role="button" class="btn btn-primary">Test Email</button>
 
 @if (this.Mails != null)
