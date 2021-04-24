@@ -7,9 +7,16 @@
 {
     @foreach (var bla in mailbox.GetMails("jobs@example.com"))
     {
+        <Card>
+            <Title>
+                From: @bla.FromAddress
+            </Title>
+            <Body>
 <pre>
 @bla.Message
 </pre>
+            </Body>
+        </Card>
         <br />
     }
 }
