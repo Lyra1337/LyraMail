@@ -1,22 +1,3 @@
 ﻿@page "/"
-@inject Services.MailboxService mailbox
 
-<h1>Mailbox</h1>
-
-@if (mailbox != null)
-{
-    @foreach (var bla in mailbox.GetMails("jobs@example.com"))
-    {
-        <Card>
-            <Title>
-                From: @bla.FromAddress
-            </Title>
-            <Body>
-<pre>
-@bla.Message
-</pre>
-            </Body>
-        </Card>
-        <br />
-    }
-}
+<h1>Temp Mail Server</h1>

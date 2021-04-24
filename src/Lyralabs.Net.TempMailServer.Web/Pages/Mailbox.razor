@@ -1,0 +1,27 @@
+﻿@page "/inbox"
+@inherits MailboxPageViewModel
+
+<h1>Mailbox</h1>
+
+<span>your email address:</span>
+<input class="form-control" type="text" @bind-value="this.mailbox" />
+<button @onclick="this.Refresh" role="button" class="btn btn-secondary">Refresh</button>
+<button @onclick="this.TestEmail" role="button" class="btn btn-primary">Test Email</button>
+
+@if (this.Mails != null)
+{
+    @foreach (var bla in this.Mails)
+    {
+        <Card>
+            <Title>
+                From: @bla.FromAddress
+            </Title>
+            <Body>
+<pre>
+@bla.Message
+</pre>
+            </Body>
+        </Card>
+        <br />
+    }
+}
