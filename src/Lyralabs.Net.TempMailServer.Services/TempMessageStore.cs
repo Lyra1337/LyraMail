@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Lyralabs.Net.TempMailServer.Services
+namespace Lyralabs.Net.TempMailServer
 {
     internal sealed class TempMessageStore : MessageStore
     {

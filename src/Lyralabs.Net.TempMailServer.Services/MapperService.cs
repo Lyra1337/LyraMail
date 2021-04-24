@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lyralabs.Net.TempMailServer.Services
+namespace Lyralabs.Net.TempMailServer
 {
     public sealed class MapperService
     {

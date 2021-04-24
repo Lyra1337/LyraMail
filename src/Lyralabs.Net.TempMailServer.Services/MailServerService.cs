@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Lyralabs.Net.TempMailServer.Services
+namespace Lyralabs.Net.TempMailServer
 {
     public class MailServerService : IHostedService
     {
