@@ -4,11 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Lyralabs.Net.TempMailServer.Services
+namespace Lyralabs.Net.TempMailServer
 {
     public class MailboxService
     {
         private readonly ConcurrentDictionary<string, List<EmailDto>> mails = new ConcurrentDictionary<string, List<EmailDto>>();
+        private readonly MailServerConfiguration mailServerConfiguration;
+
+        public MailboxService(MailServerConfiguration mailServerConfiguration)
+        {
+            this.mailServerConfiguration = mailServerConfiguration;
+        }
 
         public List<EmailDto> GetMails(string account)
         {
@@ -57,6 +63,24 @@ namespace Lyralabs.Net.TempMailServer.Services
             }
 
             return Task.CompletedTask;
+        }
+
+        public string GenerateNewMailbox()
+        {
+            string mailAddress;
+
+            do
+            {
+                mailAddress = String.Concat(
+                    Guid.NewGuid().ToString().Split('-').Last(),
+                    "@",
+                    this.mailServerConfiguration.Domain
+                );
+            } while (this.mails.ContainsKey(mailAddress) == true);
+
+            this.mails[mailAddress] = new List<EmailDto>();
+
+            return mailAddress;
         }
     }
 }
