@@ -364,3 +364,4 @@ FodyWeavers.xsd
 # custom
 
 wwwroot/lib/**
+/src/Lyralabs.Net.TempMailServer.Web/wwwroot/lib
