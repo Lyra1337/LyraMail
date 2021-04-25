@@ -32,9 +32,10 @@ namespace Lyralabs.Net.TempMailServer
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            var serviceProvider = new ServiceProvider();
-            serviceProvider.Add(this.messageStore);
-            this.smtpServer = new SmtpServer.SmtpServer(this.options, serviceProvider);
+            var mailServiceProvider = new ServiceProvider();
+            mailServiceProvider.Add(this.messageStore);
+            mailServiceProvider.Add(this.serviceProvider.Resolve<MailboxFilter>());
+            this.smtpServer = new SmtpServer.SmtpServer(this.options, mailServiceProvider);
             _ = this.smtpServer.StartAsync(CancellationToken.None);
         }
 
