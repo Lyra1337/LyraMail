@@ -9,7 +9,11 @@ namespace Lyralabs.Net.TempMailServer.Test
 {
     class Program
     {
-        static string[] addresses = new string[] { "steve@example.com", "jobs@example.com" };
+        static string[] addresses = new string[] { "steve@example.com", "jobs@example.com", "262427997691@tempmail.lyra.bz" };
+
+        //static string mailserver = "127.0.0.1";
+        static string mailserver = "116.203.154.142";
+        //static string mailserver = "tempmail.lyra.bz";
 
         static void Main(string[] args)
         {
@@ -17,8 +21,8 @@ namespace Lyralabs.Net.TempMailServer.Test
             {
                 foreach (string address in addresses)
                 {
-                    SmtpClient client = new SmtpClient("127.0.0.1");
-                    client.Timeout = 1000;
+                    SmtpClient client = new SmtpClient(mailserver);
+                    client.Timeout = 10000;
                     MailMessage msg = GenerateMessage(address);
                     client.Send(msg);
                     Console.WriteLine("msg sent.");

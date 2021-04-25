@@ -15,14 +15,15 @@ namespace Lyralabs.Net.TempMailServer
         private readonly ISmtpServerOptions options;
         private readonly TempMessageStore messageStore;
         private readonly IServiceProvider serviceProvider;
+        private readonly MailServerConfiguration mailServerConfiguration;
         private SmtpServer.SmtpServer smtpServer;
 
-        public MailServerService(IServiceProvider serviceProvider)
+        public MailServerService(IServiceProvider serviceProvider, MailServerConfiguration mailServerConfiguration)
         {
             this.serviceProvider = serviceProvider;
-
+            this.mailServerConfiguration = mailServerConfiguration;
             this.options = new SmtpServerOptionsBuilder()
-                .ServerName("127.0.0.1")
+                .ServerName(mailServerConfiguration.Domain)
                 .Port(25, 587)
                 .Build();
 
