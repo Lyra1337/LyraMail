@@ -30,6 +30,7 @@ namespace Lyralabs.Net.TempMailServer
 
             if (this.mailServerConfiguration.Domain.Equals(to.Host, StringComparison.InvariantCultureIgnoreCase) == true)
             {
+                this.logger.LogInformation($"accepting email from {from.AsAddress()} to {to.AsAddress()}");
                 return Task.FromResult(MailboxFilterResult.Yes);
             }
             else

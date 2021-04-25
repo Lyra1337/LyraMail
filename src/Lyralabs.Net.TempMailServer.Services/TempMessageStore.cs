@@ -33,25 +33,33 @@ namespace Lyralabs.Net.TempMailServer
             ReadOnlySequence<byte> buffer,
             CancellationToken cancellationToken)
         {
-            await using var stream = new MemoryStream();
-
-            var position = buffer.GetPosition(0);
-            while (buffer.TryGet(ref position, out var memory))
+            try
             {
-                await stream.WriteAsync(memory, cancellationToken);
+                await using var stream = new MemoryStream();
+
+                var position = buffer.GetPosition(0);
+                while (buffer.TryGet(ref position, out var memory))
+                {
+                    await stream.WriteAsync(memory, cancellationToken);
+                }
+
+                stream.Position = 0;
+
+                var message = await MimeKit.MimeMessage.LoadAsync(stream, cancellationToken);
+
+                this.logger.LogInformation($"storing E-Mail from {String.Join(", ", message.From)}");
+
+                var dto = this.mapper.Map<EmailDto>(message);
+
+                await this.mailboxService.StoreMail(dto);
+
+                return SmtpResponse.Ok;
             }
-
-            stream.Position = 0;
-
-            var message = await MimeKit.MimeMessage.LoadAsync(stream, cancellationToken);
-
-            this.logger.LogInformation($"received E-Mail from {String.Join(", ", message.From)}");
-
-            var dto = this.mapper.Map<EmailDto>(message);
-
-            await this.mailboxService.StoreMail(dto);
-
-            return SmtpResponse.Ok;
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "failed to store message");
+                return SmtpResponse.TransactionFailed;
+            }
         }
     }
 }
