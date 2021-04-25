@@ -24,7 +24,7 @@ namespace Lyralabs.Net.TempMailServer
             this.mailServerConfiguration = mailServerConfiguration;
             this.options = new SmtpServerOptionsBuilder()
                 .ServerName(mailServerConfiguration.Domain)
-                .Port(25, 587)
+                .Port(25, false)
                 .CommandWaitTimeout(TimeSpan.FromSeconds(30))
                 .Build();
 
