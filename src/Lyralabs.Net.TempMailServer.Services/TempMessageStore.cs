@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using MimeKit;
 using SmtpServer;
 using SmtpServer.Protocol;
 using SmtpServer.Storage;
@@ -45,7 +46,9 @@ namespace Lyralabs.Net.TempMailServer
 
                 stream.Position = 0;
 
-                var message = await MimeKit.MimeMessage.LoadAsync(stream, cancellationToken);
+                var messages = await this.ParseMessage(stream, cancellationToken);
+
+                var message = messages.First();
 
                 this.logger.LogInformation($"storing E-Mail from {String.Join(", ", message.From)}");
 
@@ -60,6 +63,25 @@ namespace Lyralabs.Net.TempMailServer
                 this.logger.LogError(ex, "failed to store message");
                 return SmtpResponse.TransactionFailed;
             }
+        }
+
+        private async Task<List<MimeMessage>> ParseMessage(MemoryStream stream, CancellationToken cancellationToken)
+        {
+            var parser = new MimeParser(stream);
+            var messages = new List<MimeMessage>();
+            this.logger.LogInformation("parsing messages...");
+
+            while (parser.IsEndOfStream == false)
+            {
+                var message = await parser.ParseMessageAsync(cancellationToken);
+                messages.Add(message);
+                this.logger.LogInformation($"parsed message of type {message.GetType().Name}");
+
+                this.logger.LogInformation($"TextBody: {message.TextBody}");
+                this.logger.LogInformation($"HtmlBody: {message.HtmlBody}");
+            }
+
+            return messages;
         }
     }
 }
