@@ -25,18 +25,20 @@ namespace Lyralabs.Net.TempMailServer
             this.options = new SmtpServerOptionsBuilder()
                 .ServerName(mailServerConfiguration.Domain)
                 .Port(25, 587)
+                .CommandWaitTimeout(TimeSpan.FromSeconds(30))
                 .Build();
 
             this.messageStore = this.serviceProvider.Resolve<TempMessageStore>();
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken cancellationToken)
         {
             var mailServiceProvider = new ServiceProvider();
             mailServiceProvider.Add(this.messageStore);
             mailServiceProvider.Add(this.serviceProvider.Resolve<MailboxFilter>());
             this.smtpServer = new SmtpServer.SmtpServer(this.options, mailServiceProvider);
             _ = this.smtpServer.StartAsync(CancellationToken.None);
+            return Task.CompletedTask;
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
