@@ -26,7 +26,7 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
 
         protected void GetNewMailbox()
         {
-            this.UserState.CurrentMailbox= this.MailboxService.GenerateNewMailbox();
+            this.UserState.CurrentMailbox = this.MailboxService.GenerateNewMailbox();
             this.Refresh();
         }
 
