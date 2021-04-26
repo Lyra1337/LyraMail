@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer.Test", "TempMailServer.Test\Lyralabs.Net.TempMailServer.Test.csproj", "{DD0F8197-4696-4764-A25F-E2208D9BF503}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.Net.TempMailServer.Test", "TempMailServer.Test\Lyralabs.Net.TempMailServer.Test.csproj", "{DD0F8197-4696-4764-A25F-E2208D9BF503}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer.Web", "Lyralabs.Net.TempMailServer.Web\Lyralabs.Net.TempMailServer.Web.csproj", "{B9BC9D51-04BA-4F81-8100-C44B78AD1DC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.Net.TempMailServer.Web", "Lyralabs.Net.TempMailServer.Web\Lyralabs.Net.TempMailServer.Web.csproj", "{B9BC9D51-04BA-4F81-8100-C44B78AD1DC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AC273A61-7E3D-46DC-973E-DF50815ABD4E}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,9 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer.Services", "Lyralabs.Net.TempMailServer.Services\Lyralabs.Net.TempMailServer.Services.csproj", "{83CAE464-0203-4FB0-9E4C-880FADB75D79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.Net.TempMailServer.Services", "Lyralabs.Net.TempMailServer.Services\Lyralabs.Net.TempMailServer.Services.csproj", "{83CAE464-0203-4FB0-9E4C-880FADB75D79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyralabs.Net.TempMailServer.DataTransferObjects", "Lyralabs.Net.TempMailServer.DataTransferObjects\Lyralabs.Net.TempMailServer.DataTransferObjects.csproj", "{23E82D6E-2767-47D3-952A-AB01D3C33857}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.Net.TempMailServer.DataTransferObjects", "Lyralabs.Net.TempMailServer.DataTransferObjects\Lyralabs.Net.TempMailServer.DataTransferObjects.csproj", "{23E82D6E-2767-47D3-952A-AB01D3C33857}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
