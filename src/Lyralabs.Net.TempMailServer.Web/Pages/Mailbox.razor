@@ -32,7 +32,7 @@
                         @mail.Subject
                     </strong>
                     <p class="my-1">
-                        @mail.Message
+                        @mail.BodyText
                     </p>
                 </a>
             }
@@ -46,9 +46,17 @@
                     @this.CurrentMail.Subject
                 </Title>
                 <Body>
+                    @if (String.IsNullOrWhiteSpace(this.CurrentMail.BodyHtml) == false)
+                    {
+                        <iframe src="/Api/HtmlContent/@(Uri.EscapeDataString(this.UserState.CurrentMailbox))/@(this.CurrentMail.Secret)"
+                                sandbox class="w-100" style="border: 0;"></iframe>
+                    }
+                    else
+                    {
 <pre class="text-break">
-@this.CurrentMail.Message
+@this.CurrentMail.BodyText
 </pre>
+                    }
                 </Body>
             </Card>
         }

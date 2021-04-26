@@ -33,6 +33,11 @@ namespace Lyralabs.Net.TempMailServer
             }
         }
 
+        public EmailDto GetMail(string account, Guid secret)
+        {
+            return this.mails[account].Single(x => x.Secret == secret);
+        }
+
         internal Task StoreMail(EmailDto mail)
         {
             if (mail is null)
