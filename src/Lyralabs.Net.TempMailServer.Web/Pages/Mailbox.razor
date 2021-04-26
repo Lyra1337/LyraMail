@@ -49,11 +49,12 @@
                     @if (String.IsNullOrWhiteSpace(this.CurrentMail.BodyHtml) == false)
                     {
                         <iframe src="/Api/HtmlContent/@(Uri.EscapeDataString(this.UserState.CurrentMailbox))/@(this.CurrentMail.Secret)"
-                                sandbox class="w-100" style="border: 0;"></iframe>
+                                style="border: 0; min-height: calc(100vh - 350px);"
+                                sandbox class="w-100"></iframe>
                     }
                     else
                     {
-<pre class="text-break">
+<pre class="text-break" style="min-height: calc(100vh - 350px);">
 @this.CurrentMail.BodyText
 </pre>
                     }
