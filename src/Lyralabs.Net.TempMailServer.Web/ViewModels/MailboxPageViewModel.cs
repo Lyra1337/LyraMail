@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
@@ -53,6 +54,18 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
         protected void ShowMail(EmailDto mail)
         {
             this.CurrentMail = mail;
+        }
+
+        protected string Truncate(string text, int maxLength)
+        {
+            if (text.Length <= maxLength)
+            {
+                return text;
+            }
+            else
+            {
+                return String.Concat(text.Substring(0, maxLength), "...");
+            }
         }
     }
 }

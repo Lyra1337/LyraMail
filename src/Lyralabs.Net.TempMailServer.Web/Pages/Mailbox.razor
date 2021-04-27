@@ -23,16 +23,16 @@
                    @onclick="() => this.ShowMail(mail)"
                    class="list-group-item list-group-item-action flex-column align-items-start @(this.CurrentMail == mail ? "active" : "")">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">
+                        <h5 class="mb-1 text-break">
                             @mail.FromAddress
                         </h5>
                         <small>@mail.ReceivedDate.ToShortTimeString()</small>
                     </div>
-                    <strong>
-                        @mail.Subject
+                    <strong class="text-break">
+                        @this.Truncate(mail.Subject, 50)
                     </strong>
-                    <p class="my-1">
-                        @mail.BodyText
+                    <p class="my-1 text-break">
+                        @this.Truncate(mail.BodyText, 200)
                     </p>
                 </a>
             }
@@ -43,14 +43,16 @@
         {
             <Card>
                 <Title>
-                    @this.CurrentMail.Subject
+                    <strong class="text-break">
+                        @this.CurrentMail.Subject
+                    </strong>
                 </Title>
                 <Body>
                     @if (String.IsNullOrWhiteSpace(this.CurrentMail.BodyHtml) == false)
                     {
                         <iframe src="/Api/HtmlContent/@(Uri.EscapeDataString(this.UserState.CurrentMailbox))/@(this.CurrentMail.Secret)"
                                 style="border: 0; min-height: calc(100vh - 350px);"
-                                sandbox class="w-100"></iframe>
+                                sandbox="allow-popups" class="w-100"></iframe>
                     }
                     else
                     {
