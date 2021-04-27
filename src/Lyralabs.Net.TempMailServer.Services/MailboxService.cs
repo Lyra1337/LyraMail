@@ -56,7 +56,7 @@ namespace Lyralabs.Net.TempMailServer
 
                 if (this.mails.TryGetValue(account, out var mailList) == true)
                 {
-                    mailList.Add(mail);
+                    mailList.Insert(0, mail);
                 }
                 else
                 {
