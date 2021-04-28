@@ -112,6 +112,11 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
 
         protected string Truncate(string text, int maxLength)
         {
+            if (String.IsNullOrEmpty(text) == true)
+            {
+                return text;
+            }
+
             if (text.Length <= maxLength)
             {
                 return text;
