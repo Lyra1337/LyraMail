@@ -115,7 +115,7 @@ namespace Lyralabs.Net.TempMailServer
             do
             {
                 mailAddress = String.Concat(
-                    Guid.NewGuid().ToString().Split('-').Last(),
+                    Guid.NewGuid().ToString().Split('-').First(),
                     "@",
                     this.mailServerConfiguration.Domain
                 );
