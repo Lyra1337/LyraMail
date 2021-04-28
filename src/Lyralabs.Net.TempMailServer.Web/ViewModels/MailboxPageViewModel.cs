@@ -24,8 +24,13 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
         protected List<EmailDto> Mails { get; private set; } = new List<EmailDto>();
         public EmailDto CurrentMail { get; private set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
+            if (firstRender == false)
+            {
+                return;
+            }
+
             if (this.UserState.Secret is null)
             {
                 this.UserState.Secret = await this.GetOrCreateUserSecret();
