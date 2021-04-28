@@ -57,6 +57,18 @@ namespace Lyralabs.Net.TempMailServer
             return decrypted;
         }
 
+        public string GetOrCreateMailbox(string privateKey)
+        {
+            var publicKey = this.cryptoService.GetPublicKey(privateKey);
+
+            var mailbox = this.mails.Values
+                .Where(x => x.PublicKey == publicKey)
+                .OrderByDescending(x => x.CreatedAt)
+                .FirstOrDefault();
+
+            return mailbox?.Address ?? this.GenerateNewMailbox(publicKey);
+        }
+
         internal Task StoreMail(EmailDto mail)
         {
             if (mail is null)
@@ -112,6 +124,7 @@ namespace Lyralabs.Net.TempMailServer
             this.mails[mailAddress] = new MailboxDto()
             {
                 Address = mailAddress,
+                CreatedAt = DateTime.Now,
                 PublicKey = publicKey
             };
 

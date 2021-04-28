@@ -12,6 +12,8 @@ namespace Lyralabs.Net.TempMailServer
 
         public string PublicKey { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+
         public List<EmailDto> Mails { get; set; } = new List<EmailDto>();
     }
 }

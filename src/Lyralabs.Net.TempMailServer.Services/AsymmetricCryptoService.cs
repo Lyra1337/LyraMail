@@ -6,6 +6,15 @@ namespace Lyralabs.Net.TempMailServer
 {
     public sealed class AsymmetricCryptoService
     {
+        public string GetPublicKey(string privateKey)
+        {
+            using var rsa = RSA.Create();
+            var privateKeyBytes = Convert.FromBase64String(privateKey);
+            var span = new ReadOnlySpan<byte>(privateKeyBytes);
+            rsa.ImportRSAPrivateKey(span, out _);
+            return Convert.ToBase64String(rsa.ExportRSAPublicKey());
+        }
+
         public UserSecret GenerateUserSecret()
         {
             using var rsa = RSA.Create();

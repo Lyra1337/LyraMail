@@ -38,7 +38,7 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
 
             if (this.UserState.CurrentMailbox is null)
             {
-                this.GetNewMailbox();
+                this.GetMailbox();
             }
         }
 
@@ -58,9 +58,17 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
             }
         }
 
-        protected void GetNewMailbox()
+        protected void GetMailbox(bool forceNew = false)
         {
-            this.UserState.CurrentMailbox = this.MailboxService.GenerateNewMailbox(this.UserState.Secret.Value.PublicKey);
+            if (forceNew == true)
+            {
+                this.UserState.CurrentMailbox = this.MailboxService.GenerateNewMailbox(this.UserState.Secret.Value.PublicKey);
+            }
+            else
+            {
+                this.UserState.CurrentMailbox = this.MailboxService.GetOrCreateMailbox(this.UserState.Secret.Value.PrivateKey);
+            }
+
             this.Refresh();
         }
 
