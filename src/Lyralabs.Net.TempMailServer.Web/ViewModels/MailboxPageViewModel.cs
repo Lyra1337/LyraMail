@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Lyralabs.Net.TempMailServer.Web.ViewModels
 {
-    public class MailboxPageViewModel : ComponentBase
+    public class MailboxPageViewModel : ComponentBase, IDisposable
     {
         [Inject]
         protected AsymmetricCryptoService CryptoService { get; set; }
@@ -69,7 +69,14 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
                 this.UserState.CurrentMailbox = this.MailboxService.GetOrCreateMailbox(this.UserState.Secret.Value.PrivateKey);
             }
 
+            this.MailboxService.RegisterForNewMails(this.UserState.CurrentMailbox, this.OnNewMailReceived);
+
             this.Refresh();
+        }
+
+        private void OnNewMailReceived(EmailDto mail)
+        {
+            this.InvokeAsync(() => this.Refresh()); // TODO: use mail from event
         }
 
         protected void Refresh()
@@ -107,6 +114,11 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
             {
                 return String.Concat(text.Substring(0, maxLength), "...");
             }
+        }
+
+        public void Dispose()
+        {
+            this.MailboxService.UnregisterForNewMails(this.UserState.CurrentMailbox);
         }
     }
 }

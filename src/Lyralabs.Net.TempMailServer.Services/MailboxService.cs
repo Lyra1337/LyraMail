@@ -11,6 +11,7 @@ namespace Lyralabs.Net.TempMailServer
     public class MailboxService
     {
         private readonly ConcurrentDictionary<string, MailboxDto> mails = new ConcurrentDictionary<string, MailboxDto>();
+        private readonly ConcurrentDictionary<string, Action<EmailDto>> mailNotifications = new ConcurrentDictionary<string, Action<EmailDto>>();
         private readonly MailServerConfiguration mailServerConfiguration;
         private readonly AsymmetricCryptoService cryptoService;
         private readonly EmailCryptoService emailCryptoService;
@@ -57,6 +58,22 @@ namespace Lyralabs.Net.TempMailServer
             return decrypted;
         }
 
+        public void RegisterForNewMails(string address, Action<EmailDto> handler)
+        {
+            // TODO: Add Multi Tab support
+            this.mailNotifications[address.ToLower()] = handler;
+        }
+
+        public void UnregisterForNewMails(string address)
+        {
+            address = address.ToLower();
+
+            if (this.mailNotifications.ContainsKey(address) == true)
+            {
+                this.mailNotifications.Remove(address, out _);
+            }
+        }
+
         public string GetOrCreateMailbox(string privateKey)
         {
             var publicKey = this.cryptoService.GetPublicKey(privateKey);
@@ -94,7 +111,7 @@ namespace Lyralabs.Net.TempMailServer
                 else
                 {
                     this.logger.LogInformation($"received mail with no corresponding mailbox. From={mail.FromAddress}; To={toAddress.Address}");
-                    
+
                     this.mails[account] = new MailboxDto()
                     {
                         Mails = new List<EmailDto>()
@@ -102,6 +119,11 @@ namespace Lyralabs.Net.TempMailServer
                             mail
                         }
                     };
+                }
+
+                if (this.mailNotifications.ContainsKey(account.ToLower()) == true)
+                {
+                    this.mailNotifications[account.ToLower()](mail);
                 }
             }
 
