@@ -5,11 +5,11 @@ namespace Lyralabs.Net.TempMailServer.Test
 {
     internal class Program
     {
-        private static readonly string[] addresses = new string[] { "steve@example.com", "jobs@example.com", "767723dba2a2@tempmail.lyra.bz" };
+        private static readonly string[] addresses = new string[] { "steve@example.com", "jobs@example.com", "c4ec9164178b@lyramail.de" };
 
         //static readonly string mailserver = "127.0.0.1";
         //static readonly string mailserver = "116.203.154.142";
-        private static readonly string mailserver = "tempmail.lyra.bz";
+        private static readonly string mailserver = "lyramail.de";
 
         private static void Main(string[] args)
         {
@@ -18,8 +18,15 @@ namespace Lyralabs.Net.TempMailServer.Test
                 SmtpClient client = new SmtpClient(mailserver);
                 client.Timeout = 10000;
                 MailMessage msg = GenerateMessage(address);
-                client.Send(msg);
-                Console.WriteLine("msg sent.");
+                try
+                {
+                    client.Send(msg);
+                    Console.WriteLine("msg sent.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
             }
         }
 
