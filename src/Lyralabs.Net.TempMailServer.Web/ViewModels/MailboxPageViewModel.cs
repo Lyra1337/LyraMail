@@ -124,7 +124,10 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
 
         public void Dispose()
         {
-            this.MailboxService.UnregisterForNewMails(this.UserState.CurrentMailbox);
+            if (this.UserState.CurrentMailbox is not null)
+            {
+                this.MailboxService.UnregisterForNewMails(this.UserState.CurrentMailbox);
+            }
         }
     }
 }
