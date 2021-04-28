@@ -30,6 +30,8 @@ namespace Lyralabs.Net.TempMailServer
 
         public string Encrypt(string text, string publicKey)
         {
+            return text;
+
             if (String.IsNullOrEmpty(text) == true)
             {
                 return text;
@@ -45,6 +47,8 @@ namespace Lyralabs.Net.TempMailServer
 
         public string Decrypt(string text, string privateKey)
         {
+            return text;
+
             if (String.IsNullOrEmpty(text) == true)
             {
                 return text;
