@@ -3,20 +3,32 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 namespace Lyralabs.Net.TempMailServer
 {
     public class MailboxService
     {
-        private readonly ConcurrentDictionary<string, List<EmailDto>> mails = new ConcurrentDictionary<string, List<EmailDto>>();
+        private readonly ConcurrentDictionary<string, MailboxDto> mails = new ConcurrentDictionary<string, MailboxDto>();
         private readonly MailServerConfiguration mailServerConfiguration;
+        private readonly AsymmetricCryptoService cryptoService;
+        private readonly EmailCryptoService emailCryptoService;
+        private readonly ILogger<MailboxService> logger;
 
-        public MailboxService(MailServerConfiguration mailServerConfiguration)
+        public MailboxService(
+            MailServerConfiguration mailServerConfiguration,
+            AsymmetricCryptoService cryptoService,
+            EmailCryptoService emailCryptoService,
+            ILogger<MailboxService> logger)
         {
             this.mailServerConfiguration = mailServerConfiguration;
+            this.cryptoService = cryptoService;
+            this.emailCryptoService = emailCryptoService;
+            this.logger = logger;
         }
 
-        public List<EmailDto> GetMails(string account)
+        public List<EmailDto> GetMails(string account, string privateKey)
         {
             if (String.IsNullOrWhiteSpace(account))
             {
@@ -25,7 +37,9 @@ namespace Lyralabs.Net.TempMailServer
 
             if (this.mails.ContainsKey(account) == true)
             {
-                return this.mails[account];
+                return this.mails[account].Mails
+                    .Select(x => this.emailCryptoService.Decrypt(x, privateKey))
+                    .ToList();
             }
             else
             {
@@ -33,9 +47,14 @@ namespace Lyralabs.Net.TempMailServer
             }
         }
 
-        public EmailDto GetMail(string account, Guid secret)
+        public EmailDto GetMail(string account, Guid secret, string privateKey)
         {
-            return this.mails[account].Single(x => x.Secret == secret);
+            var mailbox = this.mails[account];
+
+            var mail = mailbox.Mails.Single(x => x.Secret == secret);
+            var decrypted = this.emailCryptoService.Decrypt(mail, privateKey);
+
+            return decrypted;
         }
 
         internal Task StoreMail(EmailDto mail)
@@ -54,15 +73,22 @@ namespace Lyralabs.Net.TempMailServer
             {
                 var account = toAddress.Address;
 
-                if (this.mails.TryGetValue(account, out var mailList) == true)
+                if (this.mails.TryGetValue(account, out var mailbox) == true)
                 {
-                    mailList.Insert(0, mail);
+                    var encryptedMail = this.emailCryptoService.Encrypt(mail, mailbox.PublicKey);
+
+                    mailbox.Mails.Insert(0, encryptedMail);
                 }
                 else
                 {
-                    this.mails[account] = new List<EmailDto>()
+                    this.logger.LogInformation($"received mail with no corresponding mailbox. From={mail.FromAddress}; To={toAddress.Address}");
+                    
+                    this.mails[account] = new MailboxDto()
                     {
-                        mail
+                        Mails = new List<EmailDto>()
+                        {
+                            mail
+                        }
                     };
                 }
             }
@@ -70,7 +96,7 @@ namespace Lyralabs.Net.TempMailServer
             return Task.CompletedTask;
         }
 
-        public string GenerateNewMailbox()
+        public string GenerateNewMailbox(string publicKey)
         {
             string mailAddress;
 
@@ -83,7 +109,11 @@ namespace Lyralabs.Net.TempMailServer
                 );
             } while (this.mails.ContainsKey(mailAddress) == true);
 
-            this.mails[mailAddress] = new List<EmailDto>();
+            this.mails[mailAddress] = new MailboxDto()
+            {
+                Address = mailAddress,
+                PublicKey = publicKey
+            };
 
             return mailAddress;
         }

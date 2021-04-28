@@ -33,6 +33,9 @@ namespace Lyralabs.Net.TempMailServer.Web
 
             services.AddScoped<UserState>();
 
+            services.AddTransient<EmailCryptoService>();
+            services.AddTransient<AsymmetricCryptoService>();
+
             services.AddHostedService(x => x.Resolve<MailServerService>());
         }
 

@@ -8,5 +8,6 @@ namespace Lyralabs.Net.TempMailServer.Web
     public class UserState
     {
         public string CurrentMailbox { get; set; }
+        public UserSecret? Secret { get; set; }
     }
 }

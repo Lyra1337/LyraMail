@@ -34,8 +34,8 @@ namespace Lyralabs.Net.TempMailServer
                 .ForMember(x => x.FromAddress, opt => opt.MapFrom(x => x.From.OfType<MailboxAddress>().Single().Address))
                 .ForMember(x => x.FromName, opt => opt.MapFrom(x => x.From.OfType<MailboxAddress>().Single().Name))
                 .ForMember(x => x.To, opt => opt.MapFrom(x => x.To.OfType<MailboxAddress>()));
-            
-            cfg.CreateMap<MailboxAddress, MailboxDto>();
+
+            cfg.CreateMap<MailboxAddress, MailboxAddressDto>();
         }
     }
 }

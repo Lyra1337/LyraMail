@@ -13,9 +13,9 @@ namespace Lyralabs.Net.TempMailServer.Web.Controllers
         }
 
         [HttpGet, Route("/Api/HtmlContent/{account}/{secret}")]
-        public IActionResult HtmlContent([FromRoute] string account, [FromRoute] Guid secret)
+        public IActionResult HtmlContent([FromRoute] string account, [FromRoute] Guid secret, [FromQuery] string privateKey)
         {
-            var mail = this.mailboxService.GetMail(account, secret);
+            var mail = this.mailboxService.GetMail(account, secret, privateKey);
 
             return this.Content(mail.BodyHtml, "text/html");
         }

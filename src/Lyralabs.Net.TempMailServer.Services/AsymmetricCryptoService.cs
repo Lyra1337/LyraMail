@@ -1,0 +1,52 @@
+﻿using System;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace Lyralabs.Net.TempMailServer
+{
+    public sealed class AsymmetricCryptoService
+    {
+        public UserSecret GenerateUserSecret()
+        {
+            using var rsa = RSA.Create();
+            var privateKey = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
+            var publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
+
+            return new UserSecret()
+            {
+                PrivateKey = privateKey,
+                PublicKey = publicKey
+            };
+        }
+
+        public string Encrypt(string text, string publicKey)
+        {
+            if (String.IsNullOrEmpty(text) == true)
+            {
+                return text;
+            }
+
+            using var rsa = RSA.Create();
+            var memory = new ReadOnlySpan<byte>(Convert.FromBase64String(publicKey));
+            rsa.ImportRSAPublicKey(memory, out _);
+            var data = Encoding.UTF8.GetBytes(text);
+            var encrypted = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
+            return Convert.ToBase64String(encrypted);
+        }
+
+        public string Decrypt(string text, string privateKey)
+        {
+            if (String.IsNullOrEmpty(text) == true)
+            {
+                return text;
+            }
+
+            using var rsa = RSA.Create();
+            var memory = new ReadOnlySpan<byte>(Convert.FromBase64String(privateKey));
+            rsa.ImportRSAPrivateKey(memory, out _);
+            var data = Convert.FromBase64String(text);
+            var decrypted = rsa.Decrypt(data, RSAEncryptionPadding.Pkcs1);
+            return Encoding.UTF8.GetString(decrypted);
+        }
+    }
+}
