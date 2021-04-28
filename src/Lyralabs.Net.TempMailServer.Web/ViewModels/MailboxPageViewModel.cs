@@ -40,6 +40,12 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
             {
                 this.GetMailbox();
             }
+            else
+            {
+                this.Refresh();
+            }
+
+            this.MailboxService.RegisterForNewMails(this.UserState.CurrentMailbox, this.OnNewMailReceived);
         }
 
         private async Task<UserSecret> GetOrCreateUserSecret()
@@ -62,14 +68,14 @@ namespace Lyralabs.Net.TempMailServer.Web.ViewModels
         {
             if (forceNew == true)
             {
+                this.MailboxService.UnregisterForNewMails(this.UserState.CurrentMailbox);
                 this.UserState.CurrentMailbox = this.MailboxService.GenerateNewMailbox(this.UserState.Secret.Value.PublicKey);
+                this.MailboxService.RegisterForNewMails(this.UserState.CurrentMailbox, this.OnNewMailReceived);
             }
             else
             {
                 this.UserState.CurrentMailbox = this.MailboxService.GetOrCreateMailbox(this.UserState.Secret.Value.PrivateKey);
             }
-
-            this.MailboxService.RegisterForNewMails(this.UserState.CurrentMailbox, this.OnNewMailReceived);
 
             this.Refresh();
         }
