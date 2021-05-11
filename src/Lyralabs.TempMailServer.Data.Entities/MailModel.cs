@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Lyralabs.TempMailServer
+namespace Lyralabs.TempMailServer.Data.Entities
 {
-    public class EmailDto
+    public class MailModel : ModelBase
     {
         public Guid Secret { get; } = Guid.NewGuid();
         public string Subject { get; set; }
         public string FromAddress { get; set; }
         public string FromName { get; set; }
-        public List<MailboxAddressDto> To { get; set; }
         public string BodyHtml { get; set; }
         public string BodyText { get; set; }
         public DateTime ReceivedDate { get; set; }
 
-        public EmailDto Clone() => (EmailDto)this.MemberwiseClone();
+        public int MailboxId { get; set; }
+
+        [ForeignKey(nameof(MailboxId))]
+        public MailboxModel Mailbox { get; set; }
     }
 }
