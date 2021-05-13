@@ -1,45 +1,55 @@
 using Blazored.LocalStorage;
+using Lyralabs.TempMailServer.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Lyralabs.TempMailServer.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public Startup(IConfiguration configuration)
+        {
+            this.Configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
             services.AddBlazoredLocalStorage();
-
-            services.AddSingleton<MailboxService>();
-            services.AddSingleton<MailServerService>();
-            services.AddSingleton<MapperService>();
-            services.AddSingleton(x => x.Resolve<MapperService>().Mapper);
-            services.AddSingleton(x => x.Resolve<IConfiguration>().GetSection("MailServer").Get<MailServerConfiguration>());
+            services.AddSingleton<IMessenger>(x => WeakReferenceMessenger.Default);
 
             services.AddScoped<UserState>();
+
+            services.AddSingleton(x => x.Resolve<IConfiguration>().GetSection("MailServer").Get<MailServerConfiguration>());
+            services.AddSingleton<MailServerService>();
+            services.AddHostedService(x => x.Resolve<MailServerService>());
+
+            services.AddSingleton<MapperService>();
+            services.AddSingleton(x => x.Resolve<MapperService>().Mapper);
+
+            services.AddSingleton<MailboxService>();
 
             services.AddTransient<EmailCryptoService>();
             services.AddTransient<AsymmetricCryptoService>();
 
-            services.AddHostedService(x => x.Resolve<MailServerService>());
+            services.AddTransient<MailRepository>();
+
+            services.AddDbContext<DatabaseContext>(
+                optionsAction: options => options.UseSqlite(this.Configuration.GetConnectionString(nameof(DatabaseContext))),
+                contextLifetime: ServiceLifetime.Transient,
+                optionsLifetime: ServiceLifetime.Singleton
+            );
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -51,8 +61,6 @@ namespace Lyralabs.TempMailServer.Web
                 app.UseExceptionHandler("/Error");
             }
 
-            //app.UseSerilogRequestLogging();
-
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -63,6 +71,8 @@ namespace Lyralabs.TempMailServer.Web
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            app.MigrateDatabase<DatabaseContext>();
         }
     }
 }

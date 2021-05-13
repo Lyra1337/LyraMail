@@ -10,11 +10,6 @@ namespace Lyralabs.TempMailServer.ServiceConfiguration
     {
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DatabaseContext>(
-                optionsAction: options => options.UseSqlite(configuration.GetConnectionString(nameof(DatabaseContext))),
-                contextLifetime: ServiceLifetime.Transient,
-                optionsLifetime: ServiceLifetime.Singleton
-            );
         }
     }
 }

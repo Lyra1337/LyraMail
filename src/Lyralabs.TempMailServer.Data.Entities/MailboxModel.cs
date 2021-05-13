@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Lyralabs.TempMailServer.Data.Entities
+namespace Lyralabs.TempMailServer.Data
 {
     public class MailboxModel : ModelBase
     {

@@ -1,5 +1,4 @@
 ﻿using System;
-using Lyralabs.TempMailServer.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lyralabs.TempMailServer.Data.Context

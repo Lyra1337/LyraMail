@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lyralabs.TempMailServer.Web.Controllers
@@ -13,9 +14,12 @@ namespace Lyralabs.TempMailServer.Web.Controllers
         }
 
         [HttpGet, Route("/Api/HtmlContent/{account}/{secret}")]
-        public IActionResult HtmlContent([FromRoute] string account, [FromRoute] Guid secret, [FromQuery] string privateKey)
+        public async Task<IActionResult> HtmlContent(
+            [FromRoute] string account,
+            [FromRoute] Guid secret,
+            [FromQuery] string privateKey)
         {
-            var mail = this.mailboxService.GetMail(account, secret, privateKey);
+            var mail = await this.mailboxService.GetDecryptedMail(account, secret, privateKey);
 
             return this.Content(mail.BodyHtml, "text/html");
         }

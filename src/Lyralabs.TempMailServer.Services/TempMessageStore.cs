@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Lyralabs.TempMailServer.Data;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using SmtpServer;
@@ -51,9 +52,9 @@ namespace Lyralabs.TempMailServer
 
                 this.logger.LogInformation($"storing E-Mail from {String.Join(", ", message.From)}");
 
-                var dto = this.mapper.Map<EmailDto>(message);
+                var dto = this.mapper.Map<MailModel>(message);
 
-                await this.mailboxService.StoreMail(dto);
+                await this.mailboxService.StoreMail(dto, message.To);
 
                 return SmtpResponse.Ok;
             }

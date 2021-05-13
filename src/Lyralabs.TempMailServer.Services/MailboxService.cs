@@ -4,61 +4,69 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Lyralabs.TempMailServer.Data;
 using Microsoft.Extensions.Logging;
+using MimeKit;
 
 namespace Lyralabs.TempMailServer
 {
     public class MailboxService
     {
-        private readonly ConcurrentDictionary<string, MailboxDto> mails = new ConcurrentDictionary<string, MailboxDto>();
-        private readonly ConcurrentDictionary<string, Action<EmailDto>> mailNotifications = new ConcurrentDictionary<string, Action<EmailDto>>();
+        private readonly ConcurrentDictionary<string, Action<MailModel>> mailNotifications = new ConcurrentDictionary<string, Action<MailModel>>();
         private readonly MailServerConfiguration mailServerConfiguration;
-        private readonly AsymmetricCryptoService cryptoService;
+        private readonly AsymmetricCryptoService asymmetricCryptoService;
         private readonly EmailCryptoService emailCryptoService;
+        private readonly MailRepository mailRepository;
         private readonly ILogger<MailboxService> logger;
 
         public MailboxService(
             MailServerConfiguration mailServerConfiguration,
-            AsymmetricCryptoService cryptoService,
+            AsymmetricCryptoService asymmetricCryptoService,
             EmailCryptoService emailCryptoService,
+            MailRepository mailRepository,
             ILogger<MailboxService> logger)
         {
             this.mailServerConfiguration = mailServerConfiguration;
-            this.cryptoService = cryptoService;
+            this.asymmetricCryptoService = asymmetricCryptoService;
             this.emailCryptoService = emailCryptoService;
+            this.mailRepository = mailRepository;
             this.logger = logger;
         }
 
-        public List<EmailDto> GetMails(string account, string privateKey)
+        public async Task<List<MailModel>> GetDecryptedMailsAsync(string address, string privateKey)
         {
-            if (String.IsNullOrWhiteSpace(account))
+            if (String.IsNullOrWhiteSpace(address))
             {
-                throw new ArgumentException($"'{nameof(account)}' cannot be null or whitespace.", nameof(account));
+                throw new ArgumentException($"'{nameof(address)}' cannot be null or whitespace.", nameof(address));
             }
 
-            if (this.mails.ContainsKey(account) == true)
+            var mailbox = await this.mailRepository.GetMailbox(address, loadMails: true);
+
+            if (mailbox is null)
             {
-                return this.mails[account].Mails
-                    .Select(x => this.emailCryptoService.Decrypt(x, privateKey))
-                    .ToList();
+                return new List<MailModel>();
             }
-            else
-            {
-                return new List<EmailDto>();
-            }
+
+            return mailbox.Mails
+                .Select(x => this.emailCryptoService.Decrypt(x, privateKey))
+                .ToList();
         }
 
-        public EmailDto GetMail(string account, Guid secret, string privateKey)
+        public async Task<MailModel> GetDecryptedMail(string account, Guid secret, string privateKey)
         {
-            var mailbox = this.mails[account];
+            var mail = await this.mailRepository.GetMailBySecret(account, secret);
 
-            var mail = mailbox.Mails.Single(x => x.Secret == secret);
+            if (mail is null)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
             var decrypted = this.emailCryptoService.Decrypt(mail, privateKey);
 
             return decrypted;
         }
 
-        public void RegisterForNewMails(string address, Action<EmailDto> handler)
+        public void RegisterForNewMails(string address, Action<MailModel> handler)
         {
             // TODO: Add Multi Tab support
             this.mailNotifications[address.ToLower()] = handler;
@@ -74,63 +82,60 @@ namespace Lyralabs.TempMailServer
             }
         }
 
-        public string GetOrCreateMailbox(string privateKey)
+        public async Task<string> GetOrCreateMailboxAsync(string privateKey, string password)
         {
-            var publicKey = this.cryptoService.GetPublicKey(privateKey);
+            var publicKey = this.asymmetricCryptoService.GetPublicKey(privateKey);
 
-            var mailbox = this.mails.Values
-                .Where(x => x.PublicKey == publicKey)
-                .OrderByDescending(x => x.CreatedAt)
-                .FirstOrDefault();
+            var mailBox = await this.mailRepository.GetMailboxByPublicKey(publicKey, password);
 
-            return mailbox?.Address ?? this.GenerateNewMailbox(publicKey);
+            if (mailBox is null)
+            {
+                return await this.GenerateNewMailbox(publicKey, password);
+            }
+            else
+            {
+                return mailBox.Address;
+            }
         }
 
-        internal Task StoreMail(EmailDto mail)
+        internal async Task StoreMail(MailModel mail, InternetAddressList to)
         {
             if (mail is null)
             {
                 throw new ArgumentNullException(nameof(mail));
             }
 
-            if (mail.To?.Any() != true)
+            if (to?.Any() != true)
             {
-                throw new ArgumentException($"{nameof(mail)}.{nameof(mail.To)} cannot be empty.");
+                throw new ArgumentException($"{nameof(mail)}.{nameof(to)} cannot be empty.");
             }
 
-            foreach (var toAddress in mail.To)
-            {
-                var account = toAddress.Address;
+            List<MailboxModel> mailboxes = await this.mailRepository.GetMailboxes(to.OfType<MailboxAddress>().Select(x => x.Address).ToList());
 
-                if (this.mails.TryGetValue(account, out var mailbox) == true)
+            foreach (var recipient in to.OfType<MailboxAddress>().Select(x => x.Address))
+            {
+                var mailbox = mailboxes.SingleOrDefault(x => x.Address == recipient);
+
+                if (mailbox != null)
                 {
                     var encryptedMail = this.emailCryptoService.Encrypt(mail, mailbox.PublicKey);
 
-                    mailbox.Mails.Insert(0, encryptedMail);
+                    encryptedMail.MailboxId = mailbox.Id;
+                    await this.mailRepository.Insert(encryptedMail);
                 }
                 else
                 {
-                    this.logger.LogInformation($"received mail with no corresponding mailbox. From={mail.FromAddress}; To={toAddress.Address}");
-
-                    this.mails[account] = new MailboxDto()
-                    {
-                        Mails = new List<EmailDto>()
-                        {
-                            mail
-                        }
-                    };
+                    this.logger.LogInformation($"disposing received mail with no corresponding mailbox. From={mail.FromAddress}; To={recipient}");
                 }
 
-                if (this.mailNotifications.ContainsKey(account.ToLower()) == true)
+                if (this.mailNotifications.ContainsKey(recipient.ToLower()) == true)
                 {
-                    this.mailNotifications[account.ToLower()](mail);
+                    this.mailNotifications[recipient.ToLower()](mail);
                 }
             }
-
-            return Task.CompletedTask;
         }
 
-        public string GenerateNewMailbox(string publicKey)
+        public async Task<string> GenerateNewMailbox(string publicKey, string password)
         {
             string mailAddress;
 
@@ -141,14 +146,9 @@ namespace Lyralabs.TempMailServer
                     "@",
                     this.mailServerConfiguration.Domain
                 );
-            } while (this.mails.ContainsKey(mailAddress) == true);
+            } while (await this.mailRepository.ExistsMailbox(mailAddress) == true);
 
-            this.mails[mailAddress] = new MailboxDto()
-            {
-                Address = mailAddress,
-                CreatedAt = DateTime.Now,
-                PublicKey = publicKey
-            };
+            await this.mailRepository.CreateMailbox(mailAddress, publicKey, password);
 
             return mailAddress;
         }

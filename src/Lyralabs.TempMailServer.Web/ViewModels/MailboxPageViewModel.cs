@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using Lyralabs.TempMailServer.Data;
 using Microsoft.AspNetCore.Components;
 
 namespace Lyralabs.TempMailServer.Web.ViewModels
@@ -21,8 +22,8 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
         [Inject]
         protected ILocalStorageService LocalStorage { get; set; }
 
-        protected List<EmailDto> Mails { get; private set; } = new List<EmailDto>();
-        public EmailDto CurrentMail { get; private set; }
+        protected List<MailModel> Mails { get; private set; } = new List<MailModel>();
+        public MailModel CurrentMail { get; private set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -64,30 +65,32 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
             }
         }
 
-        protected void GetMailbox(bool forceNew = false)
+        protected async Task GetMailbox(bool forceNew = false)
         {
+            var userSecret = this.UserState.Secret.Value;
+
             if (forceNew == true)
             {
                 this.MailboxService.UnregisterForNewMails(this.UserState.CurrentMailbox);
-                this.UserState.CurrentMailbox = this.MailboxService.GenerateNewMailbox(this.UserState.Secret.Value.PublicKey);
+                this.UserState.CurrentMailbox = await this.MailboxService.GenerateNewMailbox(userSecret.PublicKey, userSecret.Password);
                 this.MailboxService.RegisterForNewMails(this.UserState.CurrentMailbox, this.OnNewMailReceived);
             }
             else
             {
-                this.UserState.CurrentMailbox = this.MailboxService.GetOrCreateMailbox(this.UserState.Secret.Value.PrivateKey);
+                this.UserState.CurrentMailbox = await this.MailboxService.GetOrCreateMailboxAsync(userSecret.PrivateKey, userSecret.Password);
             }
 
-            this.Refresh();
+            await this.Refresh();
         }
 
-        private void OnNewMailReceived(EmailDto mail)
+        private void OnNewMailReceived(MailModel mail)
         {
             this.InvokeAsync(() => this.Refresh()); // TODO: use mail from event
         }
 
-        protected void Refresh()
+        protected async Task Refresh()
         {
-            this.Mails = this.MailboxService.GetMails(this.UserState.CurrentMailbox, this.UserState.Secret.Value.PrivateKey);
+            this.Mails = await this.MailboxService.GetDecryptedMailsAsync(this.UserState.CurrentMailbox, this.UserState.Secret.Value.PrivateKey);
             this.StateHasChanged();
         }
 
@@ -105,7 +108,7 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
             client.Send(msg);
         }
 
-        protected void ShowMail(EmailDto mail)
+        protected void ShowMail(MailModel mail)
         {
             this.CurrentMail = mail;
         }

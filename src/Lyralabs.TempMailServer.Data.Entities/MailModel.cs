@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lyralabs.TempMailServer.Data.Entities
+namespace Lyralabs.TempMailServer.Data
 {
     public class MailModel : ModelBase
     {
@@ -14,6 +14,12 @@ namespace Lyralabs.TempMailServer.Data.Entities
         public string FromAddress { get; set; }
         public string FromName { get; set; }
         public string BodyHtml { get; set; }
+
+        public MailModel Clone()
+        {
+            return (MailModel)this.MemberwiseClone();
+        }
+
         public string BodyText { get; set; }
         public DateTime ReceivedDate { get; set; }
 

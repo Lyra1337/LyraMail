@@ -21,10 +21,13 @@ namespace Lyralabs.TempMailServer
             var privateKey = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
             var publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
 
+            var password = Guid.NewGuid().ToString();
+
             return new UserSecret()
             {
                 PrivateKey = privateKey,
-                PublicKey = publicKey
+                PublicKey = publicKey,
+                Password = password
             };
         }
 

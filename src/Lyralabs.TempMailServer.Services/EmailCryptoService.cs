@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using Lyralabs.TempMailServer.Data;
 
 namespace Lyralabs.TempMailServer
 {
@@ -13,21 +14,21 @@ namespace Lyralabs.TempMailServer
             this.cryptoService = cryptoService;
         }
 
-        public EmailDto Encrypt(EmailDto mail, string publicKey)
+        public MailModel Encrypt(MailModel mail, string publicKey)
         {
             var dto = mail.Clone();
             this.ForEachString(mail, dto, x => this.cryptoService.Encrypt(x, publicKey));
             return dto;
         }
 
-        public EmailDto Decrypt(EmailDto mail, string privateKey)
+        public MailModel Decrypt(MailModel mail, string privateKey)
         {
             var dto = mail.Clone();
             this.ForEachString(mail, dto, x => this.cryptoService.Decrypt(x, privateKey));
             return dto;
         }
 
-        private void ForEachString(EmailDto source, EmailDto destination, Func<string, string> memberFunc)
+        private void ForEachString(MailModel source, MailModel destination, Func<string, string> memberFunc)
         {
             var properties = source.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(x => x.PropertyType == typeof(string))

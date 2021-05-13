@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using AutoMapper;
+using Lyralabs.TempMailServer.Data;
 using MimeKit;
 
 namespace Lyralabs.TempMailServer
@@ -27,15 +28,15 @@ namespace Lyralabs.TempMailServer
 
         private void MapMail(IMapperConfigurationExpression cfg)
         {
-            cfg.CreateMap<MimeMessage, EmailDto>()
+            cfg.CreateMap<MimeMessage, MailModel>()
+                .ForMember(x => x.Mailbox, opt => opt.Ignore())
+                .ForMember(x => x.MailboxId, opt => opt.Ignore())
+                .ForMember(x => x.Id, opt => opt.Ignore())
                 .ForMember(x => x.ReceivedDate, opt => opt.MapFrom(x => x.Date.LocalDateTime))
                 .ForMember(x => x.BodyHtml, opt => opt.MapFrom(x => x.HtmlBody))
                 .ForMember(x => x.BodyText, opt => opt.MapFrom(x => x.TextBody))
                 .ForMember(x => x.FromAddress, opt => opt.MapFrom(x => x.From.OfType<MailboxAddress>().Single().Address))
-                .ForMember(x => x.FromName, opt => opt.MapFrom(x => x.From.OfType<MailboxAddress>().Single().Name))
-                .ForMember(x => x.To, opt => opt.MapFrom(x => x.To.OfType<MailboxAddress>()));
-
-            cfg.CreateMap<MailboxAddress, MailboxAddressDto>();
+                .ForMember(x => x.FromName, opt => opt.MapFrom(x => x.From.OfType<MailboxAddress>().Single().Name));
         }
     }
 }
