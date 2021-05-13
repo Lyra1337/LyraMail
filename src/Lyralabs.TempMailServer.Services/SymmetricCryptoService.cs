@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Lyralabs.TempMailServer
 {
@@ -16,7 +17,25 @@ namespace Lyralabs.TempMailServer
             return (Convert.ToBase64String(aes.Key), Convert.ToBase64String(aes.IV));
         }
 
-        public string EncryptString(string plainText, string key, string iv)
+        public (string key, string iv) GenerateKeyByPassword(string password)
+        {
+            // HACK: Use key derivation
+            byte[] key, iv;
+
+            using (var md5 = MD5.Create())
+            {
+                iv = md5.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
+
+            using (var sha = SHA256.Create())
+            {
+                key = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
+
+            return (Convert.ToBase64String(key), Convert.ToBase64String(iv));
+        }
+
+        public string Encrypt(string plainText, string key, string iv)
         {
             if (plainText is null)
             {
@@ -50,7 +69,7 @@ namespace Lyralabs.TempMailServer
             return Convert.ToBase64String(encrypted);
         }
 
-        public string DecryptString(string cipherText, string key, string iv)
+        public string Decrypt(string cipherText, string key, string iv)
         {
             if (String.IsNullOrWhiteSpace(cipherText) == true)
             {

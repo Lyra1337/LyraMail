@@ -40,6 +40,7 @@ namespace Lyralabs.TempMailServer.Web
 
             services.AddTransient<EmailCryptoService>();
             services.AddTransient<AsymmetricCryptoService>();
+            services.AddTransient<SymmetricCryptoService>();
 
             services.AddTransient<MailRepository>();
 

@@ -7,34 +7,60 @@ namespace Lyralabs.TempMailServer
 {
     public sealed class EmailCryptoService
     {
-        private readonly AsymmetricCryptoService cryptoService;
+        private readonly AsymmetricCryptoService asymmetricCryptoService;
+        private readonly SymmetricCryptoService symmetricCryptoService;
 
-        public EmailCryptoService(AsymmetricCryptoService cryptoService)
+        public EmailCryptoService(AsymmetricCryptoService asymmetricCryptoService, SymmetricCryptoService symmetricCryptoService)
         {
-            this.cryptoService = cryptoService;
+            this.asymmetricCryptoService = asymmetricCryptoService;
+            this.symmetricCryptoService = symmetricCryptoService;
         }
 
-        public MailModel Encrypt(MailModel mail, string publicKey)
+        public MailModel EncryptWithNewPassword(MailModel mail, string publicKey)
         {
             var dto = mail.Clone();
-            this.ForEachString(mail, dto, x => this.cryptoService.Encrypt(x, publicKey));
+
+            var password = Guid.NewGuid().ToString(); // HACK: Use better password generator
+            var (key, iv) = this.symmetricCryptoService.GenerateKeyByPassword(password);
+
+            this.ForEachString(mail, dto, x => this.symmetricCryptoService.Encrypt(x, key, iv));
+
+            dto.Password = this.asymmetricCryptoService.Encrypt(password, publicKey);
+
             return dto;
         }
 
         public MailModel Decrypt(MailModel mail, string privateKey)
         {
             var dto = mail.Clone();
-            this.ForEachString(mail, dto, x => this.cryptoService.Decrypt(x, privateKey));
+
+            var password = this.asymmetricCryptoService.Decrypt(mail.Password, privateKey);
+            var (key, iv) = this.symmetricCryptoService.GenerateKeyByPassword(password);
+
+            this.ForEachString(mail, dto, x => this.symmetricCryptoService.Decrypt(x, key, iv));
+
             return dto;
         }
 
         private void ForEachString(MailModel source, MailModel destination, Func<string, string> memberFunc)
         {
-            var properties = source.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(x => x.PropertyType == typeof(string))
-                .ToList();
+            var propertyQuery = source.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => x.PropertyType == typeof(string));
 
-            properties.ForEach(x => x.SetValue(destination, memberFunc((string)x.GetValue(source))));
+            if (true)
+            {
+                propertyQuery = propertyQuery.Where(x => x.Name != nameof(MailModel.Password));
+            }
+
+            var properties = propertyQuery.ToList();
+
+            properties.ForEach(x =>
+            {
+                if (x.GetValue(source) is string value)
+                {
+                    x.SetValue(destination, memberFunc(value));
+                }
+            });
         }
     }
 }

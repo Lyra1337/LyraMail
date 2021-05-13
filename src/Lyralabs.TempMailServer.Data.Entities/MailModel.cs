@@ -14,6 +14,7 @@ namespace Lyralabs.TempMailServer.Data
         public string FromAddress { get; set; }
         public string FromName { get; set; }
         public string BodyHtml { get; set; }
+        public string Password { get; set; }
 
         public MailModel Clone()
         {

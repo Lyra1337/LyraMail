@@ -118,7 +118,7 @@ namespace Lyralabs.TempMailServer
 
                 if (mailbox != null)
                 {
-                    var encryptedMail = this.emailCryptoService.Encrypt(mail, mailbox.PublicKey);
+                    var encryptedMail = this.emailCryptoService.EncryptWithNewPassword(mail, mailbox.PublicKey);
 
                     encryptedMail.MailboxId = mailbox.Id;
                     await this.mailRepository.Insert(encryptedMail);
