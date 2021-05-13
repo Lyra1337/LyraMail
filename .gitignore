@@ -365,3 +365,5 @@ FodyWeavers.xsd
 
 wwwroot/lib/**
 /src/Lyralabs.Net.TempMailServer.Web/wwwroot/lib
+*.db-shm
+*.db-wal
