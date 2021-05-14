@@ -48,10 +48,7 @@ namespace Lyralabs.TempMailServer
             account = this.NormalizeEmailAddress(account);
 
             using var context = this.serviceProvider.Resolve<DatabaseContext>();
-            var mail = await context.Mails
-                .Where(x => x.Mailbox.Address == account)
-                .Where(x => x.Secret == secret)
-                .SingleAsync();
+            var mail = await context.Mails.SingleAsync(x => x.Secret == secret && x.Mailbox.Address == account);
 
             return mail;
         }
