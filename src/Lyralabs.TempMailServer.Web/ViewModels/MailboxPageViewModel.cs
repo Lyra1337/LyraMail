@@ -39,11 +39,11 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
 
             if (this.UserState.CurrentMailbox is null)
             {
-                this.GetMailbox();
+                await this.GetMailbox();
             }
             else
             {
-                this.Refresh();
+                await this.Refresh();
             }
 
             this.MailboxService.RegisterForNewMails(this.UserState.CurrentMailbox, this.OnNewMailReceived);
@@ -53,16 +53,19 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
         {
             if (await this.LocalStorage.ContainKeyAsync("secret") == true)
             {
-                return await this.LocalStorage.GetItemAsync<UserSecret>("secret");
-            }
-            else
-            {
-                var secret = this.CryptoService.GenerateUserSecret();
+                var secretFromStorage = await this.LocalStorage.GetItemAsync<UserSecret>("secret");
 
-                await this.LocalStorage.SetItemAsync("secret", secret);
-
-                return secret;
+                if (secretFromStorage.PrivateKey != null && secretFromStorage.PublicKey != null && secretFromStorage.Password != null)
+                {
+                    return secretFromStorage;
+                }
             }
+
+            var secret = this.CryptoService.GenerateUserSecret();
+
+            await this.LocalStorage.SetItemAsync("secret", secret);
+
+            return secret;
         }
 
         protected async Task GetMailbox(bool forceNew = false)
