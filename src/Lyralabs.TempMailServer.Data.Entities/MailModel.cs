@@ -9,7 +9,7 @@ namespace Lyralabs.TempMailServer.Data
 {
     public class MailModel : ModelBase
     {
-        public Guid Secret { get; set; } = Guid.NewGuid();
+        public Guid Secret { get; set; }
         public string Subject { get; set; }
         public string FromAddress { get; set; }
         public string FromName { get; set; }
