@@ -50,7 +50,7 @@
                 <Body>
                     @if (String.IsNullOrWhiteSpace(this.CurrentMail.BodyHtml) == false)
                     {
-                        <iframe src="/Api/HtmlContent/@(Uri.EscapeDataString(this.UserState.CurrentMailbox))/@(this.CurrentMail.Secret)?privateKey=@this.UserState.Secret.Value.PrivateKey"
+                        <iframe src="/Api/HtmlContent/@(Uri.EscapeDataString(this.UserState.CurrentMailbox))/@(this.CurrentMail.Secret)?privateKey=@Uri.EscapeDataString(this.UserState.Secret.Value.PrivateKey)"
                                 style="border: 0; min-height: calc(100vh - 350px);"
                                 sandbox="allow-popups" class="w-100"></iframe>
                     }
