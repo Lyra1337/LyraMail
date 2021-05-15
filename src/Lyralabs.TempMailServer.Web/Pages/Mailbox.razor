@@ -7,12 +7,13 @@
 
 @if (this.UserState.CurrentMailbox != null)
 {
-    <input readonly class="form-control" type="text" @bind-value="this.UserState.CurrentMailbox" />
+    <input readonly class="form-control email-textbox" type="text" @bind-value="this.UserState.CurrentMailbox" />
 }
 
 <button @onclick="this.Refresh" role="button" class="btn btn-secondary">Refresh</button>
 <button @onclick="(() => this.GetMailbox(forceNew: true))" role="button" class="btn btn-danger">New Address</button>
 <button @onclick="this.TestEmail" role="button" class="btn btn-primary">Test Email</button>
+<button @onclick="this.CopyEmail" role="button" class="btn btn-warning">Copy Email</button>
 
 <div class="row no-gutters">
     <div class="col-sm-6 col-md-5 col-lg-4">

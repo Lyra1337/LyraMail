@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Lyralabs.TempMailServer.Data;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Lyralabs.TempMailServer.Web.ViewModels
@@ -15,7 +16,7 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
         protected AsymmetricCryptoService CryptoService { get; set; }
 
         [Inject]
-        public IMessenger Messenger { get; set; }
+        protected IMessenger Messenger { get; set; }
 
         [Inject]
         protected MailboxService MailboxService { get; set; }
@@ -26,9 +27,12 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
         [Inject]
         protected ILocalStorageService LocalStorage { get; set; }
 
+        [Inject]
+        protected IJSRuntime JsRuntime { get; set; }
+
         protected List<MailModel> Mails { get; private set; } = new List<MailModel>();
 
-        public MailModel CurrentMail { get; private set; }
+        protected MailModel CurrentMail { get; private set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -50,6 +54,8 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
             {
                 await this.Refresh();
             }
+
+            await this.JsRuntime.InvokeVoidAsync("window.TempMailServer.InitializeAutoSelect");
         }
 
         private async Task<UserSecret> GetOrCreateUserSecret()
@@ -100,6 +106,11 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
             this.StateHasChanged();
         }
 
+        protected async Task CopyEmail()
+        {
+            await this.JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", this.UserState.CurrentMailbox);
+        }
+
         protected void TestEmail()
         {
             SmtpClient client = new SmtpClient("127.0.0.1");
@@ -109,7 +120,7 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
             MailAddress to = new MailAddress(this.UserState.CurrentMailbox, "Steve Jobs");
             MailMessage msg = new MailMessage(from, to);
             msg.Subject = "Hi, wie gehts?";
-            msg.Body = $"body blubb \r\n{System.Guid.NewGuid()}";
+            msg.Body = $"body blubb \r\n{Guid.NewGuid()}";
 
             client.Send(msg);
         }
