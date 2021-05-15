@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Lyralabs.TempMailServer.Data;
 using Microsoft.Extensions.Logging;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using MimeKit;
 
 namespace Lyralabs.TempMailServer
 {
     public class MailboxService
     {
-        private readonly ConcurrentDictionary<string, Action<MailModel>> mailNotifications = new ConcurrentDictionary<string, Action<MailModel>>();
         private readonly MailServerConfiguration mailServerConfiguration;
         private readonly AsymmetricCryptoService asymmetricCryptoService;
         private readonly EmailCryptoService emailCryptoService;
         private readonly MailRepository mailRepository;
+        private readonly IMessenger messenger;
         private readonly ILogger<MailboxService> logger;
 
         public MailboxService(
@@ -24,12 +25,14 @@ namespace Lyralabs.TempMailServer
             AsymmetricCryptoService asymmetricCryptoService,
             EmailCryptoService emailCryptoService,
             MailRepository mailRepository,
+            IMessenger messenger,
             ILogger<MailboxService> logger)
         {
             this.mailServerConfiguration = mailServerConfiguration;
             this.asymmetricCryptoService = asymmetricCryptoService;
             this.emailCryptoService = emailCryptoService;
             this.mailRepository = mailRepository;
+            this.messenger = messenger;
             this.logger = logger;
         }
 
@@ -64,22 +67,6 @@ namespace Lyralabs.TempMailServer
             var decrypted = this.emailCryptoService.Decrypt(mail, privateKey);
 
             return decrypted;
-        }
-
-        public void RegisterForNewMails(string address, Action<MailModel> handler)
-        {
-            // TODO: Add Multi Tab support
-            this.mailNotifications[address.ToLower()] = handler;
-        }
-
-        public void UnregisterForNewMails(string address)
-        {
-            address = address.ToLower();
-
-            if (this.mailNotifications.ContainsKey(address) == true)
-            {
-                this.mailNotifications.Remove(address, out _);
-            }
         }
 
         public async Task<string> GetOrCreateMailboxAsync(string privateKey, string password)
@@ -128,11 +115,13 @@ namespace Lyralabs.TempMailServer
                     this.logger.LogInformation($"disposing received mail with no corresponding mailbox. From={mail.FromAddress}; To={recipient}");
                 }
 
-                if (this.mailNotifications.ContainsKey(recipient.ToLower()) == true)
-                {
-                    this.mailNotifications[recipient.ToLower()](mail);
-                }
+                this.NotifyMail(mail, recipient);
             }
+        }
+
+        private void NotifyMail(MailModel mail, string recipient)
+        {
+            this.messenger.Send(new MailReceivedMessage(mail), recipient.ToLower());
         }
 
         public async Task<string> GenerateNewMailbox(string publicKey, string password)

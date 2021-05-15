@@ -5,13 +5,17 @@ using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Lyralabs.TempMailServer.Data;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Lyralabs.TempMailServer.Web.ViewModels
 {
-    public class MailboxPageViewModel : ComponentBase, IDisposable
+    public class MailboxPageViewModel : ComponentBase, IRecipient<MailReceivedMessage>
     {
         [Inject]
         protected AsymmetricCryptoService CryptoService { get; set; }
+
+        [Inject]
+        public IMessenger Messenger { get; set; }
 
         [Inject]
         protected MailboxService MailboxService { get; set; }
@@ -23,6 +27,7 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
         protected ILocalStorageService LocalStorage { get; set; }
 
         protected List<MailModel> Mails { get; private set; } = new List<MailModel>();
+
         public MailModel CurrentMail { get; private set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -45,8 +50,6 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
             {
                 await this.Refresh();
             }
-
-            this.MailboxService.RegisterForNewMails(this.UserState.CurrentMailbox, this.OnNewMailReceived);
         }
 
         private async Task<UserSecret> GetOrCreateUserSecret()
@@ -74,14 +77,14 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
 
             if (forceNew == true)
             {
-                this.MailboxService.UnregisterForNewMails(this.UserState.CurrentMailbox);
                 this.UserState.CurrentMailbox = await this.MailboxService.GenerateNewMailbox(userSecret.PublicKey, userSecret.Password);
-                this.MailboxService.RegisterForNewMails(this.UserState.CurrentMailbox, this.OnNewMailReceived);
             }
             else
             {
                 this.UserState.CurrentMailbox = await this.MailboxService.GetOrCreateMailboxAsync(userSecret.PrivateKey, userSecret.Password);
             }
+
+            this.Messenger.Register(this, this.UserState.CurrentMailbox);
 
             await this.Refresh();
         }
@@ -133,12 +136,10 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
             }
         }
 
-        public void Dispose()
+        public void Receive(MailReceivedMessage message)
         {
-            if (this.UserState.CurrentMailbox is not null)
-            {
-                this.MailboxService.UnregisterForNewMails(this.UserState.CurrentMailbox);
-            }
+            this.Mails.Insert(0, message.Mail);
+            _ = this.InvokeAsync(() => this.StateHasChanged());
         }
     }
 }
