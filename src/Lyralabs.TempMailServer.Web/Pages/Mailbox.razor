@@ -3,19 +3,29 @@
 
 <PageTitle Title="Mailbox" />
 
-<span>your email address:</span>
-
 @if (this.UserState.CurrentMailbox != null)
 {
-    <input readonly class="form-control email-textbox" type="text" @bind-value="this.UserState.CurrentMailbox" />
+    <div class="row">
+        <label class="col-md-auto col-form-label" for="email-address">your email address:</label>
+
+        <div class="col">
+            <input id="email-address" readonly class="form-control email-textbox" type="text" @bind-value="this.UserState.CurrentMailbox" />
+        </div>
+
+        <div class="col-lg-auto">
+            <button @onclick="this.Refresh" role="button" class="btn btn-secondary">Refresh</button>
+            <button @onclick="(() => this.GetMailbox(forceNew: true))" role="button" class="btn btn-danger">New Address</button>
+            <button @onclick="this.TestEmail" role="button" class="btn btn-primary">Test Email</button>
+            <button @onclick="this.CopyEmail" role="button" class="btn btn-warning">Copy Email</button>
+        </div>
+    </div>
+}
+else
+{
+    <span class="text-muted">Loading...</span>
 }
 
-<button @onclick="this.Refresh" role="button" class="btn btn-secondary">Refresh</button>
-<button @onclick="(() => this.GetMailbox(forceNew: true))" role="button" class="btn btn-danger">New Address</button>
-<button @onclick="this.TestEmail" role="button" class="btn btn-primary">Test Email</button>
-<button @onclick="this.CopyEmail" role="button" class="btn btn-warning">Copy Email</button>
-
-<div class="row no-gutters">
+<div class="row no-gutters mt-3">
     <div class="col-sm-6 col-md-5 col-lg-4">
         <div class="list-group">
             @foreach (var mail in this.Mails)
