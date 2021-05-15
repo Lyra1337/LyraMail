@@ -21,7 +21,11 @@
                 "js/bootstrap.js",
                 "js/bootstrap.js.map",
                 "js/bootstrap.min.js",
-                "js/bootstrap.min.js.map"
+                "js/bootstrap.min.js.map",
+                "js/bootstrap.bundle.js",
+                "js/bootstrap.bundle.js.map",
+                "js/bootstrap.bundle.min.js",
+                "js/bootstrap.bundle.min.js.map"
             ]
         },
         {
