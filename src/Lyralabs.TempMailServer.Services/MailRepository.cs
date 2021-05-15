@@ -58,7 +58,8 @@ namespace Lyralabs.TempMailServer
             using var context = this.serviceProvider.Resolve<DatabaseContext>();
             var passwordHash = this.HashPassword(password);
             return await context.Mailboxes
-                .SingleOrDefaultAsync(x => x.Password == passwordHash && x.PublicKey == publicKey);
+                .OrderByDescending(x => x.CreatedAt)
+                .FirstOrDefaultAsync(x => x.Password == passwordHash && x.PublicKey == publicKey);
         }
 
         public async Task<MailboxModel> GetMailbox(string address, bool loadMails)
