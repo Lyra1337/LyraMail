@@ -73,7 +73,13 @@ namespace Lyralabs.TempMailServer
                 query = query.Include(x => x.Mails);
             }
 
-            return await query.SingleAsync(x => x.Address == address);
+            var mailbox = await query.SingleAsync(x => x.Address == address);
+
+            mailbox.Mails = mailbox.Mails
+                .OrderByDescending(x => x.ReceivedDate)
+                .ToList();
+
+            return mailbox;
         }
 
         public async Task<List<MailboxModel>> GetMailboxes(List<string> addresses)
