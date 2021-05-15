@@ -1,7 +1,21 @@
-﻿<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+﻿@inherits TopNavigationViewModel
+
+<nav class="navbar navbar-dark sticky-top flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-xs-3 col-md-3 col-lg-2 mr-0" href="/">
         LyraMail
     </a>
+
+    @if (this.UserState?.CurrentMailbox != null)
+    {
+        <div class="navbar-text">
+            <div class="input-group">
+                <input type="text" class="form-control form-control-sm form-control-dark email-textbox" @bind-value="this.UserState.CurrentMailbox" />
+                <div class="input-group-append">
+                    <button @onclick="this.CopyEmail" role="button" class="btn btn-sm btn-outline-warning input-group-sm">Copy</button>
+                </div>
+            </div>
+        </div>
+    }
 
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">

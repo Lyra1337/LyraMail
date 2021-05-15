@@ -8,15 +8,14 @@
     <div class="row">
         <label class="col-md-auto col-form-label" for="email-address">your email address:</label>
 
-        <div class="col">
+        @*<div class="col">
             <input id="email-address" readonly class="form-control email-textbox" type="text" @bind-value="this.UserState.CurrentMailbox" />
-        </div>
+        </div>*@
 
         <div class="col-lg-auto">
             <button @onclick="this.Refresh" role="button" class="btn btn-secondary">Refresh</button>
             <button @onclick="(() => this.GetMailbox(forceNew: true))" role="button" class="btn btn-danger">New Address</button>
             <button @onclick="this.TestEmail" role="button" class="btn btn-primary">Test Email</button>
-            <button @onclick="this.CopyEmail" role="button" class="btn btn-warning">Copy Email</button>
         </div>
     </div>
 }

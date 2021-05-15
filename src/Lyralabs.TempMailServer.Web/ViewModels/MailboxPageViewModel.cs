@@ -95,20 +95,10 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
             await this.Refresh();
         }
 
-        private void OnNewMailReceived(MailModel mail)
-        {
-            this.InvokeAsync(() => this.Refresh()); // TODO: use mail from event
-        }
-
         protected async Task Refresh()
         {
             this.Mails = await this.MailboxService.GetDecryptedMailsAsync(this.UserState.CurrentMailbox, this.UserState.Secret.Value.PrivateKey);
             this.StateHasChanged();
-        }
-
-        protected async Task CopyEmail()
-        {
-            await this.JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", this.UserState.CurrentMailbox);
         }
 
         protected void TestEmail()
