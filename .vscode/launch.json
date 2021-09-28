@@ -1,0 +1,26 @@
+{
+    // https://code.visualstudio.com/docs/editor/debugging#_launch-configurations
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Lyralabs.TempMailServer.Web/bin/Debug/net5.0/Lyralabs.TempMailServer.Web.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Lyralabs.TempMailServer.Web",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/src/Lyralabs.TempMailServer.Web/Views"
+            }
+        }
+    ]
+}
