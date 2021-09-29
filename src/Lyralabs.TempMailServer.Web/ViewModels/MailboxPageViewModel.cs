@@ -30,6 +30,9 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
         [Inject]
         protected IJSRuntime JsRuntime { get; set; }
 
+        [Inject]
+        protected WebServerConfiguration WebServerConfiguration { get; set; }
+
         protected List<MailModel> Mails { get; private set; } = new List<MailModel>();
 
         protected MailModel CurrentMail { get; private set; }
@@ -140,7 +143,7 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
         public void Receive(MailReceivedMessage message)
         {
             this.Mails.Insert(0, message.Mail);
-            _ = this.InvokeAsync(() => this.StateHasChanged());
+            _ = this.InvokeAsync(this.StateHasChanged);
         }
     }
 }

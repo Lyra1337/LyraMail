@@ -6,12 +6,6 @@
 @if (this.UserState.CurrentMailbox != null)
 {
     <div class="row">
-        <label class="col-md-auto col-form-label" for="email-address">your email address:</label>
-
-        @*<div class="col">
-            <input id="email-address" readonly class="form-control email-textbox" type="text" @bind-value="this.UserState.CurrentMailbox" />
-        </div>*@
-
         <div class="col-lg-auto">
             <button @onclick="this.Refresh" role="button" class="btn btn-secondary">Refresh</button>
             <button @onclick="(() => this.GetMailbox(forceNew: true))" role="button" class="btn btn-danger">New Address</button>
@@ -60,7 +54,7 @@ else
                 <Body>
                     @if (String.IsNullOrWhiteSpace(this.CurrentMail.BodyHtml) == false)
                     {
-                        <iframe src="/Api/HtmlContent/@(Uri.EscapeDataString(this.UserState.CurrentMailbox))/@(this.CurrentMail.Secret)?privateKey=@Uri.EscapeDataString(this.UserState.Secret.Value.PrivateKey)"
+                        <iframe src="@this.WebServerConfiguration.MailContentBaseUrl/Api/HtmlContent/@(Uri.EscapeDataString(this.UserState.CurrentMailbox))/@(this.CurrentMail.Secret)?privateKey=@Uri.EscapeDataString(this.UserState.Secret.Value.PrivateKey)"
                                 style="border: 0; min-height: calc(100vh - 350px); background-color: white;"
                                 sandbox="allow-popups" class="w-100"></iframe>
                     }
