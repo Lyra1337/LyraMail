@@ -13,6 +13,7 @@
             "type": "image/png"
         }
     ],
+    "start_url": "./Mailbox",
     "theme_color": "#222222",
     "background_color": "#222222",
     "display": "standalone"
