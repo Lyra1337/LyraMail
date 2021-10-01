@@ -482,14 +482,10 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,rider
 
-
-# Jetbrains
-.idea/
-src/idea/
 # custom
 
 wwwroot/lib/**
-/src/Lyralabs.TempMailServer.Web/wwwroot/lib
+/Lyralabs.TempMailServer.Web/wwwroot/lib
 *.db
 *.db-shm
 *.db-wal
