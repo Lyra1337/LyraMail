@@ -10,5 +10,11 @@
             e.target.select();
             return false;
         }));
+    },
+
+    CloseMenu: function () {
+        let navMenu = $('#sidebarMenu');
+        console.log(navMenu);
+        navMenu.collapse('hide');
     }
 };
