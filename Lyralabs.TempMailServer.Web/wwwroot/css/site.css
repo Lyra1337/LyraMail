@@ -32,6 +32,10 @@ a, .btn-link {
     background-color: #222;
 }
 
+.navbar-dark {
+    background-color: #222;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
