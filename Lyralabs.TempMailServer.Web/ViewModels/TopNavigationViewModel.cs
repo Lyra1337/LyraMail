@@ -35,6 +35,5 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
             }
             catch { }
         }
-
     }
 }
