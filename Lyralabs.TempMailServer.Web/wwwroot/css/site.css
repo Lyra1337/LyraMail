@@ -28,6 +28,10 @@ a, .btn-link {
     color: red;
 }
 
+.sidebar {
+    background-color: #222;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
