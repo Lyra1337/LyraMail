@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using Lyralabs.TempMailServer.Data.Context;
+using Lyralabs.TempMailServer.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace Lyralabs.TempMailServer.Web
             services.AddSingleton<IMessenger>(x => WeakReferenceMessenger.Default);
 
             services.AddScoped<UserState>();
+            services.AddScoped<MailboxSessionService>();
 
             services.AddSingleton(x => x.Resolve<IConfiguration>().GetSection("MailServer").Get<MailServerConfiguration>());
             services.AddSingleton(x => x.Resolve<IConfiguration>().GetSection("WebServer").Get<WebServerConfiguration>());

@@ -21,7 +21,7 @@ else
 <div class="row no-gutters mt-3">
     <div class="col-sm-6 col-md-5 col-lg-4">
         <div class="list-group">
-            @foreach (var mail in this.Mails)
+            @foreach (var mail in this.MailboxSessionService.Mails)
             {
                 <a href="javascript:void(0)"
                    @onclick="() => this.ShowMail(mail)"
@@ -47,9 +47,13 @@ else
         {
             <Card>
                 <Title>
-                    <strong class="text-break">
+                    <strong class="text-break pt-1">
                         @this.CurrentMail.Subject
                     </strong>
+
+                    <button class="btn btn-sm btn-danger float-right" @onclick="this.DeleteCurrentMail">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </Title>
                 <Body>
                     @if (String.IsNullOrWhiteSpace(this.CurrentMail.BodyHtml) == false)
