@@ -93,6 +93,13 @@ namespace Lyralabs.TempMailServer
                 .ToListAsync();
         }
 
+        internal async Task DeleteMail(int id)
+        {
+            using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            context.Entry(new MailModel() { Id = id }).State = EntityState.Deleted;
+            await context.SaveChangesAsync();
+        }
+
         public async Task<bool> ExistsMailbox(string mailAddress)
         {
             using var context = this.serviceProvider.Resolve<DatabaseContext>();

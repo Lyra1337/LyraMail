@@ -85,6 +85,11 @@ namespace Lyralabs.TempMailServer
             }
         }
 
+        public async Task DeleteMail(int id)
+        {
+            await this.mailRepository.DeleteMail(id);
+        }
+
         internal async Task StoreMail(MailModel mail, InternetAddressList to)
         {
             if (mail is null)
