@@ -3,21 +3,6 @@
 
 <PageTitle Title="Mailbox" />
 
-@if (this.UserState.CurrentMailbox != null)
-{
-    <div class="row">
-        <div class="col-lg-auto">
-            <button @onclick="this.Refresh" role="button" class="btn btn-secondary">Refresh</button>
-            <button @onclick="(() => this.GetMailbox(forceNew: true))" role="button" class="btn btn-danger">New Address</button>
-            <button @onclick="this.TestEmail" role="button" class="btn btn-primary">Test Email</button>
-        </div>
-    </div>
-}
-else
-{
-    <span class="text-muted">Loading...</span>
-}
-
 <div class="row no-gutters mt-3">
     <div class="col-sm-6 col-md-5 col-lg-4">
         <div class="list-group">

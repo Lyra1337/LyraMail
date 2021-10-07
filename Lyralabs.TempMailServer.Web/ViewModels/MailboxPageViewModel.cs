@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.Mail;
 using System.Threading.Tasks;
-using Blazored.LocalStorage;
 using Lyralabs.TempMailServer.Data;
 using Lyralabs.TempMailServer.Web.Services;
 using Microsoft.AspNetCore.Components;
@@ -33,57 +30,19 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
 
         protected MailModel CurrentMail { get; private set; }
 
+        protected override void OnParametersSet()
+        {
+            this.MailboxSessionService.MailReceived += this.MailboxSessionService_MailReceived;
+        }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender == false)
-            {
-                return;
-            }
-
-            if (this.UserState.Secret is null)
-            {
-                this.UserState.Secret = await this.MailboxSessionService.GetOrCreateUserSecret();
-            }
-
-            if (this.UserState.CurrentMailbox is null)
-            {
-                await this.GetMailbox();
-            }
-            else
-            {
-                await this.Refresh();
-            }
-
             await this.JsRuntime.InvokeVoidAsync("window.TempMailServer.InitializeAutoSelect");
         }
 
-        protected async Task GetMailbox(bool forceNew = false)
+        private void MailboxSessionService_MailReceived(object sender, EventArgs e)
         {
-            var userSecret = this.UserState.Secret.Value;
-
-            if (forceNew == true)
-            {
-                this.UserState.CurrentMailbox = await this.MailboxService.GenerateNewMailbox(userSecret.PublicKey, userSecret.Password);
-            }
-            else
-            {
-                this.UserState.CurrentMailbox = await this.MailboxService.GetOrCreateMailboxAsync(userSecret.PrivateKey, userSecret.Password);
-            }
-
-            this.Messenger.Register(this, this.UserState.CurrentMailbox);
-
-            await this.Refresh();
-        }
-
-        protected async Task Refresh()
-        {
-            await this.MailboxSessionService.Refresh();
-            this.StateHasChanged();
-        }
-
-        protected void TestEmail()
-        {
-            this.MailboxSessionService.TestEmail();
+            _ = this.InvokeAsync(this.StateHasChanged);
         }
 
         protected void ShowMail(MailModel mail)
@@ -117,6 +76,11 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
         public void Receive(MailReceivedMessage message)
         {
             _ = this.InvokeAsync(this.StateHasChanged);
+        }
+
+        ~MailboxPageViewModel()
+        {
+            this.MailboxSessionService.MailReceived -= this.MailboxSessionService_MailReceived;
         }
     }
 }
