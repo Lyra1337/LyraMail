@@ -54,3 +54,8 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.sidebar a.nav-link > i.fas {
+    width: 32px;
+    text-align: center;
+}
