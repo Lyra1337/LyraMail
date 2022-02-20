@@ -1,6 +1,5 @@
 using Blazored.LocalStorage;
 using Lyralabs.TempMailServer.Data.Context;
-using Lyralabs.TempMailServer.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

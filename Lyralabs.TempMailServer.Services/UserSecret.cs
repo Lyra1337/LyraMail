@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Lyralabs.TempMailServer
+﻿namespace Lyralabs.TempMailServer
 {
     public struct UserSecret
     {

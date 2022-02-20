@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Lyralabs.TempMailServer.Web.Messages;
-using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Microsoft.Toolkit.Mvvm.Messaging;
 

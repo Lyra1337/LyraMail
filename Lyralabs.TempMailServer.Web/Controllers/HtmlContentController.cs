@@ -13,7 +13,7 @@ namespace Lyralabs.TempMailServer.Web.Controllers
             this.mailboxService = mailboxService;
         }
 
-        [HttpGet, Route("/Api/HtmlContent/{account}/{secret}")]
+        [HttpGet, Microsoft.AspNetCore.Mvc.Route("/Api/HtmlContent/{account}/{secret}")]
         public async Task<IActionResult> HtmlContent(
             [FromRoute] string account,
             [FromRoute] Guid secret,
