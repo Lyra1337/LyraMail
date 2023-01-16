@@ -3,7 +3,7 @@
     "defaultProvider": "cdnjs",
     "libraries": [
         {
-            "library": "bootswatch@4.6.0",
+            "library": "bootswatch@5.2.3",
             "destination": "wwwroot/lib/bootswatch",
             "files": [
                 "darkly/bootstrap.css",
@@ -15,7 +15,7 @@
             "destination": "wwwroot/lib/fontawesome"
         },
         {
-            "library": "twitter-bootstrap@4.6.0",
+            "library": "twitter-bootstrap@5.2.3",
             "destination": "wwwroot/lib/bootstrap",
             "files": [
                 "js/bootstrap.js",
