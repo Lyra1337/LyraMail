@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Lyralabs.TempMailServer.Services\Lyralabs.TempMailServer.Services.csproj" />
+        <ProjectReference Include="..\Services\Lyralabs.TempMailServer.Services.csproj" />
     </ItemGroup>
 
     <ProjectExtensions>
