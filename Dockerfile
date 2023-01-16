@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ENV TZ="Europe/Berlin"
 WORKDIR /src
 COPY . .
-WORKDIR "/src/Lyralabs.TempMailServer.Web"
+WORKDIR "/src/Web"
 RUN dotnet publish "Lyralabs.TempMailServer.Web.csproj" -c Release -o /app/publish
 
 FROM base AS final
