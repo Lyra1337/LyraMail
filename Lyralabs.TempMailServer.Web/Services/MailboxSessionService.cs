@@ -48,8 +48,8 @@ namespace Lyralabs.TempMailServer.Web.Services
                 var from = new MailAddress("steve@contoso.com", "Steve Ballmer");
                 var to = new MailAddress(this.userState.CurrentMailbox, "Steve Jobs");
                 var msg = new MailMessage(from, to);
-                msg.Subject = "Hi, wie gehts?";
-                msg.Body = $"body blubb \r\n{Guid.NewGuid()}";
+                msg.Subject = "Test Mail?";
+                msg.Body = $"Test Mail issued at {DateTime.UtcNow} (UTC)\r\n{Guid.NewGuid()}";
 
                 client.Send(msg);
             }
