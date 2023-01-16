@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+    lyra_mail:
+        build:
+            context: .
+        restart: unless-stopped
+        ports:
+            - 80:80
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://*:80

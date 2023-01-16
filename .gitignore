@@ -484,8 +484,10 @@ FodyWeavers.xsd
 
 # custom
 
-wwwroot/lib/**
-/Lyralabs.TempMailServer.Web/wwwroot/lib
+# re-enabled committing client-side libraries due to failing docker builds
+# wwwroot/lib/**
+# /Lyralabs.TempMailServer.Web/wwwroot/lib
+
 *.db
 *.db-shm
 *.db-wal
