@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.TestApp", "Lyralabs.TempMailServer.TestApp\Lyralabs.TempMailServer.TestApp.csproj", "{DD0F8197-4696-4764-A25F-E2208D9BF503}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.TestApp", "TestApp\Lyralabs.TempMailServer.TestApp.csproj", "{DD0F8197-4696-4764-A25F-E2208D9BF503}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.Web", "Lyralabs.TempMailServer.Web\Lyralabs.TempMailServer.Web.csproj", "{B9BC9D51-04BA-4F81-8100-C44B78AD1DC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.Web", "Web\Lyralabs.TempMailServer.Web.csproj", "{B9BC9D51-04BA-4F81-8100-C44B78AD1DC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AC273A61-7E3D-46DC-973E-DF50815ABD4E}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,15 +17,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.Services", "Lyralabs.TempMailServer.Services\Lyralabs.TempMailServer.Services.csproj", "{83CAE464-0203-4FB0-9E4C-880FADB75D79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.Services", "Services\Lyralabs.TempMailServer.Services.csproj", "{83CAE464-0203-4FB0-9E4C-880FADB75D79}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.DataTransferObjects", "Lyralabs.TempMailServer.DataTransferObjects\Lyralabs.TempMailServer.DataTransferObjects.csproj", "{23E82D6E-2767-47D3-952A-AB01D3C33857}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.DataTransferObjects", "DataTransferObjects\Lyralabs.TempMailServer.DataTransferObjects.csproj", "{23E82D6E-2767-47D3-952A-AB01D3C33857}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.Tests", "Lyralabs.TempMailServer.Tests\Lyralabs.TempMailServer.Tests.csproj", "{ED956C79-BF12-4B1A-AD7D-9E957690E8CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.Tests", "Tests\Lyralabs.TempMailServer.Tests.csproj", "{ED956C79-BF12-4B1A-AD7D-9E957690E8CB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.Data.Context", "Lyralabs.TempMailServer.Data.Context\Lyralabs.TempMailServer.Data.Context.csproj", "{AD7FB677-98CD-45D8-A310-D6EA6881E66B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.Data.Context", "Data\Context\Lyralabs.TempMailServer.Data.Context.csproj", "{AD7FB677-98CD-45D8-A310-D6EA6881E66B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.Data.Entities", "Lyralabs.TempMailServer.Data.Entities\Lyralabs.TempMailServer.Data.Entities.csproj", "{F4414B18-93DA-4DAF-83D8-8612A2A3D47B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyralabs.TempMailServer.Data.Entities", "Data\Entities\Lyralabs.TempMailServer.Data.Entities.csproj", "{F4414B18-93DA-4DAF-83D8-8612A2A3D47B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

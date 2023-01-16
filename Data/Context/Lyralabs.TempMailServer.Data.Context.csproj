@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Lyralabs.TempMailServer.Data.Entities\Lyralabs.TempMailServer.Data.Entities.csproj" />
+        <ProjectReference Include="..\Entities\Lyralabs.TempMailServer.Data.Entities.csproj" />
     </ItemGroup>
 
 </Project>

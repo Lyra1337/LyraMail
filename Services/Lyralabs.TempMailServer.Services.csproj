@@ -16,9 +16,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Lyralabs.TempMailServer.Data.Context\Lyralabs.TempMailServer.Data.Context.csproj" />
-        <ProjectReference Include="..\Lyralabs.TempMailServer.Data.Entities\Lyralabs.TempMailServer.Data.Entities.csproj" />
-        <ProjectReference Include="..\Lyralabs.TempMailServer.DataTransferObjects\Lyralabs.TempMailServer.DataTransferObjects.csproj" />
+        <ProjectReference Include="..\Data\Context\Lyralabs.TempMailServer.Data.Context.csproj" />
+        <ProjectReference Include="..\Data\Entities\Lyralabs.TempMailServer.Data.Entities.csproj" />
+        <ProjectReference Include="..\DataTransferObjects\Lyralabs.TempMailServer.DataTransferObjects.csproj" />
     </ItemGroup>
 
 </Project>
