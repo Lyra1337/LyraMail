@@ -50,7 +50,7 @@ namespace Lyralabs.TempMailServer
 
                 var message = messages.First();
 
-                this.logger.LogInformation($"storing E-Mail from {String.Join(", ", message.From)}");
+                this.logger.LogDebug($"storing E-Mail from {String.Join(", ", message.From)}");
 
                 var dto = this.mapper.Map<MailModel>(message);
 
@@ -77,8 +77,8 @@ namespace Lyralabs.TempMailServer
                 messages.Add(message);
                 this.logger.LogInformation($"parsed message of type {message.GetType().Name}");
 
-                this.logger.LogInformation($"TextBody: {message.TextBody}");
-                this.logger.LogInformation($"HtmlBody: {message.HtmlBody}");
+                this.logger.LogTrace($"TextBody: {message.TextBody}");
+                this.logger.LogTrace($"HtmlBody: {message.HtmlBody}");
             }
 
             return messages;

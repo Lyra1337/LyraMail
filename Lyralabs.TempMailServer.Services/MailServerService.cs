@@ -61,7 +61,7 @@ namespace Lyralabs.TempMailServer
 
         private void Context_CommandExecuting(object sender, SmtpCommandEventArgs e)
         {
-            this.logger.LogInformation($"Command executing: {e.Command.Name}");
+            this.logger.LogTrace($"Command executing: {e.Command.Name}");
         }
 
         private void SmtpServer_SessionFaulted(object sender, SessionFaultedEventArgs e)
