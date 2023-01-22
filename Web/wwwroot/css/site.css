@@ -2,20 +2,6 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-a, .btn-link {
-    color: #0366d6;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-
-.content {
-    padding-top: 1.1rem;
-}
-
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
 }
@@ -54,8 +40,3 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
-
-.sidebar a.nav-link > i.fas {
-    width: 32px;
-    text-align: center;
-}

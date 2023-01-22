@@ -1,13 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
-<TopNavigationMenu />
+<SideNavigationMenu />
 
-<div class="container-fluid">
-    <div class="row">
-        <SideNavigationMenu />
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <TopNavigationMenu />
+    <div class="container-fluid py-4">
+        @this.Body
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-3">
-            @this.Body
-        </main>
+        <Footer />
     </div>
-</div>
+</main>

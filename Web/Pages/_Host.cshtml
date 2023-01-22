@@ -5,22 +5,43 @@
     this.Layout = null;
 }
 
+@*
+=========================================================
+* Soft UI Dashboard - v1.0.7
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard
+* Copyright 2022 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://www.creative-tim.com/license)
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+*@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="180x180" href="~/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="~/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="~/icons/favicon-16x16.png">
     <link rel="manifest" href="~/site.webmanifest">
     <title>LyraMail.de</title>
     <base href="~/" />
-    <link href="~/lib/bootswatch/darkly/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="~/lib/soft-ui/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="~/lib/soft-ui/css/nucleo-svg.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="~/lib/soft-ui/css/nucleo-svg.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link id="pagestyle" href="~/lib/soft-ui/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
+
     <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/css/dashboard.css" rel="stylesheet" />
-    <link href="~/css/fonts.css" rel="stylesheet" />
     <link href="Lyralabs.TempMailServer.Web.styles.css" rel="stylesheet" />
 </head>
 <body data-color="grey" class="flat">
@@ -39,27 +60,33 @@
 
     <script src="_framework/blazor.server.js"></script>
 
-    <script src="~/lib/jquery/jquery.slim.min.js"></script>
-    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/soft-ui/js/core/popper.min.js"></script>
+    <script src="~/lib/soft-ui/js/core/bootstrap.min.js"></script>
+    <script src="~/lib/soft-ui/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="~/lib/soft-ui/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="~/lib/soft-ui/js/plugins/chartjs.min.js"></script>
+
+    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="~/lib/soft-ui/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
 
     <script src="~/js/app.js"></script>
 
     <script>
         @* From https://stackoverflow.com/a/61196613/1018200 *@
-        // Wait until a 'reload' button appears
-        new MutationObserver((mutations, observer) => {
-            if (document.querySelector('#components-reconnect-modal h5 a')) {
-                // Now every 1 second, see if the server appears to be back, and if so, reload
-                async function attemptReload() {
-                    await fetch(''); // Check the server really is back
-                    location.reload();
-                }
+            // Wait until a 'reload' button appears
+            new MutationObserver((mutations, observer) => {
+                if (document.querySelector('#components-reconnect-modal h5 a')) {
+                    // Now every 1 second, see if the server appears to be back, and if so, reload
+                    async function attemptReload() {
+                        await fetch(''); // Check the server really is back
+                        location.reload();
+                    }
 
-                observer.disconnect();
-                attemptReload();
-                setInterval(attemptReload, 1000);
-            }
-        }).observe(document.body, { childList: true, subtree: true });
+                    observer.disconnect();
+                    attemptReload();
+                    setInterval(attemptReload, 1000);
+                }
+            }).observe(document.body, { childList: true, subtree: true });
     </script>
 </body>
 </html>
