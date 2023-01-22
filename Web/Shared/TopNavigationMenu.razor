@@ -1,19 +1,17 @@
 ﻿@inherits TopNavigationViewModel
 
 <nav class="navbar navbar-dark sticky-top flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-xs-3 col-md-3 col-lg-2 mr-0" href="/">
+    <a class="navbar-brand col-xs-3 col-md-3 col-lg-2 mr-0 px-4" href="/">
         LyraMail.de
     </a>
 
     @if (this.UserState?.CurrentMailbox != null)
     {
-        <div class="navbar-text">
-            <div class="input-group">
-                <input type="text" style="height: 32px;" class="form-control form-control-sm form-control-dark email-textbox" @bind-value="this.UserState.CurrentMailbox" />
-                <button @onclick="this.CopyEmail" role="button" type="button" class="btn btn-sm btn-outline-warning input-group-sm">
-                    <i class="far fa-copy"></i>
-                </button>
-            </div>
+        <div class="input-group">
+            <input type="text" style="height: 32px;" class="form-control form-control-sm form-control-dark email-textbox" @bind-value="this.UserState.CurrentMailbox" />
+            <button @onclick="this.CopyEmail" role="button" type="button" class="btn btn-sm btn-outline-warning input-group-sm">
+                <i class="far fa-copy"></i>
+            </button>
         </div>
     }
 
@@ -28,7 +26,7 @@
     </ul>
 
     <button class="navbar-toggler position-absolute d-md-none collapsed"
-            type="button" data-toggle="collapse" data-target="#sidebarMenu"
+            type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
             aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
