@@ -1,5 +1,4 @@
-- name: Build and push Docker images
-  uses: docker/build-push-action@v3.3.0name: release
+name: build
 
 on:
   push:
