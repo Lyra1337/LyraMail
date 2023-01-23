@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Lyralabs.TempMailServer.Data;
 using Microsoft.Extensions.Logging;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Lyralabs.TempMailServer.Web.Services
 {
