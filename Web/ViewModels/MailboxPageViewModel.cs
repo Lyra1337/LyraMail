@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Lyralabs.TempMailServer.Data;
 using Microsoft.JSInterop;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Lyralabs.TempMailServer.Web.ViewModels
 {

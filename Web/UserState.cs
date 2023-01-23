@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Lyralabs.TempMailServer.Web.Messages;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Lyralabs.TempMailServer.Web
 {
