@@ -18,6 +18,15 @@
                         <small>@mail.ReceivedDate.ToShortTimeString()</small>
                     </div>
                     <strong class="text-break">
+                        @if (mail.IsRead == true)
+                        {
+                            <i class="far fa-envelope-open me-2"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-envelope me-2"></i>
+                        }
+
                         @this.Truncate(mail.Subject, 50)
                     </strong>
                     <p class="my-1 text-break">

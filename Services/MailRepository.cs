@@ -148,5 +148,19 @@ namespace Lyralabs.TempMailServer
         {
             return address.Trim().ToLower();
         }
+
+        public async Task SetReadMark(int mailId, bool isRead)
+        {
+            await using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            var entry = context.Entry(new MailModel()
+            {
+                Id = mailId,
+                IsRead = isRead
+            });
+            
+            entry.Property(x => x.IsRead).IsModified = true;
+
+            await context.SaveChangesAsync();
+        }
     }
 }

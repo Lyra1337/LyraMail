@@ -46,6 +46,7 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
         protected void ShowMail(MailModel mail)
         {
             this.CurrentMail = mail;
+            mail.IsRead = true;
         }
 
         protected async Task DeleteCurrentMail()
