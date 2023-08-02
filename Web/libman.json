@@ -6,24 +6,29 @@
             "library": "bootswatch@5.3.1",
             "destination": "wwwroot/lib/bootswatch",
             "files": [
-                "darkly/bootstrap.css",
                 "darkly/bootstrap.min.css"
             ]
         },
         {
             "library": "font-awesome@5.15.4",
-            "destination": "wwwroot/lib/fontawesome"
+            "destination": "wwwroot/lib/fontawesome",
+            "files": [
+                "css/all.min.css",
+                "webfonts/fa-brands-400.ttf",
+                "webfonts/fa-brands-400.woff",
+                "webfonts/fa-brands-400.woff2",
+                "webfonts/fa-solid-900.ttf",
+                "webfonts/fa-solid-900.woff",
+                "webfonts/fa-solid-900.woff2",
+                "webfonts/fa-regular-400.ttf",
+                "webfonts/fa-regular-400.woff",
+                "webfonts/fa-regular-400.woff2"
+            ]
         },
         {
             "library": "twitter-bootstrap@5.3.1",
             "destination": "wwwroot/lib/bootstrap",
             "files": [
-                "js/bootstrap.js",
-                "js/bootstrap.js.map",
-                "js/bootstrap.min.js",
-                "js/bootstrap.min.js.map",
-                "js/bootstrap.bundle.js",
-                "js/bootstrap.bundle.js.map",
                 "js/bootstrap.bundle.min.js",
                 "js/bootstrap.bundle.min.js.map"
             ]
@@ -32,7 +37,6 @@
             "library": "jquery@3.7.0",
             "destination": "wwwroot/lib/jquery",
             "files": [
-                "jquery.slim.js",
                 "jquery.slim.min.js",
                 "jquery.slim.min.map"
             ]
