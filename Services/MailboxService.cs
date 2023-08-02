@@ -53,18 +53,13 @@ namespace Lyralabs.TempMailServer
                 .ToList();
         }
 
-        public async Task<MailModel> GetDecryptedMail(string account, Guid secret, string privateKey, bool markAsRead = true)
+        public async Task<MailModel> GetDecryptedMail(string account, Guid secret, string privateKey)
         {
             var mail = await this.mailRepository.GetMailBySecret(account, secret);
 
             if (mail is null)
             {
                 throw new UnauthorizedAccessException();
-            }
-
-            if (markAsRead == true)
-            {
-                await this.mailRepository.SetReadMark(mail.Id, true);
             }
 
             var decrypted = this.emailCryptoService.Decrypt(mail, privateKey);
@@ -148,6 +143,11 @@ namespace Lyralabs.TempMailServer
             await this.mailRepository.CreateMailbox(mailAddress, publicKey, password);
 
             return mailAddress;
+        }
+
+        public async Task SetMailReadMark(int mailId, bool isRead)
+        {
+            await this.mailRepository.SetReadMark(mailId, isRead);
         }
     }
 }

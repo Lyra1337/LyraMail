@@ -9,7 +9,7 @@
             @foreach (var mail in this.MailboxSessionService.Mails)
             {
                 <a href="javascript:void(0)"
-                   @onclick="() => this.ShowMail(mail)"
+                   @onclick="async () => await this.ShowMail(mail)"
                    class="list-group-item list-group-item-action flex-column align-items-start @(this.CurrentMail == mail ? "active" : "")">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1 text-break">

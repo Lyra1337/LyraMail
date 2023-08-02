@@ -43,9 +43,10 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
             _ = this.InvokeAsync(this.StateHasChanged);
         }
 
-        protected void ShowMail(MailModel mail)
+        protected async Task ShowMail(MailModel mail)
         {
             this.CurrentMail = mail;
+            await this.MailboxService.SetMailReadMark(mail.Id, true);
             mail.IsRead = true;
         }
 
