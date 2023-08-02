@@ -3,7 +3,7 @@
     "defaultProvider": "cdnjs",
     "libraries": [
         {
-            "library": "bootswatch@5.2.3",
+            "library": "bootswatch@5.3.1",
             "destination": "wwwroot/lib/bootswatch",
             "files": [
                 "darkly/bootstrap.css",
@@ -11,11 +11,11 @@
             ]
         },
         {
-            "library": "font-awesome@5.15.3",
+            "library": "font-awesome@5.15.4",
             "destination": "wwwroot/lib/fontawesome"
         },
         {
-            "library": "twitter-bootstrap@5.2.3",
+            "library": "twitter-bootstrap@5.3.1",
             "destination": "wwwroot/lib/bootstrap",
             "files": [
                 "js/bootstrap.js",
@@ -29,7 +29,7 @@
             ]
         },
         {
-            "library": "jquery@3.6.0",
+            "library": "jquery@3.7.0",
             "destination": "wwwroot/lib/jquery",
             "files": [
                 "jquery.slim.js",
