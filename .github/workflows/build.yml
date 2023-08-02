@@ -26,8 +26,16 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           push: true
           tags: lyra1337/lyramail:latest
+
+      - name: Build and push minimal image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          file: Minimal.Dockerfile
+          tags: lyra1337/lyramail:minimal
