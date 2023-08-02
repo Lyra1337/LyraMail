@@ -11,7 +11,7 @@ namespace Lyralabs.TempMailServer.Data.Context
         public DatabaseContext CreateDbContext(string[] args)
         {
             var directory = new DirectoryInfo(Environment.CurrentDirectory);
-            var configFile = new FileInfo(Path.Combine(directory.Parent.FullName, "Lyralabs.TempMailServer.Web", "appsettings.json"));
+            var configFile = new FileInfo(Path.Combine(directory.Parent.Parent.FullName, "Web", "appsettings.json"));
 
             var config = new ConfigurationBuilder()
                 .AddJsonFile(configFile.FullName)
