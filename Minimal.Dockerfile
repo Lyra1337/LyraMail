@@ -1,11 +1,11 @@
 # minimal build adopted from https://benfoster.io/blog/optimising-dotnet-docker-images/
 
-FROM mcr.microsoft.com/dotnet/runtime-deps:7.0-alpine AS base
+FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 25
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 ENV TZ="Europe/Berlin"
 WORKDIR /src
 COPY . .
