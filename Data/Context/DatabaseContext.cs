@@ -2,7 +2,7 @@
 
 namespace Lyralabs.TempMailServer.Data.Context
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<UserModel, DatabaseContext>
     {
         public DbSet<MailboxModel> Mailboxes { get; set; }
 
