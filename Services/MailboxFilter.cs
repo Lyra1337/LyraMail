@@ -19,24 +19,24 @@ namespace Lyralabs.TempMailServer
             this.logger = logger;
         }
 
-        public Task<MailboxFilterResult> CanAcceptFromAsync(ISessionContext context, IMailbox from, int size, CancellationToken cancellationToken)
+        public Task<bool> CanAcceptFromAsync(ISessionContext context, IMailbox from, int size, CancellationToken cancellationToken)
         {
-            return Task.FromResult(MailboxFilterResult.Yes);
+            return Task.FromResult(true);
         }
 
-        public Task<MailboxFilterResult> CanDeliverToAsync(ISessionContext context, IMailbox to, IMailbox from, CancellationToken cancellationToken)
+        public Task<bool> CanDeliverToAsync(ISessionContext context, IMailbox to, IMailbox from, CancellationToken cancellationToken)
         {
             this.logger.LogDebug($"checking if we can deliver mail from {from.AsAddress()} to {to.AsAddress()}");
 
             if (this.mailServerConfiguration.Domain.Equals(to.Host, StringComparison.InvariantCultureIgnoreCase) == true)
             {
                 this.logger.LogInformation($"accepting email from {from.AsAddress()} to {to.AsAddress()}");
-                return Task.FromResult(MailboxFilterResult.Yes);
+                return Task.FromResult(true);
             }
             else
             {
                 this.logger.LogInformation($"denying email from {from.AsAddress()} to {to.AsAddress()}");
-                return Task.FromResult(MailboxFilterResult.NoTemporarily);
+                return Task.FromResult(false);
             }
         }
     }
