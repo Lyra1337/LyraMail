@@ -1,4 +1,4 @@
-﻿@page "/inbox"
+@page "/inbox"
 @inherits MailboxPageViewModel
 
 <TitleControl Title="Mailbox" />
@@ -6,11 +6,10 @@
 <div class="row no-gutters mt-3">
     <div class="col-sm-6 col-md-5 col-lg-4">
         <div class="list-group">
-            @foreach (var mail in this.MailboxSessionService.Mails)
-            {
+            <Virtualize Items="this.MailboxSessionService.Mails" Context="mail">
                 <a href="javascript:void(0)"
-                   @onclick="async () => await this.ShowMail(mail)"
-                   class="list-group-item list-group-item-action flex-column align-items-start @(this.CurrentMail == mail ? "active" : "")">
+                    @onclick="async () => await this.ShowMail(mail)"
+                    class="list-group-item list-group-item-action flex-column align-items-start @(this.CurrentMail == mail ? "active" : "")">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1 text-break">
                             @mail.FromAddress
@@ -33,7 +32,7 @@
                         @this.Truncate(mail.BodyText, 200)
                     </p>
                 </a>
-            }
+            </Virtualize>
         </div>
     </div>
     <div class="col-sm-6 col-md-7 col-lg-8">
