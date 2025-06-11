@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using AutoMapper;
 using Lyralabs.TempMailServer.Data;
@@ -36,7 +36,7 @@ namespace Lyralabs.TempMailServer
                 .ForMember(x => x.Secret, opt => opt.MapFrom(x => Guid.NewGuid()))
                 .ForMember(x => x.Password, opt => opt.Ignore())
                 .ForMember(x => x.IsRead, opt => opt.Ignore())
-                .ForMember(x => x.ReceivedDate, opt => opt.MapFrom(x => x.Date.LocalDateTime))
+                .ForMember(x => x.ReceivedDate, opt => opt.MapFrom(x => x.Date.UtcDateTime))
                 .ForMember(x => x.BodyHtml, opt => opt.MapFrom(x => x.HtmlBody))
                 .ForMember(x => x.BodyText, opt => opt.MapFrom(x => x.TextBody))
                 .ForMember(x => x.FromAddress, opt => opt.MapFrom(x => x.From.OfType<MailboxAddress>().Single().Address))
