@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Lyralabs.TempMailServer.Web
 {
@@ -8,7 +6,8 @@ namespace Lyralabs.TempMailServer.Web
     {
         public static void MigrateDatabase<TContext>(this IApplicationBuilder app) where TContext : DbContext
         {
-            using var context = app.ApplicationServices.GetService<TContext>();
+            var factory = app.ApplicationServices.GetService<IDbContextFactory<TContext>>();
+            using var context = factory.CreateDbContext();
             context.Database.Migrate();
         }
     }

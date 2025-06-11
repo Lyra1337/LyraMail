@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SmtpServer;
 using SmtpServer.ComponentModel;
@@ -13,30 +13,30 @@ namespace Lyralabs.TempMailServer
     {
         private readonly ISmtpServerOptions options;
         private readonly TempMessageStore messageStore;
-        private readonly IServiceProvider serviceProvider;
+        private readonly MailboxFilter mailboxFilter;
         private readonly MailServerConfiguration mailServerConfiguration;
         private readonly ILogger<MailServerService> logger;
         private SmtpServer.SmtpServer smtpServer;
 
-        public MailServerService(IServiceProvider serviceProvider, MailServerConfiguration mailServerConfiguration, ILogger<MailServerService> logger)
+        public MailServerService(MailServerConfiguration mailServerConfiguration, TempMessageStore  tempMessageStore, MailboxFilter mailboxFilter, ILogger<MailServerService> logger)
         {
-            this.serviceProvider = serviceProvider;
             this.mailServerConfiguration = mailServerConfiguration;
             this.logger = logger;
+            this.messageStore = tempMessageStore;
+            this.mailboxFilter = mailboxFilter;
+
             this.options = new SmtpServerOptionsBuilder()
                 .ServerName(this.mailServerConfiguration.Domain)
                 .Port(25, false)
                 .CommandWaitTimeout(TimeSpan.FromSeconds(30))
                 .Build();
-
-            this.messageStore = this.serviceProvider.Resolve<TempMessageStore>();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
             var mailServiceProvider = new ServiceProvider();
             mailServiceProvider.Add(this.messageStore);
-            mailServiceProvider.Add(this.serviceProvider.Resolve<MailboxFilter>());
+            mailServiceProvider.Add(this.mailboxFilter);
             this.smtpServer = new SmtpServer.SmtpServer(this.options, mailServiceProvider);
 
             this.smtpServer.SessionCreated += this.SmtpServer_SessionCreated;

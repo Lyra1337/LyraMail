@@ -10,18 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lyralabs.TempMailServer
 {
-    public class MailRepository
+    public class MailRepository(IDbContextFactory<DatabaseContext> databaseContextFactory)
     {
-        private readonly IServiceProvider serviceProvider;
-
-        public MailRepository(IServiceProvider serviceProvider)
-        {
-            this.serviceProvider = serviceProvider;
-        }
-
         public async Task<List<MailModel>> GetMails(int mailBoxId)
         {
-            using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            using var context = databaseContextFactory.CreateDbContext();
 
             var mails = await context.Mails
                 .Where(x => x.MailboxId == mailBoxId)
@@ -34,7 +27,7 @@ namespace Lyralabs.TempMailServer
         {
             account = this.NormalizeEmailAddress(account);
 
-            using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            using var context = databaseContextFactory.CreateDbContext();
             var mail = await context.Mails
                 .Where(x => x.Mailbox.Address == account)
                 .Where(x => x.Id == id)
@@ -47,7 +40,7 @@ namespace Lyralabs.TempMailServer
         {
             account = this.NormalizeEmailAddress(account);
 
-            using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            using var context = databaseContextFactory.CreateDbContext();
             var mail = await context.Mails.SingleAsync(x => x.Secret == secret && x.Mailbox.Address == account);
 
             return mail;
@@ -55,7 +48,7 @@ namespace Lyralabs.TempMailServer
 
         public async Task<MailboxModel> GetMailboxByPublicKey(string publicKey, string password)
         {
-            using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            using var context = databaseContextFactory.CreateDbContext();
             var passwordHash = this.HashPassword(password);
             return await context.Mailboxes
                 .OrderByDescending(x => x.CreatedAt)
@@ -66,7 +59,7 @@ namespace Lyralabs.TempMailServer
         {
             address = this.NormalizeEmailAddress(address);
 
-            using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            using var context = databaseContextFactory.CreateDbContext();
             IQueryable<MailboxModel> query = context.Mailboxes;
 
             if (loadMails == true)
@@ -85,7 +78,7 @@ namespace Lyralabs.TempMailServer
 
         public async Task<List<MailboxModel>> GetMailboxes(List<string> addresses)
         {
-            using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            using var context = databaseContextFactory.CreateDbContext();
             addresses = addresses.Select(x => this.NormalizeEmailAddress(x)).ToList();
 
             return await context.Mailboxes
@@ -95,21 +88,21 @@ namespace Lyralabs.TempMailServer
 
         internal async Task DeleteMail(int id)
         {
-            using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            using var context = databaseContextFactory.CreateDbContext();
             context.Entry(new MailModel() { Id = id }).State = EntityState.Deleted;
             await context.SaveChangesAsync();
         }
 
         public async Task<bool> ExistsMailbox(string mailAddress)
         {
-            using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            using var context = databaseContextFactory.CreateDbContext();
             mailAddress = this.NormalizeEmailAddress(mailAddress);
             return await context.Mailboxes.AnyAsync(x => x.Address == mailAddress);
         }
 
         public async Task CreateMailbox(string mailAddress, string publicKey, string password)
         {
-            using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            using var context = databaseContextFactory.CreateDbContext();
             mailAddress = this.NormalizeEmailAddress(mailAddress);
 
             context.Mailboxes.Add(new MailboxModel()
@@ -125,7 +118,7 @@ namespace Lyralabs.TempMailServer
 
         public async Task Insert(MailModel encryptedMail)
         {
-            using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            using var context = databaseContextFactory.CreateDbContext();
             context.Mails.Add(encryptedMail);
             await context.SaveChangesAsync();
         }
@@ -151,13 +144,13 @@ namespace Lyralabs.TempMailServer
 
         public async Task SetReadMark(int mailId, bool isRead)
         {
-            await using var context = this.serviceProvider.Resolve<DatabaseContext>();
+            await using var context = databaseContextFactory.CreateDbContext();
             var entry = context.Entry(new MailModel()
             {
                 Id = mailId,
                 IsRead = isRead
             });
-            
+
             entry.Property(x => x.IsRead).IsModified = true;
 
             await context.SaveChangesAsync();

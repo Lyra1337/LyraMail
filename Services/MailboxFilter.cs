@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -8,7 +8,7 @@ using SmtpServer.Storage;
 
 namespace Lyralabs.TempMailServer
 {
-    internal sealed class MailboxFilter : IMailboxFilter
+    public sealed class MailboxFilter : IMailboxFilter
     {
         private readonly MailServerConfiguration mailServerConfiguration;
         private readonly ILogger<MailboxFilter> logger;

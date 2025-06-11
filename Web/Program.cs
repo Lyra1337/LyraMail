@@ -60,11 +60,11 @@ namespace Lyralabs.TempMailServer.Web
             builder.Services.AddTransient<SymmetricCryptoService>();
 
             builder.Services.AddTransient<MailRepository>();
+            builder.Services.AddTransient<TempMessageStore>();
+            builder.Services.AddTransient<MailboxFilter>();
 
-            builder.Services.AddDbContext<DatabaseContext>(
-                options => options.UseSqlite(builder.Configuration.GetConnectionString(nameof(DatabaseContext))),
-                contextLifetime: ServiceLifetime.Transient,
-                optionsLifetime: ServiceLifetime.Singleton
+            builder.Services.AddDbContextFactory<DatabaseContext>(
+                options => options.UseSqlite(builder.Configuration.GetConnectionString(nameof(DatabaseContext)))
             );
 
             var app = builder.Build();

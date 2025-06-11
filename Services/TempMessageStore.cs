@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Lyralabs.TempMailServer.Data;
 using Microsoft.Extensions.Logging;
 using MimeKit;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Lyralabs.TempMailServer
 {
-    internal sealed class TempMessageStore : MessageStore
+    public sealed class TempMessageStore : MessageStore
     {
         private readonly MailboxService mailboxService;
         private readonly IMapper mapper;
