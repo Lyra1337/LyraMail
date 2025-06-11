@@ -34,7 +34,7 @@ namespace Lyralabs.TempMailServer
             this.logger = logger;
         }
 
-        public async Task<List<MailModel>> GetDecryptedMailsAsync(string address, string privateKey, int? limit = 200)
+        public async Task<List<MailPreviewDto>> GetDecryptedMailsAsync(string address, string privateKey, int? limit = 200)
         {
             if (String.IsNullOrWhiteSpace(address))
             {
@@ -45,12 +45,16 @@ namespace Lyralabs.TempMailServer
 
             if (mailbox is null)
             {
-                return new List<MailModel>();
+                return [];
             }
 
             var query = mailbox.Mails
                 .OrderByDescending(x => x.ReceivedDate)
-                .Select(x => this.emailCryptoService.Decrypt(x, privateKey));
+                .Select(x =>
+                {
+                    var mail = this.emailCryptoService.Decrypt(x, privateKey);
+                    return this.ConvertToPreview(mail);
+                });
 
             if (limit is not null)
             {
@@ -58,6 +62,50 @@ namespace Lyralabs.TempMailServer
             }
 
             return query.ToList();
+        }
+
+        public MailPreviewDto ConvertToPreview(MailModel mail)
+        {
+            return new MailPreviewDto
+            {
+                Id = mail.Id,
+                Subject = this.Truncate(mail.Subject, 100),
+                FromAddress = mail.FromAddress,
+                ReceivedDate = mail.ReceivedDate,
+                IsRead = mail.IsRead,
+                PreviewText = this.Truncate(mail.BodyText ?? "no text body")
+            };
+        }
+
+        private string Truncate(string text, int maxLength = 200)
+        {
+            if (String.IsNullOrEmpty(text) == true)
+            {
+                return text;
+            }
+
+            if (text.Length <= maxLength)
+            {
+                return text;
+            }
+            else
+            {
+                return String.Concat(text.Substring(0, maxLength), "...");
+            }
+        }
+
+        public async Task<MailModel> GetDecryptedMailById(string account, int mailId, string privateKey)
+        {
+            var mail = await this.mailRepository.GetMailById(account, mailId);
+
+            if (mail is null)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            var decrypted = this.emailCryptoService.Decrypt(mail, privateKey);
+
+            return decrypted;
         }
 
         public async Task<MailModel> GetDecryptedMail(string account, Guid secret, string privateKey)
@@ -119,13 +167,13 @@ namespace Lyralabs.TempMailServer
 
                     encryptedMail.MailboxId = mailbox.Id;
                     await this.mailRepository.Insert(encryptedMail);
+                    mail.Id = encryptedMail.Id;
+                    this.NotifyMail(mail, recipient);
                 }
                 else
                 {
                     this.logger.LogInformation($"disposing received mail with no corresponding mailbox. From={mail.FromAddress}; To={recipient}");
                 }
-
-                this.NotifyMail(mail, recipient);
             }
         }
 

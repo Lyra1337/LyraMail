@@ -8,7 +8,7 @@
             <Virtualize Items="this.MailboxSessionService.Mails" Context="mail">
                 <a href="javascript:void(0)"
                     @onclick="async () => await this.ShowMail(mail)"
-                    class="list-group-item list-group-item-action flex-column align-items-start @(this.CurrentMail == mail ? "active" : "")">
+                    class="list-group-item list-group-item-action flex-column align-items-start @(this.CurrentMail?.Id == mail.Id ? "active" : "")">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1 text-break">
                             @mail.FromAddress
@@ -28,7 +28,7 @@
                         @this.Truncate(mail.Subject, 50)
                     </strong>
                     <p class="my-1 text-break">
-                        @this.Truncate(mail.BodyText, 200)
+                        @mail.PreviewText
                     </p>
                 </a>
             </Virtualize>

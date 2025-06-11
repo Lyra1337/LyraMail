@@ -41,16 +41,16 @@ namespace Lyralabs.TempMailServer.Web.Pages
             _ = this.InvokeAsync(this.StateHasChanged);
         }
 
-        protected async Task ShowMail(MailModel mail)
+        protected async Task ShowMail(MailPreviewDto mailPreview)
         {
-            this.CurrentMail = mail;
-            await this.MailboxService.SetMailReadMark(mail.Id, true);
-            mail.IsRead = true;
+            this.CurrentMail = await this.MailboxSessionService.GetMailByIdAsync(mailPreview.Id);
+            await this.MailboxService.SetMailReadMark(mailPreview.Id, true);
+            mailPreview.IsRead = true;
         }
 
         protected async Task DeleteCurrentMail()
         {
-            await this.MailboxSessionService.DeleteMail(this.CurrentMail);
+            await this.MailboxSessionService.DeleteMail(this.CurrentMail.Id);
             this.CurrentMail = null;
         }
 

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Net.Mail;
-using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using Lyralabs.TempMailServer.Data;
-using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.Messaging;
+using Lyralabs.TempMailServer.Data;
 
 namespace Lyralabs.TempMailServer.Web.Services
 {
@@ -20,7 +16,7 @@ namespace Lyralabs.TempMailServer.Web.Services
         private readonly IMessenger messenger;
         private readonly ILogger<MailboxSessionService> logger;
 
-        public List<MailModel> Mails { get; private set; } = new List<MailModel>();
+        public List<MailPreviewDto> Mails { get; private set; } = [];
 
         public MailboxSessionService(
             UserState userState,
@@ -86,16 +82,16 @@ namespace Lyralabs.TempMailServer.Web.Services
 
         public void Receive(MailReceivedMessage message)
         {
-            this.Mails.Insert(0, message.Mail);
+            this.Mails.Insert(0, this.mailboxService.ConvertToPreview(message.Mail));
             this.MailReceived?.Invoke(this, EventArgs.Empty);
         }
 
-        public async Task DeleteMail(MailModel currentMail)
+        public async Task DeleteMail(int mailid)
         {
-            await this.mailboxService.DeleteMail(currentMail.Id);
-            this.Mails.Remove(currentMail);
+            await this.mailboxService.DeleteMail(mailid);
+            this.Mails.Remove(this.Mails.Single(m => m.Id == mailid));
         }
-    
+
         public async Task GetMailbox(bool forceNew = false)
         {
             var userSecret = this.userState.Secret.Value;
@@ -113,5 +109,11 @@ namespace Lyralabs.TempMailServer.Web.Services
 
             await this.Refresh();
         }
-}
+
+        internal async Task<MailModel> GetMailByIdAsync(int mailId)
+        {
+            var mail = await this.mailboxService.GetDecryptedMailById(this.userState.CurrentMailbox, mailId, this.userState.Secret.Value.PrivateKey);
+            return mail;
+        }
+    }
 }

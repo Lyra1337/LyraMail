@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -30,7 +30,7 @@ namespace Lyralabs.TempMailServer
             return mails;
         }
 
-        public async Task<MailModel> GetMail(string account, int id)
+        public async Task<MailModel> GetMailById(string account, int id)
         {
             account = this.NormalizeEmailAddress(account);
 
