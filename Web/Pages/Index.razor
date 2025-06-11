@@ -1,3 +1,10 @@
-﻿@page "/"
+@page "/"
 
-<TitleControl Title="Home" />
+<TitleControl Title="Stats" />
+
+<div>
+    <div>Total Mailboxes: <strong>@this.TotalMailboxes</strong></div>
+    <div>Total Messages: <strong>@this.TotalMails</strong></div>
+    <div>Largest Mailbox contains <strong>@this.LargestMailbox</strong> Mails</div>
+    <div>Mails received Yesterday: <strong>@this.YesterdaysMailCount</strong></div>
+</div>
