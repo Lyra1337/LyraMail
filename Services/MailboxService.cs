@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,7 +34,7 @@ namespace Lyralabs.TempMailServer
             this.logger = logger;
         }
 
-        public async Task<List<MailModel>> GetDecryptedMailsAsync(string address, string privateKey)
+        public async Task<List<MailModel>> GetDecryptedMailsAsync(string address, string privateKey, int? limit = 200)
         {
             if (String.IsNullOrWhiteSpace(address))
             {
@@ -48,9 +48,16 @@ namespace Lyralabs.TempMailServer
                 return new List<MailModel>();
             }
 
-            return mailbox.Mails
-                .Select(x => this.emailCryptoService.Decrypt(x, privateKey))
-                .ToList();
+            var query = mailbox.Mails
+                .OrderByDescending(x => x.ReceivedDate)
+                .Select(x => this.emailCryptoService.Decrypt(x, privateKey));
+
+            if (limit is not null)
+            {
+                query = query.Take(limit.Value);
+            }
+
+            return query.ToList();
         }
 
         public async Task<MailModel> GetDecryptedMail(string account, Guid secret, string privateKey)
