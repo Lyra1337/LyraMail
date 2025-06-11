@@ -31,8 +31,10 @@ namespace Lyralabs.TempMailServer
                 .Build();
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
+            await Task.Yield();
+
             var mailServiceProvider = new SmtpServer.ComponentModel.ServiceProvider();
             mailServiceProvider.Add(this.messageStore);
             mailServiceProvider.Add(this.mailboxFilter);
@@ -43,7 +45,6 @@ namespace Lyralabs.TempMailServer
             this.smtpServer.SessionCompleted += this.SmtpServer_SessionCompleted;
 
             _ = this.smtpServer.StartAsync(CancellationToken.None);
-            return Task.CompletedTask;
         }
 
         private void SmtpServer_SessionCompleted(object sender, SessionEventArgs e)
