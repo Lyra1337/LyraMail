@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SmtpServer;
-using SmtpServer.ComponentModel;
 using System;
 using System.Linq;
 using System.Threading;
@@ -34,7 +33,7 @@ namespace Lyralabs.TempMailServer
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            var mailServiceProvider = new ServiceProvider();
+            var mailServiceProvider = new SmtpServer.ComponentModel.ServiceProvider();
             mailServiceProvider.Add(this.messageStore);
             mailServiceProvider.Add(this.mailboxFilter);
             this.smtpServer = new SmtpServer.SmtpServer(this.options, mailServiceProvider);

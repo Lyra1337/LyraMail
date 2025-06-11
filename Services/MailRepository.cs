@@ -144,7 +144,7 @@ namespace Lyralabs.TempMailServer
 
         public async Task SetReadMark(int mailId, bool isRead)
         {
-            await using var context = databaseContextFactory.CreateDbContext();
+            using var context = databaseContextFactory.CreateDbContext();
             var entry = context.Entry(new MailModel()
             {
                 Id = mailId,
