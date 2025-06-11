@@ -14,4 +14,4 @@ FROM base AS final
 ENV TZ="Europe/Berlin"
 WORKDIR /app
 COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "Lyralabs.TempMailServer.dll"]
+ENTRYPOINT ["dotnet", "Lyralabs.TempMailServer.Web.dll"]
