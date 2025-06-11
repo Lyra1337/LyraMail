@@ -199,10 +199,5 @@ namespace Lyralabs.TempMailServer
 
             return mailAddress;
         }
-
-        public async Task SetMailReadMark(int mailId, bool isRead)
-        {
-            await this.mailRepository.SetReadMark(mailId, isRead);
-        }
     }
 }

@@ -43,8 +43,8 @@ namespace Lyralabs.TempMailServer.Web.Pages
         protected async Task ShowMail(MailPreviewDto mailPreview)
         {
             this.CurrentMail = await this.MailboxSessionService.GetMailByIdAsync(mailPreview.Id);
-            await this.MailboxService.SetMailReadMark(mailPreview.Id, true);
             mailPreview.IsRead = true;
+            await this.MailboxSessionService.SetMailReadMark(mailPreview.Id, true);
         }
 
         protected async Task DeleteCurrentMail()
