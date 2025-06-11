@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
 using Lyralabs.TempMailServer.Data;
 using Microsoft.JSInterop;
 using CommunityToolkit.Mvvm.Messaging;
 
-namespace Lyralabs.TempMailServer.Web.ViewModels
+namespace Lyralabs.TempMailServer.Web.Pages
 {
-    public class MailboxPageViewModel : ComponentBase, IRecipient<MailReceivedMessage>
+    partial class Mailbox : IRecipient<MailReceivedMessage>, IDisposable
     {
         [Inject]
         protected IMessenger Messenger { get; set; }
@@ -78,7 +76,7 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
             _ = this.InvokeAsync(this.StateHasChanged);
         }
 
-        ~MailboxPageViewModel()
+        public void Dispose()
         {
             this.MailboxSessionService.MailReceived -= this.MailboxSessionService_MailReceived;
         }

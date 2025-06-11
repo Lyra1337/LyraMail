@@ -1,11 +1,10 @@
-﻿using System.Threading.Tasks;
 using Lyralabs.TempMailServer.Web.Messages;
 using Microsoft.JSInterop;
 using CommunityToolkit.Mvvm.Messaging;
 
-namespace Lyralabs.TempMailServer.Web.ViewModels
+namespace Lyralabs.TempMailServer.Web.Shared
 {
-    public class TopNavigationViewModel : ComponentBase, IRecipient<UserStateChangedMessage>
+    partial class TopNavigationMenu : IRecipient<UserStateChangedMessage>
     {
         [Inject]
         protected UserState UserState { get; set; }

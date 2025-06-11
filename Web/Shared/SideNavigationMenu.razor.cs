@@ -1,11 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.JSInterop;
 
-namespace Lyralabs.TempMailServer.Web.ViewModels
+namespace Lyralabs.TempMailServer.Web.Shared
 {
-    public class SideNavigationMenuViewModel : ComponentBase
+    partial class SideNavigationMenu
     {
         [Inject]
         protected IJSRuntime JsRuntime { get; set; }
@@ -61,7 +59,7 @@ namespace Lyralabs.TempMailServer.Web.ViewModels
 
         private void CheckMailboxUrl()
         {
-            this.IsMailboxActive = Uri.TryCreate(this.NavigationManager.Uri, UriKind.Absolute, out Uri uri) == true
+            this.IsMailboxActive = Uri.TryCreate(this.NavigationManager.Uri, UriKind.Absolute, out var uri) == true
                 && uri.LocalPath.Equals("/inbox", StringComparison.OrdinalIgnoreCase) == true;
 
             this.StateHasChanged();
