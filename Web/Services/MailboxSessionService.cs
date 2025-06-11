@@ -5,7 +5,7 @@ using Lyralabs.TempMailServer.Data;
 
 namespace Lyralabs.TempMailServer.Web.Services
 {
-    public class MailboxSessionService : IRecipient<MailReceivedMessage>
+    public class MailboxSessionService : IRecipient<MailReceivedMessage>, IDisposable
     {
         public event EventHandler MailReceived;
 
@@ -114,6 +114,12 @@ namespace Lyralabs.TempMailServer.Web.Services
         {
             var mail = await this.mailboxService.GetDecryptedMailById(this.userState.CurrentMailbox, mailId, this.userState.Secret.Value.PrivateKey);
             return mail;
+        }
+
+        public void Dispose()
+        {
+            this.messenger.UnregisterAll(this);
+            this.Mails.Clear();
         }
     }
 }

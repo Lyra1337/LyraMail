@@ -26,14 +26,13 @@ namespace Lyralabs.TempMailServer.Web.Pages
 
         protected MailModel CurrentMail { get; private set; }
 
-        protected override void OnParametersSet()
+        protected override async Task OnInitializedAsync()
         {
-            this.MailboxSessionService.MailReceived += this.MailboxSessionService_MailReceived;
-        }
+            await base.OnInitializedAsync();
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
+            this.MailboxSessionService.MailReceived += this.MailboxSessionService_MailReceived;
             await this.JsRuntime.InvokeVoidAsync("window.TempMailServer.InitializeAutoSelect");
+            this.Messenger.Register(this);
         }
 
         private void MailboxSessionService_MailReceived(object sender, EventArgs e)
@@ -78,6 +77,7 @@ namespace Lyralabs.TempMailServer.Web.Pages
 
         public void Dispose()
         {
+            this.Messenger.UnregisterAll(this);
             this.MailboxSessionService.MailReceived -= this.MailboxSessionService_MailReceived;
         }
     }
