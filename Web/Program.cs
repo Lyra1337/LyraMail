@@ -20,17 +20,18 @@ namespace Lyralabs.TempMailServer.Web
 
             // Serilog configuration
             Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-            .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-            .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.File(
-                path: "mailserver.log",
-                rollOnFileSizeLimit: true,
-                restrictedToMinimumLevel: LogEventLevel.Information,
-                fileSizeLimitBytes: (int)Math.Pow(1024, 2) * 10) // 10 MB
-            .CreateLogger();
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File(
+                    path: "/logs/mailserver.log",
+                    rollOnFileSizeLimit: true,
+                    restrictedToMinimumLevel: LogEventLevel.Information,
+                    retainedFileCountLimit: 10,
+                    fileSizeLimitBytes: (int)Math.Pow(1024, 2) * 10) // 10 MB
+                .CreateLogger();
 
             builder.Host.UseSerilog();
 
