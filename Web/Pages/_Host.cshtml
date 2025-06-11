@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @namespace Lyralabs.TempMailServer.Web.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
@@ -24,7 +24,7 @@
     <link href="Lyralabs.TempMailServer.Web.styles.css" rel="stylesheet" />
 </head>
 <body data-color="grey" class="flat">
-    <component type="typeof(App)" render-mode="ServerPrerendered" />
+    <component type="typeof(App)" render-mode="Server" />
 
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
