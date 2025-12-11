@@ -54,8 +54,7 @@ namespace Lyralabs.TempMailServer.Web
             builder.Services.AddSingleton<StatisticCacheService>();
             builder.Services.AddHostedService(x => x.GetRequiredService<StatisticCacheService>());
 
-            builder.Services.AddSingleton<MapperService>();
-            builder.Services.AddSingleton(x => x.GetRequiredService<MapperService>().Mapper);
+            builder.Services.AddSingleton<MimeMessageMapper>();
 
             builder.Services.AddSingleton<MailboxService>();
 

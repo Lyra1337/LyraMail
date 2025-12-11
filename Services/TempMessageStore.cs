@@ -1,4 +1,3 @@
-using AutoMapper;
 using Lyralabs.TempMailServer.Data;
 using Microsoft.Extensions.Logging;
 using MimeKit;
@@ -18,10 +17,10 @@ namespace Lyralabs.TempMailServer
     public sealed class TempMessageStore : MessageStore
     {
         private readonly MailboxService mailboxService;
-        private readonly IMapper mapper;
+        private readonly MimeMessageMapper mapper;
         private readonly ILogger<TempMessageStore> logger;
 
-        public TempMessageStore(MailboxService mailboxService, IMapper mapper, ILogger<TempMessageStore> logger)
+        public TempMessageStore(MailboxService mailboxService, MimeMessageMapper mapper, ILogger<TempMessageStore> logger)
         {
             this.mailboxService = mailboxService;
             this.mapper = mapper;
@@ -56,7 +55,7 @@ namespace Lyralabs.TempMailServer
                 this.logger.LogDebug($"storing E-Mail...");
 #endif
 
-                var dto = this.mapper.Map<MailModel>(message);
+                var dto = this.mapper.MapToMailModel(message);
 
                 await this.mailboxService.StoreMail(dto, message.To);
 
