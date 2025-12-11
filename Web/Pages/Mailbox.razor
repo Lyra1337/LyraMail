@@ -2,8 +2,8 @@
 
 <TitleControl Title="Mailbox" />
 
-<div class="row no-gutters mt-3">
-    <div class="col-sm-6 col-md-5 col-lg-4">
+<div class="row no-gutters mt-3 mailbox-container">
+    <div class="col-sm-6 col-md-5 col-lg-4 mail-list-column @(this.CurrentMail != null ? "d-none d-sm-block" : "")">
         <RadzenDataList @ref="dataList"
                         AllowPaging="true"
                         Data="@pagedMails"
@@ -43,16 +43,20 @@
             </Template>
         </RadzenDataList>
     </div>
-    <div class="col-sm-6 col-md-7 col-lg-8">
+    <div class="col-sm-6 col-md-7 col-lg-8 mail-content-column @(this.CurrentMail == null ? "d-none d-sm-block" : "")">
         @if (this.CurrentMail != null)
         {
-            <Card>
+            <Card Class="mail-detail-card h-100">
                 <Title>
+                    <button class="btn btn-secondary d-inline-block d-sm-none me-2" @onclick="this.CloseMail">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+
                     <strong class="text-break pt-1">
                         @this.CurrentMail.Subject
                     </strong>
 
-                    <button class="btn btn-sm btn-danger float-right" @onclick="this.DeleteCurrentMail">
+                    <button class="btn btn-sm btn-danger float-end" @onclick="this.DeleteCurrentMail">
                         <i class="fas fa-trash"></i>
                     </button>
                 </Title>
@@ -60,14 +64,12 @@
                     @if (String.IsNullOrWhiteSpace(this.CurrentMail.BodyHtml) == false)
                     {
                         <iframe src="@this.WebServerConfiguration.MailContentBaseUrl/Api/HtmlContent/@(Uri.EscapeDataString(this.UserState.CurrentMailbox))/@(this.CurrentMail.Secret)?privateKey=@Uri.EscapeDataString(this.UserState.Secret.Value.PrivateKey)"
-                                style="border: 0; min-height: calc(100vh - 350px); background-color: white;"
-                                sandbox="allow-popups" class="w-100"></iframe>
+                                class="mail-iframe h-100"
+                                sandbox="allow-popups"></iframe>
                     }
                     else
                     {
-<pre class="text-break" style="min-height: calc(100vh - 350px);">
-@this.CurrentMail.BodyText
-</pre>
+                        <pre class="mail-text-preview text-break">@this.CurrentMail.BodyText</pre>
                     }
                 </Body>
             </Card>

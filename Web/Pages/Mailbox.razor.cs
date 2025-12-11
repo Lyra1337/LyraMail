@@ -89,6 +89,11 @@ namespace Lyralabs.TempMailServer.Web.Pages
             await this.MailboxSessionService.SetMailReadMark(mailPreview.Id, true);
         }
 
+        protected void CloseMail()
+        {
+            this.CurrentMail = null;
+        }
+
         protected async Task DeleteCurrentMail()
         {
             await this.MailboxSessionService.DeleteMail(this.CurrentMail.Id);
