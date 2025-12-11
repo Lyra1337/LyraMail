@@ -12,13 +12,20 @@ namespace Lyralabs.TempMailServer
 {
     public class MailRepository(IDbContextFactory<DatabaseContext> databaseContextFactory)
     {
-        public async Task<List<MailModel>> GetMails(int mailBoxId)
+        public async Task<List<MailModel>> GetMails(int mailBoxId, int? limit = null)
         {
             using var context = databaseContextFactory.CreateDbContext();
 
-            var mails = await context.Mails
+            IQueryable<MailModel> query = context.Mails
                 .Where(x => x.MailboxId == mailBoxId)
-                .ToListAsync();
+                .OrderByDescending(x => x.ReceivedDate);
+
+            if (limit != null)
+            {
+                query = query.Take(limit.Value);
+            }
+
+            var mails = await query.ToListAsync();
 
             return mails;
         }
@@ -69,9 +76,12 @@ namespace Lyralabs.TempMailServer
 
             var mailbox = await query.SingleAsync(x => x.Address == address);
 
-            mailbox.Mails = mailbox.Mails
-                .OrderByDescending(x => x.ReceivedDate)
-                .ToList();
+            if (loadMails == true)
+            {
+                mailbox.Mails = mailbox.Mails
+                    .OrderByDescending(x => x.ReceivedDate)
+                    .ToList();
+            }
 
             return mailbox;
         }

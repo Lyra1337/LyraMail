@@ -41,27 +41,21 @@ namespace Lyralabs.TempMailServer
                 throw new ArgumentException($"'{nameof(address)}' cannot be null or whitespace.", nameof(address));
             }
 
-            var mailbox = await this.mailRepository.GetMailbox(address, loadMails: true);
+            var mailbox = await this.mailRepository.GetMailbox(address, loadMails: false);
 
             if (mailbox is null)
             {
                 return [];
-            }
-
-            var query = mailbox.Mails
-                .OrderByDescending(x => x.ReceivedDate)
+            } 
+            
+            var mails = await this.mailRepository.GetMails(mailbox.Id, limit: 200);
+            return mails
                 .Select(x =>
                 {
                     var mail = this.emailCryptoService.Decrypt(x, privateKey);
                     return this.ConvertToPreview(mail);
-                });
-
-            if (limit is not null)
-            {
-                query = query.Take(limit.Value);
-            }
-
-            return query.ToList();
+                })
+                .ToList();
         }
 
         public MailPreviewDto ConvertToPreview(MailModel mail)
