@@ -58,6 +58,30 @@ namespace Lyralabs.TempMailServer
                 .ToList();
         }
 
+        public async Task<List<MailPreviewDto>> GetDecryptedMailsPagedAsync(string address, string privateKey, int skip, int take)
+        {
+            if (String.IsNullOrWhiteSpace(address))
+            {
+                throw new ArgumentException($"'{nameof(address)}' cannot be null or whitespace.", nameof(address));
+            }
+
+            var mailbox = await this.mailRepository.GetMailbox(address, loadMails: false);
+
+            if (mailbox is null)
+            {
+                return [];
+            }
+
+            var mails = await this.mailRepository.GetMailsPaged(mailbox.Id, skip, take);
+            return mails
+                .Select(x =>
+                {
+                    var mail = this.emailCryptoService.Decrypt(x, privateKey);
+                    return this.ConvertToPreview(mail);
+                })
+                .ToList();
+        }
+
         public MailPreviewDto ConvertToPreview(MailModel mail)
         {
             return new MailPreviewDto
@@ -135,6 +159,23 @@ namespace Lyralabs.TempMailServer
         public async Task DeleteMail(int id)
         {
             await this.mailRepository.DeleteMail(id);
+        }
+
+        public async Task<int> GetMailCountAsync(string address)
+        {
+            if (String.IsNullOrWhiteSpace(address))
+            {
+                throw new ArgumentException($"'{nameof(address)}' cannot be null or whitespace.", nameof(address));
+            }
+
+            var mailbox = await this.mailRepository.GetMailbox(address, loadMails: false);
+
+            if (mailbox is null)
+            {
+                return 0;
+            }
+
+            return await this.mailRepository.GetMailCount(mailbox.Id);
         }
 
         internal async Task StoreMail(MailModel mail, InternetAddressList to)

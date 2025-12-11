@@ -30,6 +30,29 @@ namespace Lyralabs.TempMailServer
             return mails;
         }
 
+        public async Task<List<MailModel>> GetMailsPaged(int mailBoxId, int skip, int take)
+        {
+            using var context = databaseContextFactory.CreateDbContext();
+
+            var mails = await context.Mails
+                .Where(x => x.MailboxId == mailBoxId)
+                .OrderByDescending(x => x.ReceivedDate)
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
+
+            return mails;
+        }
+
+        public async Task<int> GetMailCount(int mailBoxId)
+        {
+            using var context = databaseContextFactory.CreateDbContext();
+
+            return await context.Mails
+                .Where(x => x.MailboxId == mailBoxId)
+                .CountAsync();
+        }
+
         public async Task<MailModel> GetMailById(string account, int id)
         {
             account = this.NormalizeEmailAddress(account);

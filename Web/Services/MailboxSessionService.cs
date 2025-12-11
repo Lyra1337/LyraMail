@@ -18,6 +18,7 @@ namespace Lyralabs.TempMailServer.Web.Services
         public event EventHandler MailRead;
 
         public List<MailPreviewDto> Mails { get; private set; } = [];
+        public int TotalMailCount { get; private set; }
 
         public void TestEmail()
         {
@@ -62,7 +63,22 @@ namespace Lyralabs.TempMailServer.Web.Services
         public async Task Refresh()
         {
             this.Mails = await mailboxService.GetDecryptedMailsAsync(userState.CurrentMailbox, userState.Secret.Value.PrivateKey);
+            this.TotalMailCount = this.Mails.Count;
             this.MailReceived?.Invoke(this, EventArgs.Empty);
+        }
+
+        public async Task<List<MailPreviewDto>> GetPagedMails(int skip, int take)
+        {
+            return await mailboxService.GetDecryptedMailsPagedAsync(
+                userState.CurrentMailbox, 
+                userState.Secret.Value.PrivateKey, 
+                skip, 
+                take);
+        }
+
+        public async Task<int> GetTotalMailCount()
+        {
+            return await mailboxService.GetMailCountAsync(userState.CurrentMailbox);
         }
 
         public void Receive(MailReceivedMessage message)

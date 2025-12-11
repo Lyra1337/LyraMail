@@ -1,6 +1,8 @@
 using Lyralabs.TempMailServer.Data;
 using Microsoft.JSInterop;
 using CommunityToolkit.Mvvm.Messaging;
+using Radzen;
+using Radzen.Blazor;
 
 namespace Lyralabs.TempMailServer.Web.Pages
 {
@@ -26,6 +28,12 @@ namespace Lyralabs.TempMailServer.Web.Pages
 
         protected MailModel CurrentMail { get; private set; }
 
+        private RadzenDataList<MailPreviewDto> dataList;
+        private List<MailPreviewDto> pagedMails = new();
+        private int totalCount;
+        private int pageSize = 20;
+        private bool isFirstRender = true;
+
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
@@ -35,9 +43,43 @@ namespace Lyralabs.TempMailServer.Web.Pages
             this.Messenger.Register(this);
         }
 
-        private void MailboxSessionService_MailReceived(object sender, EventArgs e)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            _ = this.InvokeAsync(this.StateHasChanged);
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (firstRender && isFirstRender)
+            {
+                isFirstRender = false;
+                await LoadInitialData();
+                StateHasChanged();
+            }
+        }
+
+        private async Task LoadInitialData()
+        {
+            totalCount = await this.MailboxSessionService.GetTotalMailCount();
+            pagedMails = await this.MailboxSessionService.GetPagedMails(0, pageSize);
+        }
+
+        private async void MailboxSessionService_MailReceived(object sender, EventArgs e)
+        {
+            await this.InvokeAsync(async () =>
+            {
+                if (dataList != null)
+                {
+                    await dataList.Reload();
+                }
+                else
+                {
+                    this.StateHasChanged();
+                }
+            });
+        }
+
+        private async Task LoadData(LoadDataArgs args)
+        {
+            totalCount = await this.MailboxSessionService.GetTotalMailCount();
+            pagedMails = await this.MailboxSessionService.GetPagedMails(args.Skip ?? 0, args.Top ?? pageSize);
         }
 
         protected async Task ShowMail(MailPreviewDto mailPreview)
@@ -51,6 +93,11 @@ namespace Lyralabs.TempMailServer.Web.Pages
         {
             await this.MailboxSessionService.DeleteMail(this.CurrentMail.Id);
             this.CurrentMail = null;
+            
+            if (dataList != null)
+            {
+                await dataList.Reload();
+            }
         }
 
         protected string Truncate(string text, int maxLength)
@@ -70,9 +117,19 @@ namespace Lyralabs.TempMailServer.Web.Pages
             }
         }
 
-        public void Receive(MailReceivedMessage message)
+        public async void Receive(MailReceivedMessage message)
         {
-            _ = this.InvokeAsync(this.StateHasChanged);
+            await this.InvokeAsync(async () =>
+            {
+                if (dataList != null)
+                {
+                    await dataList.Reload();
+                }
+                else
+                {
+                    this.StateHasChanged();
+                }
+            });
         }
 
         public void Dispose()

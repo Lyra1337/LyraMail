@@ -59,3 +59,33 @@ a, .btn-link {
     width: 32px;
     text-align: center;
 }
+
+/* Radzen DataList styling for dark theme */
+.rz-datalist {
+    background-color: transparent !important;
+}
+
+.rz-datalist-data {
+    background-color: transparent !important;
+}
+
+.rz-paginator {
+    background-color: transparent !important;
+    color: #fff !important;
+}
+
+.rz-paginator .rz-paginator-element {
+    color: #fff !important;
+}
+
+.rz-paginator .rz-paginator-element:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.rz-paginator .rz-state-active {
+    background-color: #375a7f !important;
+}
+
+.rz-paginator-pages .rz-paginator-page {
+    color: #fff !important;
+}

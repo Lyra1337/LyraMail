@@ -4,8 +4,17 @@
 
 <div class="row no-gutters mt-3">
     <div class="col-sm-6 col-md-5 col-lg-4">
-        <div class="list-group">
-            <Virtualize Items="this.MailboxSessionService.Mails" Context="mail">
+        <RadzenDataList @ref="dataList"
+                        AllowPaging="true"
+                        Data="@pagedMails"
+                        Count="@totalCount"
+                        PageSize="@pageSize"
+                        LoadData="@LoadData"
+                        TItem="MailPreviewDto"
+                        PagerHorizontalAlign="HorizontalAlign.Center"
+                        ShowPagingSummary="true"
+                        PagingSummaryFormat="@("Showing page {0} of {1} (total {2} records)")">
+            <Template Context="mail">
                 <a href="javascript:void(0)"
                     @onclick="async () => await this.ShowMail(mail)"
                     class="list-group-item list-group-item-action flex-column align-items-start @(this.CurrentMail?.Id == mail.Id ? "active" : "")">
@@ -31,8 +40,8 @@
                         @mail.PreviewText
                     </p>
                 </a>
-            </Virtualize>
-        </div>
+            </Template>
+        </RadzenDataList>
     </div>
     <div class="col-sm-6 col-md-7 col-lg-8">
         @if (this.CurrentMail != null)
